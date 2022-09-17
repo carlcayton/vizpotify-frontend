@@ -1,30 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import LoginButton from "components/LoginButton";
-import LandingPageCards from "componnents/LoginPageCards"
+import LandingPageCards from "components/LandingPageCards";
+import Image from "next/image";
 
 const AUTH_URL =
   "https://accounts.spotify.com/authorize?client_id=19677842c1504c3c831f448b3e0691c8&response_type=code&redirect_uri=http://localhost:3000&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20user-read-playback-state%20user-modify-playback-state";
 
 const LandingPage = () => {
-
+  const [hoveredCard, setHoveredCard] = useState(0);
   const cardsInfo = [
     {
-      src: "assets/vector_image/gear_logo.svg",
+      src: "/LandingPage/Logo/gear_logo.svg",
       title: "Modify",
-      desc: "Browse your statistics according to your liking"
+      desc: "Browse your statistics according to your liking",
+      illuSrc: "/LandingPage/Illustration/Sort.svg",
+      isHovered: false,
     },
 
     {
-      src: "assets/vector_image/share_logo.svg",
+      src: "/LandingPage/Logo/share_logo.svg",
       title: "Share",
-      desc: "Share to the world what music you are into"
+      desc: "Share to the world what music you are into",
+      illuSrc: "/LandingPage/Illustration/Share.svg",
+      isHovered: false,
     },
     {
-      src: "assets/vector_image/compare_logo.svg",
+      src: "/LandingPage/Logo/compare_logo.svg",
       title: "Compare",
-      desc: "Find out similar music you and your friends listen to and learn about artists you both like"
+      desc: "Find out similar music you and your friends listen to and learn about artists you both like",
+      illuSrc: "/LandingPage/Illustration/Compare.svg",
+      isHovered: false,
     },
-  ]
+  ];
+
+  const onMouseOverHandler = (hoveredIndex) => {
+    setHoveredCard(hoveredIndex);
+  };
+
   return (
     <div className="flex flex-col">
       {/**
@@ -43,27 +55,43 @@ const LandingPage = () => {
           Share with your friends.
         </p>
         <div className="flex px-10">
-          <LoginButton authUrl={AUTH_URL}/>
+          <LoginButton authUrl={AUTH_URL} />
         </div>
       </div>
 
       {/**
        * Second
        */}
-      <div className="flex bg-theme-green">
-        <div className="flex">
-          <div>
-            <div className="flex flex-col">
-              <p>Discover more about your music taste</p>
-              <div className="flex flex-row">
-                {cardsInfo.map((card)=>{
-                  return 
-                })}
-              </div>
+      <div className="flex bg-theme-green lg:px-[350px]">
+        <div className="flex flex-row">
+          <div className="flex flex-col w-1/2">
+            <p>Discover more about your music taste</p>
+            <div className="flex flex-row gap-10">
+              {cardsInfo.map((card, index) => {
+                return (
+                  <div key={index}>
+                    <LandingPageCards
+                      imgSrc={card.src}
+                      title={card.title}
+                      desc={card.desc}
+                      // setIsHovered={card.isHovered}
+                      index={index}
+                      onMouseOver={onMouseOverHandler}
+                    />
+                    {card.isHovered ? setHoveredCard(index) : ""}
+                  </div>
+                );
+              })}
             </div>
-            <div>
+          </div>
+          <div className="flex w-1/2 relative">
+            <Image
+              className=""
+              src={cardsInfo[hoveredCard].illuSrc}
+              layout="fill"
 
-            </div>
+              alt="Sorting Illustration"
+            />
           </div>
         </div>
       </div>

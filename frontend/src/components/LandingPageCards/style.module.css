@@ -1,0 +1,15 @@
+.parent{
+
+}
+
+.parent:hover .icon{
+filter: brightness(0) saturate(100) invert(91%) sepia(16%) saturate(1057%) hue-rotate(75deg) brightness(97%) contrast(92%);
+}
+
+/* .card {
+   display: flex;
+   flex-direction: column;
+   gap: 1;
+   padding: 10;
+   background: #111827;
+} */
