@@ -27,7 +27,7 @@ const LandingPage = () => {
     {
       src: "/LandingPage/Logo/compare_logo.svg",
       title: "Compare",
-      desc: "Find out similar music you and your friends listen to and learn about artists you both like",
+      desc: "Find out similar music you and your friends listen to",
       illuSrc: "/LandingPage/Illustration/Compare.svg",
       isHovered: false,
     },
@@ -38,11 +38,11 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       {/**
        * First
        */}
-      <div className="flex flex-col bg-theme-black pt-20 px-10  sm:px-16 md:px-40 lg:px-56 2xl:px-80 gap-y-4">
+      <div className="flex flex-col bg-theme-black pt-20 px-10 sm:px-16 md:px-40 lg:px-56 2xl:px-72 gap-y-4 py-4">
         <p className="text-white font-bold text-xl sm:text-2xl md:text-3xl lg:text-5xl px-10  ">
           Personal <span className="font- text-theme-green">Spotify </span>
           Stats
@@ -62,36 +62,36 @@ const LandingPage = () => {
       {/**
        * Second
        */}
-      <div className="flex bg-theme-green lg:px-[350px]">
-        <div className="flex flex-row">
-          <div className="flex flex-col w-1/2">
-            <p>Discover more about your music taste</p>
-            <div className="flex flex-row gap-10">
+      <div className="flex bg-theme-green px-20 sm:px-[100px] lg:pl-64 xl:pl-50 2xl:pl-80 py-10 ">
+        <div className="flex flex-col justify-center">
+          <p className="font-semibold text-2xl pb-4 sm:pb-6">
+            Discover more about your music taste
+          </p>
+          <div className="flex xl:flex-row lg:flex-col items-center">
+            <div className="flex flex-col justify-between sm:flex-row  items-stretch justify-items-stretch sm:justify-evenly w-full xl:w-1/2 lg:h-1/2 sm:h-full gap-5 2xl:gap-8">
               {cardsInfo.map((card, index) => {
                 return (
-                  <div key={index}>
-                    <LandingPageCards
-                      imgSrc={card.src}
-                      title={card.title}
-                      desc={card.desc}
-                      // setIsHovered={card.isHovered}
-                      index={index}
-                      onMouseOver={onMouseOverHandler}
-                    />
-                    {card.isHovered ? setHoveredCard(index) : ""}
-                  </div>
+                  <LandingPageCards
+                    imgSrc={card.src}
+                    title={card.title}
+                    desc={card.desc}
+                    index={index}
+                    onMouseOver={onMouseOverHandler}
+                    key={index}
+                  />
                 );
               })}
             </div>
-          </div>
-          <div className="flex w-1/2 relative">
-            <Image
-              className=""
-              src={cardsInfo[hoveredCard].illuSrc}
-              layout="fill"
 
-              alt="Sorting Illustration"
-            />
+            <div className="hidden lg:flex justify-center ml-1 xl:w-100 lg:w-1/2">
+              <Image
+                src={cardsInfo[hoveredCard].illuSrc}
+                height="500%"
+                width="500%"
+                // layout="fill"
+                alt={cardsInfo[hoveredCard].title}
+              />
+            </div>
           </div>
         </div>
       </div>

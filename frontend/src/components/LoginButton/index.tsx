@@ -8,7 +8,7 @@ const LoginButton = (props) => {
   return (
     <Link href={props.authUrl}>
       <a className="">
-        <button className="p-3 flex items-center my-5 bg-theme-green  rounded-lg ease-out hover:translate-y-1 transition-all group">
+        <button className="p-3 flex items-center my-5 bg-theme-green  rounded-lg ease-in-out hover:translate-y-1 transition-all group">
           <Image
             className="group-hover:animate-[spin_.5s_ease-in-out]"
             src={spotifyLogo}
