@@ -1,30 +1,160 @@
-import { useEffect, useState } from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
+import React, { useState, useEffect } from "react";
+import LoginButton from "components/LoginButton";
+import LandingPageCards from "components/LandingPageCards";
 import Image from "next/image";
-import Dashboard from "./dashboard";
-import LandingPage from "./LandingPage";
 import { useRouter } from "next/router";
-import NavBar from "components/NavBar";
+import { getProviders, signIn } from "next-auth/react";
 
-const Home = () => {
-  const [code_, setCode] = useState<string | undefined>(undefined);
-  const router = useRouter();
-  useEffect(() => {
-    const { code } = router.query;
-    setCode(code as string);
-  }, [code_, router.query]);
+import NavBar from "components/NavBar";
+import { useAuth } from "api/useAuth";
+
+// const setStoredJSON = (id, obj) => {
+//   localStorage.setItem(id, JSON.stringify(obj));
+// };
+
+// function getStoredJSON(id, fallbackValue = null) {
+//   const storedValue = localStorage.getItem(id);
+//   console.log(storedValue)
+//   return storedValue === undefined ? fallbackValue : storedValue;
+// }
+
+export async function getServerSideProps() {
+  const providers = await getProviders();
+  console.log(`HOTDOG ${JSON.stringify(providers)}`);
+  return {
+    props: {
+      providers,
+    },
+  };
+}
+
+const LandingPage = ({ providers }) => {
+  console.log(JSON.stringify(providers));
+  const [hoveredCard, setHoveredCard] = useState(0);
+  // const [codeInfo, setCodeInfo] = useState(() => );
+
+  // const [code_, setCode] = useState<string | undefined>(undefined);
+  // useEffect(() => {
+  //   // const codeInfo = getStoredJSON("code", null);
+  //   // if (codeInfo === undefined) return;
+  //   // console.log(codeInfo === undefined);
+  //   // setStoredJSON("code", code);
+  //   // if (code !== undefined) router.replace(`/dashboard/?code=${code}`);
+  //   // console.log(code);
+  // }, []);
+
+  const cardsInfo = [
+    {
+      src: "/LandingPage/Logo/gear_logo.svg",
+      title: "Modify",
+      desc: "Browse your statistics according to your liking",
+      illuSrc: "/LandingPage/Illustration/Sort.svg",
+      isHovered: false,
+    },
+
+    {
+      src: "/LandingPage/Logo/share_logo.svg",
+      title: "Share",
+      desc: "Share to the world what music you are into",
+      illuSrc: "/LandingPage/Illustration/Share.svg",
+      isHovered: false,
+    },
+    {
+      src: "/LandingPage/Logo/compare_logo.svg",
+      title: "Compare",
+      desc: "Find out similar music you and your friends listen to",
+      illuSrc: "/LandingPage/Illustration/Compare.svg",
+      isHovered: false,
+    },
+  ];
+
+  const tailwindForDivs = `flex flex-col pt-20 px-10 sm:px-16 md:px-40 lg:px-56 2xl:px-72`;
+
+  const onMouseOverHandler = (hoveredIndex) => {
+    setHoveredCard(hoveredIndex);
+  };
 
   return (
-    <div >
-      <Head>
-        <title>Vizpotify</title>
-      </Head>
+    <div>
       <NavBar />
-      {code_ ? <Dashboard code={code_} /> : <LandingPage />}
-      <footer>Made by Arian</footer>
+      <div className="flex flex-col ">
+        {/**
+         * First
+         */}
+        <div className={`${tailwindForDivs} bg-theme-black gap-y-4 py-4`}>
+          <p className="text-white font-bold text-xl sm:text-2xl md:text-3xl lg:text-5xl   ">
+            Personal <span className="font- text-theme-green">Spotify </span>
+            Stats
+          </p>
+          <p className="text-slate-400 font-thin text-base sm:text-lg  md:text-xl lg:text-2xl ">
+            Explore expressive visualizations of your top artists, songs, and
+            genres based from your activities @Spotify.
+            <br />
+            <br />
+            Share with your friends.
+          </p>
+          <div>
+            {/* {Object.values(providers).map(provider)=>{
+            return (
+
+          <LoginButton provider={provider} signIn={signIn} />
+
+          )}} */}
+          </div>
+        </div>
+
+        {/**
+         * Second
+         */}
+        <div
+          className={`${tailwindForDivs} bg-theme-green lg:pl-64 xl:pl-50 2xl:pl-80 py-10 `}
+        >
+          <div className="flex flex-col justify-center">
+            <p className="font-semibold text-2xl pb-4 sm:pb-6">
+              Discover more about your music taste
+            </p>
+            <div className="flex xl:flex-row lg:flex-col items-center">
+              <div className="flex flex-col justify-between sm:flex-row  items-stretch justify-items-stretch sm:justify-evenly w-full xl:w-1/2 lg:h-1/2 sm:h-full gap-5 2xl:gap-8">
+                {cardsInfo.map((card, index) => {
+                  return (
+                    <LandingPageCards
+                      imgSrc={card.src}
+                      title={card.title}
+                      desc={card.desc}
+                      index={index}
+                      onMouseOver={onMouseOverHandler}
+                      key={index}
+                    />
+                  );
+                })}
+              </div>
+
+              <div className="hidden lg:flex justify-center ml-1 xl:w-100 lg:w-1/2">
+                <Image
+                  src={cardsInfo[hoveredCard].illuSrc}
+                  height="500%"
+                  width="500%"
+                  // layout="fill"
+                  alt={cardsInfo[hoveredCard].title}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/**
+         * Third
+         */}
+        <div className={`${tailwindForDivs} bg-theme-black justify-center`}>
+          <div className="bg-[#374151] p-10 flex flex-row justify-around gap-10 items-center rounded-xl">
+            <p className="text-white text-xl font-semibold">
+              Ready to start exploring?
+            </p>
+            {/* <LoginButton authUrl={AUTH_URL} /> */}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Home;
+export default LandingPage;

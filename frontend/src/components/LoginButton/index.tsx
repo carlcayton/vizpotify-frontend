@@ -6,9 +6,10 @@ import PropTypes from "prop-types";
 
 const LoginButton = (props) => {
   return (
-    <Link href={props.authUrl}>
-      <a className="">
-        <button className="p-3 flex items-center my-5 bg-theme-green  rounded-lg ease-in-out hover:translate-y-1 transition-all group">
+    // <Link href={props.authUrl}>
+      // <a className="">
+        <button className="p-3 flex items-center my-5 bg-theme-green  rounded-lg ease-in-out hover:translate-y-1 transition-all group"
+        onClick={()=>{props.signIn(props.provider.id)}}>
           <Image
             className="group-hover:animate-[spin_.5s_ease-in-out]"
             src={spotifyLogo}
@@ -16,8 +17,8 @@ const LoginButton = (props) => {
           ></Image>
           <p className="font-bold ml-3">Login With Spotify</p>
         </button>
-      </a>
-    </Link>
+      // </a>
+    // </Link>
   );
 };
 

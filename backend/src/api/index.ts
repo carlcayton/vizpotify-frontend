@@ -7,11 +7,10 @@ const loginUser = async (req, res) => {
   const code = req.body.code;
 
   const spotifyApi = new SpotifyWebApi({
-    redirectUri: `${process.env.REDIRECT_URI}`,
+    // redirectUri: `${process.env.REDIRECT_URI}`,
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
   });
-  console.log(`LOGIN CALLED`);
 
   spotifyApi
     .authorizationCodeGrant(code)
@@ -35,8 +34,6 @@ const refreshUser = async (req: Request, res: Response) => {
     clientSecret: process.env.CLIENT_SECRET,
     refreshToken,
   });
-  console.log("REFRESH CALLED");
-  console.log(chalk.yellow(refreshToken));
   spotifyApi
     .refreshAccessToken()
     .then((data) => {
