@@ -20,7 +20,7 @@ import { useAuth } from "api/useAuth";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
-  console.log(`HOTDOG ${JSON.stringify(providers)}`);
+
   return {
     props: {
       providers,
@@ -29,19 +29,9 @@ export async function getServerSideProps() {
 }
 
 const LandingPage = ({ providers }) => {
-  console.log(JSON.stringify(providers));
-  const [hoveredCard, setHoveredCard] = useState(0);
-  // const [codeInfo, setCodeInfo] = useState(() => );
+  const spotifyProvider = Object.values(providers)[0];
 
-  // const [code_, setCode] = useState<string | undefined>(undefined);
-  // useEffect(() => {
-  //   // const codeInfo = getStoredJSON("code", null);
-  //   // if (codeInfo === undefined) return;
-  //   // console.log(codeInfo === undefined);
-  //   // setStoredJSON("code", code);
-  //   // if (code !== undefined) router.replace(`/dashboard/?code=${code}`);
-  //   // console.log(code);
-  // }, []);
+  const [hoveredCard, setHoveredCard] = useState(0);
 
   const cardsInfo = [
     {
@@ -94,12 +84,7 @@ const LandingPage = ({ providers }) => {
             Share with your friends.
           </p>
           <div>
-            {/* {Object.values(providers).map(provider)=>{
-            return (
-
-          <LoginButton provider={provider} signIn={signIn} />
-
-          )}} */}
+            <LoginButton provider={spotifyProvider} signIn={signIn} />
           </div>
         </div>
 

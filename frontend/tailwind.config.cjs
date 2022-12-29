@@ -5,7 +5,9 @@ module.exports = {
     extend: {
       colors: {
         "theme-green": "#86EFAC",
+        "theme-green-1": "#21C25C",
         "theme-black": "#111827",
+        "theme-dark-indigo": "#374151"
       },
       invert: {
         101: '.91',

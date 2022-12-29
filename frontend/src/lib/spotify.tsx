@@ -1,6 +1,7 @@
 import SpotifyWebApi from "spotify-web-api-node";
 
 const scopes = [
+  "user-follow-read",
   "user-read-email",
   "playlist-read-private",
   "playlist-read-collaborative",
@@ -11,16 +12,15 @@ const scopes = [
   "user-top-read",
   "user-read-playback-state",
   "user-read-recently-played",
-  "user-follow-read",
-].join(",");
+].join("%20");
 
 const params = {
   scope: scopes,
 };
 
-const queryParamString = new URLSearchParams(params);
-const LOGIN_URL = `https://accounts.spotify.com/authorize? ${queryParamString.toString()}`;
-
+const queryParamString = `scope=${scopes}`;
+const LOGIN_URL =
+  "https://accounts.spotify.com/authorize?" + queryParamString.toString();
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,

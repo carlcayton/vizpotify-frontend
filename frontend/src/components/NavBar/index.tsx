@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <nav className="bg-theme-green">
       <div className="flex justify-between lg:px-40 sm:px-14 py-1.5">
-        <Link href="http://localhost:3000">
+        {/* <Link href="http://localhost:3000"> */}
           <a className="flex items-center">
             <Image
               className="rotate-[5deg]"
@@ -15,7 +15,7 @@ const NavBar = () => {
             ></Image>
             <p className="text-2xl text-theme-black font-bold">Vizpotify</p>
           </a>
-        </Link>
+        {/* </Link> */}
         <button className="hidden sm:block my-[3px] px-3 py-[0.5px] border border-theme-black rounded-lg font-semibold">
           Show me the stats!
         </button>

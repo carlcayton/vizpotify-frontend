@@ -2,6 +2,7 @@ import Image from "next/image";
 import classes from "./style.module.css";
 
 const Card = ({ imgSrc, title, desc, onMouseOver, index }) => {
+  console.log(imgSrc)
   return (
     <div
       className={`${classes.parent} flex flex-col flex-[1_1_0%] items-start gap-3 relative p-6 bg-theme-black rounded-2xl hover:shadow-lg transition ease-in-out hover:-translate-y-2 `}
