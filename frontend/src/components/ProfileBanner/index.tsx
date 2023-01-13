@@ -25,7 +25,7 @@ const ProfileBanner = ({
   playlistsCount,
 }: ProfileBannerType) => {
   return (
-    <div className="flex flex-col space-y-4 items-center bg-gradient-to-b from-[#374151] to-[#111827] py-10 space-y-5">
+    <div className="flex flex-col space-y-4 items-center bg-gradient-to-b from-[#374151] to-[#111827] py-10  w-full">
       <Image
         src={imageSrc}
         alt={`${userName} image`}
