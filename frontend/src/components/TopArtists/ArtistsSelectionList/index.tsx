@@ -64,7 +64,7 @@ const ArtistsSelectionList = ({
 
   return (
     <div
-      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2 overflow-y-auto max-h-[42em] scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-900`}
+      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2  `}
     >
       {userTopArtists
         .slice(0, showMore.itemsToShow)

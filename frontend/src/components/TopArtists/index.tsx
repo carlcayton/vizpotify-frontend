@@ -6,8 +6,8 @@ import ArtistDetailsPanel from "./ArtistDetailsPanel";
 
 const UpperSection = () => {
   return (
-    <div className="flex flex-row">
-      <div>
+    <div className="flex flex-row sticky top-0">
+      <div className="">
         <p className="text-white font-bold text-xl">
           Top
           <span className="text-theme-green-1 font-bold text-2xl pl-1">
@@ -57,14 +57,13 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
   return (
     <div className="flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full p-10 ">
       <UpperSection />
-      <div className="flex flex-row justify-center bg-[#111827] space-x-1 ">
+      <div className="flex flex-row justify-center  bg-[#111827] space-x-1 ">
         <ArtistsSelectionList
           userTopArtists={userTopArtists}
           selectedArtistIndex={selectedArtistIndex}
           setSelectedArtistIndex={setSelectedArtistIndex}
           showMore={showMore}
         />
-        {/* <div className="hidden sm:flex  bg-[#1B2539] rounded-lg mr-4 sticky top-0"> */}
 
         {!isMobile
           ? userTopArtists.map((artist, index) => {
@@ -78,7 +77,6 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
               );
             })
           : null}
-        {/* </div> */}
       </div>
 
       <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />

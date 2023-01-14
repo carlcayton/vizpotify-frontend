@@ -96,7 +96,7 @@ const ArtistDetailsPanel = ({
     <>
       {artistInfo.id === selectedArtistIndex && (
         <div
-          className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539] mr-4 h-1/2 sticky`}
+          className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539]  mr-4 h-1/2 sticky top-0`}
         >
           <ArtistGenresSection genres={artistInfo.genres} />
           <ArtistFollowersSection followers={artistInfo.followers.total} />
