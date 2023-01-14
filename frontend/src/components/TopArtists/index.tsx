@@ -22,19 +22,23 @@ const UpperSection = () => {
   );
 };
 
-const ShowMoreButton = (showMore, setShowMore) => {
-  <button
-    className="px-3 pb-1 flex text-white text-sm items-center mt-5 rounded-full ease-in-out hover:translate-y-1 transition-all group border border-white"
-    onClick={() =>
-      setShowMore((prevState) => ({
-        ...prevState,
-        isExpanded: !showMore.isExpanded,
-        itemsToShow: showMore.totalItems,
-      }))
-    }
-  >
-    {showMore.isExpanded ? "Show Less" : "Show More"}
-  </button>;
+const ShowMoreButton = ({ showMore, setShowMore }) => {
+  const handleShowMore = () => {
+    setShowMore((prevState) => ({
+      isExpanded: !showMore.isExpanded,
+      itemsToShow: !showMore.isExpanded ? showMore.totalItems : 5,
+      totalItems: showMore.totalItems,
+    }));
+  };
+
+  return (
+    <button
+      className="px-3 pb-1 flex text-white text-sm items-center mt-5 rounded-full ease-in-out hover:translate-y-1 transition-all group border border-white"
+      onClick={handleShowMore}
+    >
+      {showMore.isExpanded ? "Show Less" : "Show More"}
+    </button>
+  );
 };
 
 const TopArtists = ({ userTopArtists, similarArtists }) => {
@@ -51,7 +55,7 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
   const classForBaseScreen = "";
 
   return (
-    <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
+    <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full p-10">
       <UpperSection />
       <div className="flex flex-row justify-center bg-[#111827] space-x-1">
         <ArtistsSelectionList
@@ -60,7 +64,7 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
           setSelectedArtistIndex={setSelectedArtistIndex}
           showMore={showMore}
         />
-        <div className="hidden sm:flex flex-col bg-[#1B2539] rounded-lg mr-4 ">
+        <div className="hidden sm:flex flex-col bg-[#1B2539] rounded-lg mr-4   sticky">
           {!isMobile
             ? userTopArtists.map((artist, index) => {
                 return (
@@ -75,6 +79,7 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
             : null}
         </div>
       </div>
+      <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />
     </div>
   );
 };
