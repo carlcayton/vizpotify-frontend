@@ -30,7 +30,7 @@ const ArtistCard = ({
       onClick={() => setSelectedArtistIndex(artistId)}
     >
       <p className="text-white font-bold text-bas ">#{artistRank}</p>
-      <div className="rounded-full w-28 md:w-31 lg:40 sm:w-20 ">
+      <div className="rounded-full w-28 md:w-31 lg:40 sm:w-20 min-w-max">
         <Image
           // loader={() => artistImage}
           src={artistImage}
@@ -59,12 +59,12 @@ const ArtistsSelectionList = ({
   setSelectedArtistIndex,
   showMore,
 }) => {
-  const classForBaseScreen = "flex-row flex-wrap grow px-5";
+  const classForBaseScreen = "flex-row   px-5";
   const classForSMScreen = "sm:flex-col grow";
 
   return (
     <div
-      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2`}
+      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2 overflow-y-auto max-h-[42em] scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-900`}
     >
       {userTopArtists
         .slice(0, showMore.itemsToShow)

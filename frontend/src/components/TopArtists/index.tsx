@@ -55,30 +55,32 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
   const classForBaseScreen = "";
 
   return (
-    <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full p-10">
+    <div className="flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full p-10 ">
       <UpperSection />
-      <div className="flex flex-row justify-center bg-[#111827] space-x-1">
+      <div className="flex flex-row justify-center bg-[#111827] space-x-1 ">
         <ArtistsSelectionList
           userTopArtists={userTopArtists}
           selectedArtistIndex={selectedArtistIndex}
           setSelectedArtistIndex={setSelectedArtistIndex}
           showMore={showMore}
         />
-        <div className="hidden sm:flex flex-col bg-[#1B2539] rounded-lg mr-4   sticky">
-          {!isMobile
-            ? userTopArtists.map((artist, index) => {
-                return (
-                  <ArtistDetailsPanel
-                    artistInfo={artist}
-                    similarArtists={similarArtists[artist.id]}
-                    selectedArtistIndex={selectedArtistIndex}
-                    key={artist.id}
-                  />
-                );
-              })
-            : null}
-        </div>
+        {/* <div className="hidden sm:flex  bg-[#1B2539] rounded-lg mr-4 sticky top-0"> */}
+
+        {!isMobile
+          ? userTopArtists.map((artist, index) => {
+              return (
+                <ArtistDetailsPanel
+                  artistInfo={artist}
+                  similarArtists={similarArtists[artist.id]}
+                  selectedArtistIndex={selectedArtistIndex}
+                  key={artist.id}
+                />
+              );
+            })
+          : null}
+        {/* </div> */}
       </div>
+
       <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />
     </div>
   );
