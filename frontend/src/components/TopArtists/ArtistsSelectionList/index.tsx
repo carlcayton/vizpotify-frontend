@@ -59,7 +59,7 @@ const ArtistsSelectionList = ({
   setSelectedArtistIndex,
   showMore,
 }) => {
-  const classForBaseScreen = "flex-row   px-5";
+  const classForBaseScreen = "flex-row flex-wrap  px-5";
   const classForSMScreen = "sm:flex-col grow";
 
   return (

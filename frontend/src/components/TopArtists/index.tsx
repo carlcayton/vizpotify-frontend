@@ -26,11 +26,10 @@ const ShowMoreButton = ({ showMore, setShowMore }) => {
   const handleShowMore = () => {
     setShowMore((prevState) => ({
       isExpanded: !showMore.isExpanded,
-      itemsToShow: !showMore.isExpanded ? showMore.totalItems : 5,
+      itemsToShow: !showMore.isExpanded ? showMore.totalItems : 4,
       totalItems: showMore.totalItems,
     }));
   };
-
   return (
     <button
       className="px-3 pb-1 flex text-white text-sm items-center mt-5 rounded-full ease-in-out hover:translate-y-1 transition-all group border border-white"
@@ -47,12 +46,20 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
   );
   const [showMore, setShowMore] = useState({
     isExpanded: false,
-    itemsToShow: 5,
+    itemsToShow: 4,
     totalItems: userTopArtists.length,
   });
   const isMobile = useMediaQuery({ query: `(max-width:640px)` });
-
+  const modalIsOpen = isMobile && false;
   const classForBaseScreen = "";
+  // if (isMobile) {
+  //   setSelectedArtistIndex("");
+  // }
+  // useEffect(() => {
+  //   if (isMobile) {
+  //     console.log("hotdog");
+  //   }
+  // });
 
   return (
     <div className="flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full p-10 ">
@@ -64,19 +71,19 @@ const TopArtists = ({ userTopArtists, similarArtists }) => {
           setSelectedArtistIndex={setSelectedArtistIndex}
           showMore={showMore}
         />
-
-        {!isMobile
-          ? userTopArtists.map((artist, index) => {
-              return (
-                <ArtistDetailsPanel
-                  artistInfo={artist}
-                  similarArtists={similarArtists[artist.id]}
-                  selectedArtistIndex={selectedArtistIndex}
-                  key={artist.id}
-                />
-              );
-            })
-          : null}
+        <div>
+          {userTopArtists.map((artist, index) => {
+            return (
+              // <div key={artist.id}>dog</div>
+              <ArtistDetailsPanel
+                artistInfo={artist}
+                similarArtists={similarArtists[artist.id]}
+                selectedArtistIndex={selectedArtistIndex}
+                key={artist.id}
+              />
+            );
+          })}
+        </div>
       </div>
 
       <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />

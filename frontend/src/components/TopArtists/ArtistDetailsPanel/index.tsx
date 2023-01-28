@@ -92,9 +92,8 @@ const ArtistDetailsPanel = ({
   const classForBaseScreen = "hidden";
   const classForSMScreen = "sm:flex ";
   return (
-    //  <div className="flex flex-col grow">
-    <>
-      {artistInfo.id === selectedArtistIndex && (
+    <div className="flex flex-col grow">
+      {artistInfo.id === selectedArtistIndex ? (
         <div
           className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539]  mr-4 h-1/2 sticky top-0`}
         >
@@ -103,9 +102,8 @@ const ArtistDetailsPanel = ({
           <ArtistPopularitySection popularity={artistInfo.popularity} />
           <SimilarArtistSection similarArtists={similarArtists.slice(0, 6)} />
         </div>
-      )}
-      {/* </div> */}
-    </>
+      ) : null}
+    </div>
   );
 };
 

@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
-import { ICode } from "@types";
-import chalk from "chalk";
+
 
 export const useAuth = (code: string) => {
   const [accessToken, setAccessToken] = useState();
@@ -38,7 +36,7 @@ export const useAuth = (code: string) => {
           setExpiresIn(res.data.expiresIn);
         })
         .catch(() => {
-          window.location.href = "/";
+          // window.location.href = "/";
         });
     }, (expiresIn - 60) * 1000);
 
