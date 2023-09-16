@@ -1,16 +1,23 @@
 // import Button from "./Button.component";
 import Image from "next/image";
 import spotifyLogo from "assets/vector_image/login_logo.svg";
-import Link from "next/link";
-import PropTypes from "prop-types";
-// import { signIn } from "next-auth/react";
 
-const LoginButton = (props) => {
+import axios from 'axios';
+
+const getSpotifyUserLogin = async () => {
+  try {
+    const { data: url } = await axios.get("http://localhost:8080/api/v1/auth/login");
+    window.location.replace(url);
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error.message);
+  }
+};
+
+const LoginButton = () => {
   return (
     <button
       className="p-3 flex items-center my-5 bg-theme-green  rounded-lg ease-in-out hover:translate-y-1 transition-all group"
-      onClick={() =>
-        props.signIn(props.provider.id, { callbackUrl: "/dashboard" })
+      onClick={() =>getSpotifyUserLogin()
       }
     >
       <Image

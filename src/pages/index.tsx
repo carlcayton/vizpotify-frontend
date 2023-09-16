@@ -2,34 +2,12 @@ import React, { useState, useEffect } from "react";
 import LoginButton from "components/LoginButton";
 import LandingPageCards from "components/LandingPageCards";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { getProviders, signIn } from "next-auth/react";
 
 import NavBar from "components/NavBar";
-import { useAuth } from "api/useAuth";
 
-// const setStoredJSON = (id, obj) => {
-//   localStorage.setItem(id, JSON.stringify(obj));
-// };
 
-// function getStoredJSON(id, fallbackValue = null) {
-//   const storedValue = localStorage.getItem(id);
-//   console.log(storedValue)
-//   return storedValue === undefined ? fallbackValue : storedValue;
-// }
-
-export async function getServerSideProps() {
-  const providers = await getProviders();
-
-  return {
-    props: {
-      providers,
-    },
-  };
-}
-
-const LandingPage = ({ providers }) => {
-  const spotifyProvider = Object.values(providers)[0];
+const LandingPage = () => {
 
   const [hoveredCard, setHoveredCard] = useState(0);
 
@@ -84,7 +62,7 @@ const LandingPage = ({ providers }) => {
             Share with your friends.
           </p>
           <div>
-            <LoginButton provider={spotifyProvider} signIn={signIn} />
+            <LoginButton />
           </div>
         </div>
 

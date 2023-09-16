@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import Dashboard from "./dashboard";
-import LandingPage from ".";
 import { useRouter } from "next/router";
-import NavBar from "components/NavBar";
 
 const Home = () => {
   const [code_, setCode] = useState<string | undefined>(undefined);
