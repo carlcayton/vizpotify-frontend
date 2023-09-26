@@ -1,64 +1,65 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { SelectedArtistContext, SelectedArtistDispatchContext } from "contexts/SelectedArtistContext";
+import { useIsMobile } from "utils/detectScreenSize"
+import ArtistDetailsPanel from "components/TopArtists/ArtistDetailsPanel";
 
-type ArtistCardProps = {
-  artistName: string;
-  artistImage: string;
-  artistRank: number;
-  artistId: string;
-  selectedArtistIndex: string;
 
-  setSelectedArtistIndex: (val: string) => void;
-};
-
-const ArtistCard = ({
-  artistName,
-  artistImage,
-  artistRank,
-  artistId,
-  selectedArtistIndex,
-  setSelectedArtistIndex,
-}: ArtistCardProps) => {
-  const isActive = selectedArtistIndex === artistId;
-  const classForBaseScreenButton = "flex-col flex-1 basis-[40%] space-y-2";
+const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
+  let isActive = false
+  if (selectedArtist === null && rank === 1) {
+    isActive = true
+  } else if (artist === selectedArtist) {
+    isActive = true
+  }
+  const isMobile = useIsMobile();
+  // const classForBaseScreenButton = "flex-col flex-1 basis-[40%] space-y-2";
   const classForSMSizeScreenButton = "sm:flex-row sm:gap-10 sm:basis-0  ";
   return (
-    <button
-      className={`flex ${classForBaseScreenButton} ${classForSMSizeScreenButton} bg-[#192132] ${
-        isActive ? "bg-[#374151] cursor-default" : "bg-transparent"
-      } hover:bg-[#374151] rounded-lg items-center p-2  sm:border-opacity-0`}
-      onClick={() => setSelectedArtistIndex(artistId)}
-    >
-      <p className="text-white font-bold text-bas ">#{artistRank}</p>
-      <div className="rounded-full w-28 md:w-31 lg:40 sm:w-20 min-w-max">
-        <Image
-          // loader={() => artistImage}
-          src={artistImage}
-          height="100%"
-          width="100%"
-          layout="responsive"
-          className="rounded-full"
-          objectFit="cover"
-          alt={`${artistName}`}
-        />
-      </div>
-      <p
-        className={`${
-          isActive ? "text-theme-green-1" : "text-white"
-        } font-bold text-2xl sm:text-left `}
+    <div className="w-full">
+      <button
+        className={`flex  ${classForSMSizeScreenButton} bg-[#192132] ${isActive ? "bg-[#374151] cursor-default" : "bg-transparent"
+          } hover:bg-[#374151] rounded-lg items-center p-2  sm:border-opacity-0 space-x-4 w-full`}
+        onClick={() => setSelectedArtist(artist)}
       >
-        {artistName}
-      </p>
-    </button>
+        <p className="text-white font-bold text-bas ">{rank}</p>
+        <div className="sm:w-20 w-20">
+          <Image
+            src={artist.imageUrl}
+            height="100%"
+            width="100%"
+            layout="responsive"
+            objectFit="cover"
+            alt={`${artist.name}`}
+            className="rounded-lg"
+          />
+        </div>
+        <p
+          className={`${isActive ? "text-theme-green-1" : "text-white"
+            } font-bold text-2xl sm:text-left `}
+        >
+          {artist.name}
+        </p>
+      </button>
+      {isMobile && isActive && <ArtistDetailsPanel artist={artist} />}
+    </div>
   );
 };
 
 const ArtistsSelectionList = ({
   userTopArtists,
-  selectedArtistIndex,
-  setSelectedArtistIndex,
   showMore,
 }) => {
+
+  const selectedArtist = useContext(SelectedArtistContext);
+  const setSelectedArtist = useContext(SelectedArtistDispatchContext);
+
+  useEffect(() => {
+    if (userTopArtists && userTopArtists.length > 0) {
+      setSelectedArtist(userTopArtists[0]);
+    }
+  }, [userTopArtists, setSelectedArtist]);
+
   const classForBaseScreen = "flex-row flex-wrap  px-5";
   const classForSMScreen = "sm:flex-col grow";
 
@@ -71,12 +72,10 @@ const ArtistsSelectionList = ({
         .map((artist: any, index: number) => {
           return (
             <ArtistCard
-              artistName={artist.name}
-              artistImage={artist.images.at(-1).url}
-              artistRank={index + 1}
-              artistId={artist.id}
-              selectedArtistIndex={selectedArtistIndex}
-              setSelectedArtistIndex={setSelectedArtistIndex}
+              artist={artist}
+              rank={index + 1}
+              selectedArtist={selectedArtist}
+              setSelectedArtist={setSelectedArtist}
               key={artist.id}
             />
           );

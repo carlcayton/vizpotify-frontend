@@ -3,8 +3,9 @@ export interface ICode {
 }
 
 export type ProfileHeaderType = {
-  profilePictureUrl: string;
+  userDisplayName: string;
   spotifyId: string;
+  profilePictureUrl: string;
   followedArtistCount: number;
   followerCount: number;
   playlistCount: number;

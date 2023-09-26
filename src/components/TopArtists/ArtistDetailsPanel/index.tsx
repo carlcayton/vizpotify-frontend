@@ -1,12 +1,14 @@
 import Image from "next/image";
+import { useState, useContext, useEffect } from "react";
+import { SelectedArtistContext, SelectedArtistDispatchContext } from "contexts/SelectedArtistContext";
 
 const SectionTitle = ({ sectionName }) => {
-  return <p className="text-white font-bold text-xl">{sectionName}</p>;
+  return <p className="text-white font-bold text-xl w-full">{sectionName}</p>;
 };
 
 const ArtistGenresSection = ({ genres }) => {
   return (
-    <div className="flex flex-col align-left space-y-2 ">
+    <div className="flex flex-col align-left space-y-2 w-full">
       <SectionTitle sectionName="Genres" />
       <div className="flex flex-row flex-wrap  gap-2">
         {genres.map((genre, index) => {
@@ -28,14 +30,14 @@ const ArtistFollowersSection = ({ followers }) => {
   return (
     <div className="flex flex-col align-left space-y-2">
       <SectionTitle sectionName="Followers" />
-      <p className="text-white">{followers.toLocaleString()}</p>
+      <p className="text-white">{followers}</p>
     </div>
   );
 };
 
 const ArtistPopularitySection = ({ popularity }) => {
   return (
-    <div className="flex flex-col align-left space-y-2 pr-12">
+    <div className="flex flex-col align-left space-y-2 pr-12 w-full">
       <SectionTitle sectionName="Popularity" />
       <div className=" bg-[#5F646F] rounded-full h-2 dark:bg-bg-gray-700">
         <div
@@ -56,13 +58,13 @@ const SimilarArtistCard = ({ artist }) => {
         className="rounded-lg "
         width={150}
         height={150}
-        // layout="fill"
-        // style={{width:"100%"}}
+      // layout="fill"
+      // style={{width:"100%"}}
       />
       <div className="flex rounded-b-lg bottom-0 absolute w-full bg-[#111827] opacity-60 ">
         <span
           className="text-white grow p-1"
-          // style={{ fontSizeAdjust: "inherit" }}
+        // style={{ fontSizeAdjust: "inherit" }}
         >
           {artist.name}
         </span>
@@ -84,25 +86,23 @@ const SimilarArtistSection = ({ similarArtists }) => {
   );
 };
 
-const ArtistDetailsPanel = ({
-  artistInfo,
-  similarArtists,
-  selectedArtistIndex,
-}) => {
+const ArtistDetailsPanel = () => {
+  const selectedArtist = useContext(SelectedArtistContext)
+  const artist = selectedArtist
   const classForBaseScreen = "hidden";
-  const classForSMScreen = "sm:flex ";
+  const classForSMScreen = "sm:flex sticky ";
   return (
-    <div className="flex flex-col grow">
-      {artistInfo.id === selectedArtistIndex ? (
-        <div
-          className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539]  mr-4 h-1/2 sticky top-0`}
-        >
-          <ArtistGenresSection genres={artistInfo.genres} />
-          <ArtistFollowersSection followers={artistInfo.followers.total} />
-          <ArtistPopularitySection popularity={artistInfo.popularity} />
-          <SimilarArtistSection similarArtists={similarArtists.slice(0, 6)} />
-        </div>
-      ) : null}
+    <div className="flex flex-col w-full">
+      {selectedArtist ? (<div
+        // className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539]  mr-4 h-1/2 sticky top-0`}
+        className={`${classForBaseScreen} ${classForSMScreen} 
+        flex-col rounded-lg p-5 space-y-4 bg-[#1B2539] mr-4 h-1/2 top-0 w-full`} // added max-w-xl for a max width
+      >
+        <ArtistGenresSection genres={artist.genres} />
+        <ArtistFollowersSection followers={artist.followers} />
+        <ArtistPopularitySection popularity={artist.popularity} />
+        {/* <SimilarArtistSection similarArtists={similarArtists.slice(0, 6)} /> */}
+      </div>) : null}
     </div>
   );
 };

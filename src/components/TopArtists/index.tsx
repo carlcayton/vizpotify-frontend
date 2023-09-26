@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, createContext } from "react";
 import { useMediaQuery } from "react-responsive";
+import { SelectedArtistContext, SelectedArtistDispatchContext, SelectedArtistProvider } from "contexts/SelectedArtistContext";
 
 import ArtistsSelectionList from "./ArtistsSelectionList";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
 
-const UpperSection = () => {
+const UpperSection = ({ setSelectedTimeRange }) => {
   return (
-    <div className="flex flex-row sticky top-0">
+    <div className="flex flex-row top-0">
       <div className="">
         <p className="text-white font-bold text-xl">
           Top
@@ -16,7 +17,17 @@ const UpperSection = () => {
         </p>
       </div>
       <div>
-        <button className="text-white ">4 weeks</button>
+        <button className="text-white" onClick={() => setSelectedTimeRange("shortTerm")}>
+          4 weeks
+        </button>
+        <button className="text-white" onClick={() => setSelectedTimeRange("shortTerm")}>
+          6 months
+        </button>
+        <button className="text-white" onClick={() => setSelectedTimeRange("shortTerm")}>
+          4 weeks
+        </button>
+        <button className="text-white ">6 months</button>
+        <button className="text-white ">All Time</button>
       </div>
     </div>
   );
@@ -40,53 +51,49 @@ const ShowMoreButton = ({ showMore, setShowMore }) => {
   );
 };
 
-const TopArtists = ({ userTopArtists, similarArtists }) => {
-  const [selectedArtistIndex, setSelectedArtistIndex] = useState<string>(
-    userTopArtists[0].id
-  );
+const getArtistsByTimeRange = ({ userTopArtistsAllTimeRange, timeRange }) => {
+  switch (timeRange) {
+    case "shortTerm":
+      return userTopArtistsAllTimeRange?.shortTerm;
+    case "mediumTerm":
+      return userTopArtistsAllTimeRange?.mediumTerm;
+    case "longTerm":
+      return userTopArtistsAllTimeRange?.longTerm;
+  }
+}
+const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
+
+  const [selectedTimeRange, setSelectedTimeRange] = useState<string>("shortTerm");
+  const [userTopArtists, setUserTopArtists] = useState([]);
+
   const [showMore, setShowMore] = useState({
     isExpanded: false,
-    itemsToShow: 4,
+    itemsToShow: 10,
     totalItems: userTopArtists.length,
   });
-  const isMobile = useMediaQuery({ query: `(max-width:640px)` });
-  const modalIsOpen = isMobile && false;
-  const classForBaseScreen = "";
-  // if (isMobile) {
-  //   setSelectedArtistIndex("");
-  // }
-  // useEffect(() => {
-  //   if (isMobile) {
-  //     console.log("hotdog");
-  //   }
-  // });
 
+  useEffect(() => {
+    if (userTopArtistsAllTimeRange) {
+      const artists = getArtistsByTimeRange({ userTopArtistsAllTimeRange, timeRange: selectedTimeRange });
+      setUserTopArtists(artists);
+    }
+  }, [userTopArtistsAllTimeRange, selectedTimeRange]);
+
+  const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
   return (
-    <div className="flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full p-10 ">
+    <div ref={innerRef} className="flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full p-10 ">
       <UpperSection />
-      <div className="flex flex-row justify-center  bg-[#111827] space-x-1 ">
-        <ArtistsSelectionList
-          userTopArtists={userTopArtists}
-          selectedArtistIndex={selectedArtistIndex}
-          setSelectedArtistIndex={setSelectedArtistIndex}
-          showMore={showMore}
-        />
-        <div>
-          {userTopArtists.map((artist, index) => {
-            return (
-              // <div key={artist.id}>dog</div>
-              <ArtistDetailsPanel
-                artistInfo={artist}
-                similarArtists={similarArtists[artist.id]}
-                selectedArtistIndex={selectedArtistIndex}
-                key={artist.id}
-              />
-            );
-          })}
-        </div>
+      <div className="flex flex-row justify-center  bg-[#111827] space-x-1 w-full ">
+        <SelectedArtistProvider>
+          <ArtistsSelectionList
+            userTopArtists={userTopArtists}
+            showMore={showMore}
+          />
+          {isMobile ? null : <ArtistDetailsPanel />}
+        </SelectedArtistProvider>
       </div>
 
-      <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />
+      {/* <ShowMoreButton showMore={showMore} setShowMore={setShowMore} /> */} */}
     </div>
   );
 };
