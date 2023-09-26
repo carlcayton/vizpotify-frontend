@@ -1,37 +1,10 @@
 import { useEffect, useState, useContext, createContext } from "react";
-import { useMediaQuery } from "react-responsive";
 import { SelectedArtistContext, SelectedArtistDispatchContext, SelectedArtistProvider } from "contexts/SelectedArtistContext";
+import { useIsMobile } from "utils/detectScreenSize"
+import UpperSection from "components/UpperSection"
 
 import ArtistsSelectionList from "./ArtistsSelectionList";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
-
-const UpperSection = ({ setSelectedTimeRange }) => {
-  return (
-    <div className="flex flex-row top-0">
-      <div className="">
-        <p className="text-white font-bold text-xl">
-          Top
-          <span className="text-theme-green-1 font-bold text-2xl pl-1">
-            Artists
-          </span>
-        </p>
-      </div>
-      <div>
-        <button className="text-white" onClick={() => setSelectedTimeRange("shortTerm")}>
-          4 weeks
-        </button>
-        <button className="text-white" onClick={() => setSelectedTimeRange("shortTerm")}>
-          6 months
-        </button>
-        <button className="text-white" onClick={() => setSelectedTimeRange("shortTerm")}>
-          4 weeks
-        </button>
-        <button className="text-white ">6 months</button>
-        <button className="text-white ">All Time</button>
-      </div>
-    </div>
-  );
-};
 
 const ShowMoreButton = ({ showMore, setShowMore }) => {
   const handleShowMore = () => {
@@ -79,10 +52,11 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
     }
   }, [userTopArtistsAllTimeRange, selectedTimeRange]);
 
-  const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
+  const isMobile = useIsMobile()
+  const classForMobile = isMobile ? `px-12` : `px-36`
   return (
-    <div ref={innerRef} className="flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full p-10 ">
-      <UpperSection />
+    <div ref={innerRef} className={`flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full ${classForMobile}`}>
+      <UpperSection sectionType={"Artists"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
       <div className="flex flex-row justify-center  bg-[#111827] space-x-1 w-full ">
         <SelectedArtistProvider>
           <ArtistsSelectionList

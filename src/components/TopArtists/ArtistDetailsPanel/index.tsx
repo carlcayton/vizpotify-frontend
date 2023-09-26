@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { useState, useContext, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import { SelectedArtistContext, SelectedArtistDispatchContext } from "contexts/SelectedArtistContext";
+import { useIsMobile } from "utils/detectScreenSize"
 
 const SectionTitle = ({ sectionName }) => {
   return <p className="text-white font-bold text-xl w-full">{sectionName}</p>;
@@ -89,14 +91,15 @@ const SimilarArtistSection = ({ similarArtists }) => {
 const ArtistDetailsPanel = () => {
   const selectedArtist = useContext(SelectedArtistContext)
   const artist = selectedArtist
-  const classForBaseScreen = "hidden";
-  const classForSMScreen = "sm:flex sticky ";
+  const isMobile = useIsMobile();
+  const classForSMScreen = isMobile ? `border ` : `sticky pr-20 `;
+  console.log(isMobile)
   return (
     <div className="flex flex-col w-full">
       {selectedArtist ? (<div
         // className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539]  mr-4 h-1/2 sticky top-0`}
-        className={`${classForBaseScreen} ${classForSMScreen} 
-        flex-col rounded-lg p-5 space-y-4 bg-[#1B2539] mr-4 h-1/2 top-0 w-full`} // added max-w-xl for a max width
+        className={` ${classForSMScreen} 
+        flex-col rounded-lg p-5 space-y-4  mr-4 h-1/2 top-0 w-full bg-[#1B2539]`} // added max-w-xl for a max width
       >
         <ArtistGenresSection genres={artist.genres} />
         <ArtistFollowersSection followers={artist.followers} />

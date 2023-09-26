@@ -17,6 +17,7 @@ export default function Dashboard() {
     <div className="flex flex-col  justify-center  ">
       <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData}/>
       <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists}/> 
+      <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists}/> 
     </div>
   );
 }

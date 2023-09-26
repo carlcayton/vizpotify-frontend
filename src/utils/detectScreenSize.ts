@@ -1,23 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // Assuming 768px is your mobile breakpoint
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   return isMobile;
 };
 
 export {
-    useIsMobile
+  useIsMobile
 }

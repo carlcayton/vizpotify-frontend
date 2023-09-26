@@ -18,12 +18,12 @@ const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
   return (
     <div className="w-full">
       <button
-        className={`flex  ${classForSMSizeScreenButton} bg-[#192132] ${isActive ? "bg-[#374151] cursor-default" : "bg-transparent"
-          } hover:bg-[#374151] rounded-lg items-center p-2  sm:border-opacity-0 space-x-4 w-full`}
+        className={`flex gap-8 bg-[#192132] ${isActive ? "bg-[#374151] cursor-default" : "bg-transparent"
+          } hover:bg-[#374151] rounded-lg items-center p-2  sm:border-opacity-0 space-x-2 w-full`}
         onClick={() => setSelectedArtist(artist)}
       >
-        <p className="text-white font-bold text-bas ">{rank}</p>
-        <div className="sm:w-20 w-20">
+        <p className="text-white font-bold text-bas">{rank}</p>
+        <div className="w-20">
           <Image
             src={artist.imageUrl}
             height="100%"
@@ -36,7 +36,7 @@ const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
         </div>
         <p
           className={`${isActive ? "text-theme-green-1" : "text-white"
-            } font-bold text-2xl sm:text-left `}
+            } font-bold text-xl sm:text-left whitespace-nowrap`}
         >
           {artist.name}
         </p>
@@ -54,18 +54,25 @@ const ArtistsSelectionList = ({
   const selectedArtist = useContext(SelectedArtistContext);
   const setSelectedArtist = useContext(SelectedArtistDispatchContext);
 
+  const isMobile = useIsMobile()
   useEffect(() => {
     if (userTopArtists && userTopArtists.length > 0) {
       setSelectedArtist(userTopArtists[0]);
     }
   }, [userTopArtists, setSelectedArtist]);
 
+  // useEffect(() => {
+  //   if (isMobile) {
+  //     setSelectedArtist("")
+  //   }
+  // }, [isMobile, setSelectedArtist])
+
   const classForBaseScreen = "flex-row flex-wrap  px-5";
   const classForSMScreen = "sm:flex-col grow";
 
   return (
     <div
-      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2  `}
+      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2 w-full `}
     >
       {userTopArtists
         .slice(0, showMore.itemsToShow)
