@@ -22,7 +22,6 @@ const ProfileHeader = ({
   followerCount,
   playlistCount,
 }) => {
-  console.log(userDisplayName)
   return (
     <div ref={innerRef} className="flex flex-col space-y-4 items-center bg-gradient-to-b from-[#374151] to-[#111827] py-10  w-full">
       <Image

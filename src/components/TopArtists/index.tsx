@@ -42,7 +42,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
   const [showMore, setShowMore] = useState({
     isExpanded: false,
     itemsToShow: 10,
-    totalItems: userTopArtists.length,
+    totalItems: 0,
   });
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
       const artists = getArtistsByTimeRange({ userTopArtistsAllTimeRange, timeRange: selectedTimeRange });
       setUserTopArtists(artists);
     }
-  }, [userTopArtistsAllTimeRange, selectedTimeRange]);
+  }, [userTopArtistsAllTimeRange, selectedTimeRange, ]);
 
   const isMobile = useIsMobile()
   const classForMobile = isMobile ? `px-12` : `md:px-12 xl:px-56`

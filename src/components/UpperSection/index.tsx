@@ -16,7 +16,6 @@ const TimeRangeButton = ({ selectedTimeRange, setSelectedTimeRange, timeRange })
     }
     const isActive = timeRange === selectedTimeRange;
     const activeClass = isActive ? "text-theme-green-1" : "text-white no-underline hover:underline hover:text-theme-green-1";
-    console.log(timeRange + selectedTimeRange)
     return (
         <button className={`${activeClass}`} onClick={() => setSelectedTimeRange(timeRange)}>
             {timeRangeForDisplay}

@@ -3,10 +3,20 @@ import { useState, useContext, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { SelectedArtistContext, SelectedArtistDispatchContext } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
+import { getRelatedArtists } from "pages/api/dashboard/dashboardApi";
 
 const SectionTitle = ({ sectionName }) => {
   return <p className="text-white font-bold text-xl w-full">{sectionName}</p>;
 };
+const GenreItem = ({ genre }) => {
+  return (
+    <div
+      className="bg-[#484E5B] rounded-full border  px-2 pb-1.5 text-white font-bold"
+    >
+      {genre.name}
+    </div>
+  )
+}
 
 const ArtistGenresSection = ({ genres }) => {
   return (
@@ -15,16 +25,11 @@ const ArtistGenresSection = ({ genres }) => {
       <div className="flex flex-row flex-wrap  gap-2">
         {genres.map((genre, index) => {
           return (
-            <div
-              className="bg-[#484E5B] rounded-full border  px-2 pb-1.5 text-white font-bold"
-              key={index}
-            >
-              {genre}
-            </div>
+            <GenreItem genre={genre} key={index} />
           );
         })}
       </div>
-    </div>
+    </div >
   );
 };
 
@@ -52,10 +57,11 @@ const ArtistPopularitySection = ({ popularity }) => {
 };
 
 const SimilarArtistCard = ({ artist }) => {
+
   return (
     <div className={`flex relative overflow-hidden hover:scale-110`}>
       <Image
-        src={artist.image}
+        src={artist.imageUrl}
         alt={artist.name}
         className="rounded-lg "
         width={150}
@@ -76,6 +82,8 @@ const SimilarArtistCard = ({ artist }) => {
 };
 
 const SimilarArtistSection = ({ similarArtists }) => {
+
+
   return (
     <div className="flex flex-col align-left space-y-2 grow gap-2">
       <SectionTitle sectionName="Similar Artists" />
@@ -90,22 +98,37 @@ const SimilarArtistSection = ({ similarArtists }) => {
 
 const ArtistDetailsPanel = () => {
   const selectedArtist = useContext(SelectedArtistContext)
+  const [similarArtists, setSimilarArtists] = useState([]);
   const artist = selectedArtist
   const isMobile = useIsMobile();
   const classForSMScreen = isMobile ? `border ` : `sticky `;
-  console.log(isMobile)
+
+  useEffect(() => {
+    if (selectedArtist) {
+      // Fetch related artists
+      getRelatedArtists(selectedArtist.id)
+        .then(data => {
+          console.log(data)
+          setSimilarArtists(data);
+        })
+        .catch(error => {
+          console.error('Error fetching similar artists:', error);
+        });
+    }
+  }, [selectedArtist]);
+
   return (
     <div className="flex flex-col w-full">
-      {selectedArtist ? (<div
-        // className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539]  mr-4 h-1/2 sticky top-0`}
-        className={` ${classForSMScreen} 
-        flex-col rounded-lg pl-6 py-6 space-y-4  mr-4 h-1/2 top-0 w-full bg-[#1B2539]`} // added max-w-xl for a max width
-      >
-        <ArtistGenresSection genres={artist.genres} />
-        <ArtistFollowersSection followers={artist.followers} />
-        <ArtistPopularitySection popularity={artist.popularity} />
-        {/* <SimilarArtistSection similarArtists={similarArtists.slice(0, 6)} /> */}
-      </div>) : null}
+      {selectedArtist ? (
+        <div
+          className={` ${classForSMScreen} 
+        flex-col rounded-lg pl-6 py-6 space-y-4  mr-4 h-1/2 top-0 w-full bg-[#1B2539]`}
+        >
+          <ArtistGenresSection genres={artist.genres} />
+          <ArtistPopularitySection popularity={artist.popularity} />
+          <SimilarArtistSection similarArtists={similarArtists} />
+        </div>
+      ) : null}
     </div>
   );
 };

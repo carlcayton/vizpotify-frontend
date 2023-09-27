@@ -5,8 +5,18 @@ const getProfileHeaderData =(spotifyId) => {
     return fetchData(spotifyId, "profileHeader");
 }
 
-const getUserTopArtist = async (spotifyId) => {
-    return await fetchData(spotifyId, "userTopArtist");
+const getUserTopArtist =(spotifyId) => {
+    return fetchData(spotifyId, "userTopArtist");
+}
+
+const getRelatedArtists = async (artistId)=>{
+    let endpoint = `http://localhost:8080/api/v1/artist/${artistId}`
+    try{
+        const response = await axios.get(endpoint)
+        return response.data
+    }catch(error){
+        console.log("Error fetching data for Related Artists", error)
+    }
 }
 
 const fetchData = async (spotifyId, dataType) => {
@@ -32,7 +42,9 @@ const createBaseEndpoint=(spotifyId, dashboardSection)=>{
 }
 
 
+
 export {
     getProfileHeaderData,
-    getUserTopArtist
+    getUserTopArtist,
+    getRelatedArtists
 }
