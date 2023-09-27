@@ -43,7 +43,7 @@ const ArtistPopularitySection = ({ popularity }) => {
       <SectionTitle sectionName="Popularity" />
       <div className=" bg-[#5F646F] rounded-full h-2 dark:bg-bg-gray-700">
         <div
-          className={`bg-theme-green-1 h-2 rounded-full`}
+          className={`bg-theme-green-1 h-2 rounded-full w-full`}
           style={{ width: `${popularity}%` }}
         ></div>
       </div>
@@ -92,14 +92,14 @@ const ArtistDetailsPanel = () => {
   const selectedArtist = useContext(SelectedArtistContext)
   const artist = selectedArtist
   const isMobile = useIsMobile();
-  const classForSMScreen = isMobile ? `border ` : `sticky pr-20 `;
+  const classForSMScreen = isMobile ? `border ` : `sticky `;
   console.log(isMobile)
   return (
     <div className="flex flex-col w-full">
       {selectedArtist ? (<div
         // className={`${classForBaseScreen} ${classForSMScreen} flex-col  rounded-lg p-5 space-y-4 bg-[#1B2539]  mr-4 h-1/2 sticky top-0`}
         className={` ${classForSMScreen} 
-        flex-col rounded-lg p-5 space-y-4  mr-4 h-1/2 top-0 w-full bg-[#1B2539]`} // added max-w-xl for a max width
+        flex-col rounded-lg pl-6 py-6 space-y-4  mr-4 h-1/2 top-0 w-full bg-[#1B2539]`} // added max-w-xl for a max width
       >
         <ArtistGenresSection genres={artist.genres} />
         <ArtistFollowersSection followers={artist.followers} />

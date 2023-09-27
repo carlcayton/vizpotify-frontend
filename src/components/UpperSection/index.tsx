@@ -43,7 +43,7 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
                 className={`bg-[#111827] text-theme-green-1 rounded px-2 py-1 md:hidden`}
             >
                 {timeRanges.map((timeRange) => (
-                    <option key={timeRange} value={timeRange} className="bg-white text-[#111827]">
+                    <option key={timeRange} value={timeRange} className={`bg-white text-[#111827]`}>
                         {timeRange === "shortTerm"
                             ? "4 Weeks"
                             : timeRange === "mediumTerm"
@@ -53,8 +53,8 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
                 ))}
             </select>
 
-            {/* <div className={`flex flex-row space-x-3 ${isMobile ? 'hidden' : 'block'}`}> */}
-            <div className={`md:flex flex-row space-x-3 `}>
+            <div className={`flex flex-row space-x-3 ${isMobile ? 'hidden' : 'block'}`}>
+            {/* <div className={`md:flex flex-row space-x-3 `}> */}
                 {timeRanges.map((timeRange, index) => {
                     return (
                         <TimeRangeButton
