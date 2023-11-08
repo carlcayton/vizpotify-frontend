@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { useState, useContext, useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
-import { SelectedArtistContext, SelectedArtistDispatchContext } from "contexts/SelectedArtistContext";
+import { SelectedArtistContext } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
-import { getRelatedArtists } from "pages/api/dashboard/dashboardApi";
+import { getArtistExtraInfo } from "pages/api/dashboard/dashboardApi";
 
 const SectionTitle = ({ sectionName }) => {
   return <p className="text-white font-bold text-xl w-full">{sectionName}</p>;
@@ -44,9 +43,9 @@ const ArtistFollowersSection = ({ followers }) => {
 
 const ArtistPopularitySection = ({ popularity }) => {
   return (
-    <div className="flex flex-col align-left space-y-2 pr-12 w-full">
+    <div className="flex flex-col align-left space-y-2 w-full">
       <SectionTitle sectionName="Popularity" />
-      <div className=" bg-[#5F646F] rounded-full h-2 dark:bg-bg-gray-700">
+      <div className=" bg-[#5F646F] rounded-full h-2 dark:bg-bg-gray-700 w-full">
         <div
           className={`bg-theme-green-1 h-2 rounded-full w-full`}
           style={{ width: `${popularity}%` }}
@@ -55,50 +54,91 @@ const ArtistPopularitySection = ({ popularity }) => {
     </div>
   );
 };
+const TopTrackHeading = () => {
+  let fontColor = "text-white"
+  return (
+
+    <div className="flex flex-row  rounded-md gap-x-6  p-2 justify-between justify-items-start ">
+      <p className={`${fontColor}  truncate w-full`}>Title</p> {/* Truncate text if it overflows */}
+      <p className={`${fontColor}  truncate w-full`}>Album</p> {/* Truncate text if it overflows */}
+      <p className={`${fontColor}  `}>Duration</p> {/* Truncate text if it overflows */}
+    </div>
+  )
+}
+const TopTrackCard = ({ rank, track }) => {
+  let fontColor = "text-white"
+  return (
+    // Use grid with template columns to align items
+    // <div className="grid grid-cols-5 bg-[#484E5B] rounded-md gap-x-6 p-2 w-full justify-between">
+    <div className="flex flex-row  bg-[#484E5B] rounded-md gap-x-6  p-2 justify-between justify-items-start ">
+      <p className={`${fontColor}  truncate w-full`}>{track.name}</p> {/* Truncate text if it overflows */}
+      <p className={`${fontColor}  truncate w-full `}>{track.albumName}</p> {/* Truncate text if it overflows */}
+      <p className={`${fontColor} pl-4`}>{track.duration}</p>
+    </div>
+  );
+};
+
+const TopTrackSection = ({ artistTopTracks }) => {
+  return (
+    <div className="flex flex-col align-left space-y-2 w-full">
+      <SectionTitle sectionName="Artist's Popular Songs" />
+      <div className="flex flex-col space-y-1">
+        <TopTrackHeading />
+        {artistTopTracks ? (
+          artistTopTracks.map((track: any, index: number) => {
+            return (
+              <TopTrackCard rank={index + 1} track={track} />
+            )
+          })
+        ) : null}
+      </div>
+    </div >
+  )
+
+}
 
 const SimilarArtistCard = ({ artist }) => {
-
   return (
-    <div className={`flex relative overflow-hidden hover:scale-110`}>
+    <div className="relative hover:scale-110">
       <Image
         src={artist.imageUrl}
-        alt={artist.name}
-        className="rounded-lg "
-        width={150}
-        height={150}
-      // layout="fill"
-      // style={{width:"100%"}}
+        height="100%"
+        width="100%"
+        layout="responsive"
+        objectFit="cover"
+        alt={`${artist.name}`}
+        className="rounded-lg"
       />
-      <div className="flex rounded-b-lg bottom-0 absolute w-full bg-[#111827] opacity-60 ">
-        <span
-          className="text-white grow p-1"
-        // style={{ fontSizeAdjust: "inherit" }}
-        >
-          {artist.name}
-        </span>
+      <div
+        className="absolute bottom-0 w-full flex justify-center items-center rounded-b-lg bg-[#111827] opacity-60"
+      >
+        <span className="text-white p-1">{artist.name}</span>
       </div>
     </div>
   );
 };
 
 const SimilarArtistSection = ({ similarArtists }) => {
-
-
   return (
-    <div className="flex flex-col align-left space-y-2 grow gap-2">
+    <div className="flex flex-col align-left space-y-2 gap-2 w-full">
       <SectionTitle sectionName="Similar Artists" />
-      <div className="flex flex-row flex-wrap   gap-2">
-        {similarArtists.map((artist, index) => {
-          return <SimilarArtistCard artist={artist} key={artist.id} />;
-        })}
-      </div>
-    </div>
+      {similarArtists ? (
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {similarArtists.slice(0, 12).map((artist, index) => {
+            return <SimilarArtistCard artist={artist} key={artist.id} />;
+          })}
+        </div>
+      ) : null
+      }
+    </div >
   );
 };
 
 const ArtistDetailsPanel = () => {
   const selectedArtist = useContext(SelectedArtistContext)
+
   const [similarArtists, setSimilarArtists] = useState([]);
+  const [artistTopTracks, setArtistTopTracks] = useState([]);
   const artist = selectedArtist
   const isMobile = useIsMobile();
   const classForSMScreen = isMobile ? `border ` : `sticky `;
@@ -106,10 +146,10 @@ const ArtistDetailsPanel = () => {
   useEffect(() => {
     if (selectedArtist) {
       // Fetch related artists
-      getRelatedArtists(selectedArtist.id)
+      getArtistExtraInfo(selectedArtist.id)
         .then(data => {
-          console.log(data)
-          setSimilarArtists(data);
+          setSimilarArtists(data.artistDTOS);
+          setArtistTopTracks(data.trackDTOS);
         })
         .catch(error => {
           console.error('Error fetching similar artists:', error);
@@ -117,15 +157,17 @@ const ArtistDetailsPanel = () => {
     }
   }, [selectedArtist]);
 
+
   return (
     <div className="flex flex-col w-full">
       {selectedArtist ? (
         <div
           className={` ${classForSMScreen} 
-        flex-col rounded-lg pl-6 py-6 space-y-4  mr-4 h-1/2 top-0 w-full bg-[#1B2539]`}
+        flex-col rounded-lg px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539]`}
         >
           <ArtistGenresSection genres={artist.genres} />
           <ArtistPopularitySection popularity={artist.popularity} />
+          <TopTrackSection artistTopTracks={artistTopTracks} />
           <SimilarArtistSection similarArtists={similarArtists} />
         </div>
       ) : null}

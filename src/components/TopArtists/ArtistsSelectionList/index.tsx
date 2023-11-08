@@ -74,19 +74,23 @@ const ArtistsSelectionList = ({
     <div
       className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2 w-full `}
     >
-      {userTopArtists
-        .slice(0, showMore.itemsToShow)
-        .map((artist: any, index: number) => {
-          return (
-            <ArtistCard
-              artist={artist}
-              rank={index + 1}
-              selectedArtist={selectedArtist}
-              setSelectedArtist={setSelectedArtist}
-              key={artist.id}
-            />
-          );
-        })}
+      {userTopArtists ? (
+        userTopArtists
+          .slice(0, showMore.itemsToShow)
+          .map((artist: any, index: number) => {
+            return (
+              <ArtistCard
+                artist={artist}
+                rank={index + 1}
+                selectedArtist={selectedArtist}
+                setSelectedArtist={setSelectedArtist}
+                key={artist.id}
+              />
+            );
+          })
+      ) : (
+        <div />
+      )}
     </div>
   );
 };
