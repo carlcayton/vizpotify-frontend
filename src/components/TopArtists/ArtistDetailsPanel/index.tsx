@@ -65,15 +65,17 @@ const TopTrackHeading = () => {
     </div>
   )
 }
+
 const TopTrackCard = ({ rank, track }) => {
   let fontColor = "text-white"
   return (
-    // Use grid with template columns to align items
-    // <div className="grid grid-cols-5 bg-[#484E5B] rounded-md gap-x-6 p-2 w-full justify-between">
-    <div className="flex flex-row  bg-[#484E5B] rounded-md gap-x-6  p-2 justify-between justify-items-start ">
-      <p className={`${fontColor}  truncate w-full`}>{track.name}</p> {/* Truncate text if it overflows */}
-      <p className={`${fontColor}  truncate w-full `}>{track.albumName}</p> {/* Truncate text if it overflows */}
-      <p className={`${fontColor} pl-4`}>{track.duration}</p>
+    <div className="flex flex-row items-center bg-[#484E5B] rounded-md gap-x-4 p-4 justify-between shadow-lg hover:shadow-2xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+      <div className="flex items-center w-2/5">
+        <span className="text-sm font-bold text-gray-400 mr-2">{rank}.</span>
+        <p className={`${fontColor} font-semibold truncate`}>{track.name}</p>
+      </div>
+      <p className={`${fontColor} truncate w-1/4 text-sm`}>{track.albumName}</p>
+      <p className={`${fontColor} w-1/6 text-right text-sm`}>{track.duration}</p>
     </div>
   );
 };
