@@ -27,14 +27,12 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
   useEffect(() => {
     if (userTopTracksAllTimeRange) {
       const tracks = getTracksByTimeRange({ userTopTracksAllTimeRange, timeRange: selectedTimeRange });
-      console.log(tracks)
       setUserTopTracks(tracks);
     }
   }, [userTopTracksAllTimeRange, selectedTimeRange]);
 
   const isMobile = useIsMobile();
   const classForMobile = isMobile ? 'px-12' : 'md:px-12 xl:px-56';
-
 
   const [showMore, setShowMore] = useState({
     isExpanded: false,

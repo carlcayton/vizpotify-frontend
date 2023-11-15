@@ -29,13 +29,17 @@ const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
                     />
                 </div>
 
-                <div className="flex flex-col items-start ">
-                    <h2 className={`${isActive ? "text-theme-green-1" : "text-white"} font-bold text-xl whitespace-nowrap text-ellipsis overflow-hidden`}>
-                        {track.name.length > 40 ? track.name.substring(0, 40) + '...' : track.name}
+                <div className="flex flex-col items-start">
+                    <h2 className={`${isActive ? "text-theme-green-1" : "text-white"
+                        } ${track.name.length > 40 ? "text-xs" :
+                            track.name.length > 30 ? "text-md" : "text-lg"
+                        } font-bold sm:text-m md:text-l whitespace-nowrap text-ellipsis overflow-hidden`}>
+                        {track.name.length > 40 ? `${track.name.substring(0, 40)}...` : track.name}
                     </h2>
+
                     {track ? (
                         <div className="flex flex-row">
-                            <p className={`${isActive ? "text-theme-green-1" : "text-white"} text-sm font-medium whitespace-nowrap`}>
+                            <p className={`${isActive ? "text-theme-green-1" : "text-white"} sm:text-xs text-sm font-medium whitespace-nowrap`}>
                                 {track.artists.join(', ')}
                             </p>
                         </div>
@@ -43,7 +47,7 @@ const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
                 </div>
 
             </button>
-            {/* {isMobile && isActive && <TrackDetailsPanel track={track} />} */}
+            {/* {isMobile && isActive && <TrackDetailPanel track={track} />} */}
         </div>
     );
 };

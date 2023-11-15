@@ -2,10 +2,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { SelectedTrackContext } from 'contexts/SelectedTrackContext';
 import { useIsMobile } from 'utils/detectScreenSize';
+import { formatDuration, formatDate } from 'utils/util';
+import SectionTitle from 'components/base/SectionTitle';
+import ProgressBar from 'components/base/ProgressBar';
+
 
 const TrackDetailsPanel = () => {
     const selectedTrack = useContext(SelectedTrackContext);
-
+    const track = selectedTrack;
     const isMobile = useIsMobile();
     const classForSMScreen = isMobile ? 'border' : 'sticky';
 
@@ -23,14 +27,35 @@ const TrackDetailsPanel = () => {
     //         });
     //     }
     //   }, [selectedTrack]);
+    if (!track) {
+        return null;
+    }
 
     return (
         <div className="flex flex-col w-full">
-            {selectedTrack ? (
-                <div className={`${classForSMScreen} flex-col rounded-lg px-6 py-6 space-y-4 mr-4 top-0 w-full bg-[#1B2539]`}>
-                    <h2 className="text-white text-lg font-bold">{selectedTrack.name}</h2>
+            <div
+                className={` ${classForSMScreen} 
+        flex-col rounded-lg px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539]`}
+            >
+                {/* Render AttributesPanel only if track.attributes is not empty */}
+                {/* {track.attributes && track.attributes.length > 0 && (
+                <AttributesPanel attributes={track.attributes} />
+            )} */}
+
+                <div className="text-white rounded-lg flex justify-between">
+                    <div>
+                        <SectionTitle sectionName={"Duration"} />
+                        <p className="">{formatDuration(track.duration)}</p>
+                    </div>
+                    <div>
+                        <SectionTitle sectionName={"Release Date"} />
+                        <p className="">{formatDate(track.releaseDate)}</p>
+                    </div>
                 </div>
-            ) : null}
+                <SectionTitle sectionName={"Popularity"} />
+                <ProgressBar percentage={track.popularity} />
+
+            </div>
         </div>
     );
 };

@@ -3,10 +3,10 @@ import { useState, useContext, useEffect } from "react";
 import { SelectedArtistContext } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
 import { getArtistExtraInfo } from "pages/api/dashboard/dashboardApi";
+import { formatDuration } from 'utils/util';
+import SectionTitle from 'components/base/SectionTitle'
+import ProgressBar from "components/base/ProgressBar";
 
-const SectionTitle = ({ sectionName }) => {
-  return <p className="text-white font-bold text-xl w-full">{sectionName}</p>;
-};
 const GenreItem = ({ genre }) => {
   return (
     <div
@@ -45,12 +45,7 @@ const ArtistPopularitySection = ({ popularity }) => {
   return (
     <div className="flex flex-col align-left space-y-2 w-full">
       <SectionTitle sectionName="Popularity" />
-      <div className=" bg-[#5F646F] rounded-full h-2 dark:bg-bg-gray-700 w-full">
-        <div
-          className={`bg-theme-green-1 h-2 rounded-full w-full`}
-          style={{ width: `${popularity}%` }}
-        ></div>
-      </div>
+      <ProgressBar percentage={popularity} />
     </div>
   );
 };
@@ -75,7 +70,7 @@ const TopTrackCard = ({ rank, track }) => {
         <p className={`${fontColor} font-semibold truncate`}>{track.name}</p>
       </div>
       <p className={`${fontColor} truncate w-1/4 text-sm`}>{track.albumName}</p>
-      <p className={`${fontColor} w-1/6 text-right text-sm`}>{track.duration}</p>
+      <p className={`${fontColor} w-1/6 text-right text-sm`}>{formatDuration(track.duration)}</p>
     </div>
   );
 };
