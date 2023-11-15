@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, createContext } from "react";
-import { SelectedArtistContext, SelectedArtistDispatchContext, SelectedArtistProvider } from "contexts/SelectedArtistContext";
+import { SelectedArtistProvider } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
-import UpperSection from "components/UpperSection"
+import UpperSection from "components/composite/UpperSection"
 
 import ArtistsSelectionList from "./ArtistsSelectionList";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
@@ -50,7 +50,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
       const artists = getArtistsByTimeRange({ userTopArtistsAllTimeRange, timeRange: selectedTimeRange });
       setUserTopArtists(artists);
     }
-  }, [userTopArtistsAllTimeRange, selectedTimeRange, ]);
+  }, [userTopArtistsAllTimeRange, selectedTimeRange,]);
 
   const isMobile = useIsMobile()
   const classForMobile = isMobile ? `px-12` : `md:px-12 xl:px-56`

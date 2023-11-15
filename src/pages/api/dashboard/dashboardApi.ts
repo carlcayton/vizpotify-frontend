@@ -6,7 +6,11 @@ const getProfileHeaderData = (spotifyId) => {
 }
 
 const getUserTopArtist = (spotifyId) => {
-    return fetchData(spotifyId, "userTopArtist");
+    return fetchData(spotifyId, "userTopArtists");
+}
+
+const getUserTopTrack = (spotifyId) => {
+    return fetchData(spotifyId, "userTopTracks")
 }
 
 const getArtistExtraInfo = async (artistId) => {
@@ -46,5 +50,6 @@ const createBaseEndpoint = (spotifyId, dashboardSection) => {
 export {
     getProfileHeaderData,
     getUserTopArtist,
+    getUserTopTrack,
     getArtistExtraInfo
 }

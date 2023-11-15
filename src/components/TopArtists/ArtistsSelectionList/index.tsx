@@ -53,7 +53,7 @@ const ArtistsSelectionList = ({
 
   const selectedArtist = useContext(SelectedArtistContext);
   const setSelectedArtist = useContext(SelectedArtistDispatchContext);
-
+  // console.log(userTopArtists)
   const isMobile = useIsMobile()
   useEffect(() => {
     if (userTopArtists && userTopArtists.length > 0) {

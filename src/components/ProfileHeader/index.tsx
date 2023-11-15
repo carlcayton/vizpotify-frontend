@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 import { ProfileHeaderType } from "@types";
-import LogoutButton from "components/LogoutButton";
+import LogoutButton from "components/base/LogoutButton";
 
 
 const ProfileHeaderNumbers = ({ count, type} ) => {

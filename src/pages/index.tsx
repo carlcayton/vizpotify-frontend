@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import LoginButton from "components/LoginButton";
+import LoginButton from "components/base/LoginButton";
 import LandingPageCards from "components/LandingPageCards";
 import Image from "next/image";
 import { getProviders, signIn } from "next-auth/react";
 
-import NavBar from "components/NavBar";
+import NavBar from "components/composite/NavBar";
 
 
 const LandingPage = () => {

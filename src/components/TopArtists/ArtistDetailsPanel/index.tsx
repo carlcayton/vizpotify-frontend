@@ -89,7 +89,7 @@ const TopTrackSection = ({ artistTopTracks }) => {
         {artistTopTracks ? (
           artistTopTracks.map((track: any, index: number) => {
             return (
-              <TopTrackCard rank={index + 1} track={track} />
+              <TopTrackCard key={index} rank={index + 1} track={track} />
             )
           })
         ) : null}
@@ -126,7 +126,7 @@ const SimilarArtistSection = ({ similarArtists }) => {
       <SectionTitle sectionName="Similar Artists" />
       {similarArtists ? (
         <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {similarArtists.slice(0, 12).map((artist, index) => {
+          {similarArtists.slice(0, 8).map((artist, index) => {
             return <SimilarArtistCard artist={artist} key={artist.id} />;
           })}
         </div>
@@ -143,11 +143,10 @@ const ArtistDetailsPanel = () => {
   const [artistTopTracks, setArtistTopTracks] = useState([]);
   const artist = selectedArtist
   const isMobile = useIsMobile();
-  const classForSMScreen = isMobile ? `border ` : `sticky `;
+  const classForSMScreen = isMobile ? `border sticky` : `sticky `;
 
   useEffect(() => {
     if (selectedArtist) {
-      // Fetch related artists
       getArtistExtraInfo(selectedArtist.id)
         .then(data => {
           setSimilarArtists(data.artistDTOS);
