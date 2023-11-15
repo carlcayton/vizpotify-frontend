@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, createContext } from "react";
 import { SelectedArtistProvider } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
 import UpperSection from "components/composite/UpperSection"
+import { ArtistDetailsProvider } from "contexts/ArtistDetailsContext";
 
 import ArtistsSelectionList from "./ArtistsSelectionList";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
@@ -57,15 +58,17 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
   return (
     <div ref={innerRef} className={`flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full ${classForMobile}`}>
       <UpperSection sectionType={"Artists"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-      <div className="flex flex-row justify-center  bg-[#111827] space-x-1 w-full ">
-        <SelectedArtistProvider>
-          <ArtistsSelectionList
-            userTopArtists={userTopArtists}
-            showMore={showMore}
-          />
-          {isMobile ? null : <ArtistDetailsPanel />}
-        </SelectedArtistProvider>
-      </div>
+      <ArtistDetailsProvider>
+        <div className="flex flex-row justify-center  bg-[#111827] space-x-1 w-full ">
+          <SelectedArtistProvider>
+            <ArtistsSelectionList
+              userTopArtists={userTopArtists}
+              showMore={showMore}
+            />
+            {isMobile ? null : <ArtistDetailsPanel />}
+          </SelectedArtistProvider>
+        </div>
+      </ArtistDetailsProvider>
 
       {/* <ShowMoreButton showMore={showMore} setShowMore={setShowMore} /> */} */}
     </div>

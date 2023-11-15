@@ -32,7 +32,7 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
   }, [userTopTracksAllTimeRange, selectedTimeRange]);
 
   const isMobile = useIsMobile();
-  const classForMobile = isMobile ? 'px-12' : 'md:px-12 xl:px-56';
+  const classForMobile = isMobile ? 'px-12' : 'sm:px-24 xl:px-56';
 
   const [showMore, setShowMore] = useState({
     isExpanded: false,

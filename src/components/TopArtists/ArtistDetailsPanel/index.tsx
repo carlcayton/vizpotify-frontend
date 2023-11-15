@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { useState, useContext, useEffect } from "react";
 import { SelectedArtistContext } from "contexts/SelectedArtistContext";
+import { useArtistDetails, useStoreArtistDetails } from "contexts/ArtistDetailsContext";
 import { useIsMobile } from "utils/detectScreenSize"
 import { getArtistExtraInfo } from "pages/api/dashboard/dashboardApi";
 import { formatDuration } from 'utils/util';
 import SectionTitle from 'components/base/SectionTitle'
 import ProgressBar from "components/base/ProgressBar";
+
 
 const GenreItem = ({ genre }) => {
   return (
@@ -53,7 +55,7 @@ const TopTrackHeading = () => {
   let fontColor = "text-white"
   return (
 
-    <div className="flex flex-row  rounded-md gap-x-6  p-2 justify-between justify-items-start ">
+    <div className="flex flex-row  rounded-md gap-x-6  p-2 justify-between justify-items-start w-full ">
       <p className={`${fontColor}  truncate w-full`}>Title</p> {/* Truncate text if it overflows */}
       <p className={`${fontColor}  truncate w-full`}>Album</p> {/* Truncate text if it overflows */}
       <p className={`${fontColor}  `}>Duration</p> {/* Truncate text if it overflows */}
@@ -132,39 +134,62 @@ const SimilarArtistSection = ({ similarArtists }) => {
 };
 
 const ArtistDetailsPanel = () => {
-  const selectedArtist = useContext(SelectedArtistContext)
 
-  const [similarArtists, setSimilarArtists] = useState([]);
-  const [artistTopTracks, setArtistTopTracks] = useState([]);
-  const artist = selectedArtist
   const isMobile = useIsMobile();
   const classForSMScreen = isMobile ? `border sticky` : `sticky `;
 
+
+  const selectedArtist = useContext(SelectedArtistContext);
+  const artist = selectedArtist
+  const artistDetails = useArtistDetails();
+  const storeArtistDetails = useStoreArtistDetails();
+
+  // Use local state to set similar artists and top tracks if needed.
+  // This could be removed if you decide to rely solely on context.
+  const [similarArtists, setSimilarArtists] = useState([]);
+  const [artistTopTracks, setArtistTopTracks] = useState([]);
+
   useEffect(() => {
     if (selectedArtist) {
-      getArtistExtraInfo(selectedArtist.id)
-        .then(data => {
-          setSimilarArtists(data.artistDTOS);
-          setArtistTopTracks(data.trackDTOS);
-        })
-        .catch(error => {
-          console.error('Error fetching similar artists:', error);
-        });
+      // Check if we already have details for this artist
+      const details = artistDetails ? artistDetails[selectedArtist.id] : undefined;
+      if (details) {
+        // If details exist in context, use them instead of fetching
+        setSimilarArtists(details.relatedArtists);
+        setArtistTopTracks(details.topTracks);
+      } else {
+        // Fetch the extra info if not already in the context
+        getArtistExtraInfo(selectedArtist.id)
+          .then(data => {
+            // Update local state
+            setSimilarArtists(data.artistDTOS);
+            setArtistTopTracks(data.trackDTOS);
+            // Update context with the new data
+            if (storeArtistDetails) {
+              storeArtistDetails(selectedArtist.id, {
+                relatedArtists: data.artistDTOS,
+                topTracks: data.trackDTOS
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching similar artists:', error);
+          });
+      }
     }
-  }, [selectedArtist]);
-
+  }, [selectedArtist, artistDetails, storeArtistDetails]);
 
   return (
     <div className="flex flex-col w-full">
       {selectedArtist ? (
         <div
           className={` ${classForSMScreen} 
-        flex-col rounded-lg px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539]`}
+        flex-col rounded-lg px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539] w-full`}
         >
           <ArtistGenresSection genres={artist.genres} />
           <ArtistPopularitySection popularity={artist.popularity} />
           <TopTrackSection artistTopTracks={artistTopTracks} />
-          <SimilarArtistSection similarArtists={similarArtists} />
+          {/* <SimilarArtistSection similarArtists={similarArtists} /> */}
         </div>
       ) : null}
     </div>
