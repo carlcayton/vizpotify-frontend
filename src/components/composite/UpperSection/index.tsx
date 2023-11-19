@@ -38,7 +38,7 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
             <select
                 value={selectedTimeRange}
                 onChange={(e) => setSelectedTimeRange(e.target.value)}
-                className={`bg-[#111827] text-theme-green-1 rounded px-2 py-1 ${isMobile ? 'block' : 'hidden'}`}
+                className={`bg-[#111827] text-theme-green-1 rounded px-2 py-1 block sm:hidden}`}
             >
                 {timeRanges.map((timeRange) => (
                     <option key={timeRange} value={timeRange} className={`bg-white text-[#111827]`}>
@@ -51,7 +51,7 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
                 ))}
             </select>
 
-            <div className={`flex flex-row space-x-3 ${isMobile ? 'hidden' : 'block'}`}>
+            <div className={`flex flex-row space-x-3 hidden sm:block}`}>
                 {timeRanges.map((timeRange, index) => {
                     return (
                         <TimeRangeButton

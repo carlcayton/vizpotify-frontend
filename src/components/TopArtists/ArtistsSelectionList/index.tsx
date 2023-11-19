@@ -59,19 +59,22 @@ import ArtistDetailsPanel from "components/TopArtists/ArtistDetailsPanel";
 
 
 const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const cardRef = useRef(null);
   let isActive = artist === selectedArtist;
+  if (artist === selectedArtist) {
+    console.log(artist)
+  }
+  const [isOpen, setIsOpen] = useState(isActive ? true : false);
   const isMobile = useIsMobile();
 
-  const toggleOpen = () => {
-    if (isMobile) {
-      setIsOpen(!isOpen);
-    }
-    if (!isActive) {
-      setSelectedArtist(artist);
-    }
-  };
+  // const toggleOpen = () => {
+  //   if (isMobile) {
+  //     setIsOpen(!isOpen);
+  //   }
+  //   if (!isActive) {
+  //     setSelectedArtist(artist);
+  //   }
+  // };
 
   useEffect(() => {
     if (isActive && cardRef.current) {
@@ -80,14 +83,19 @@ const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
         block: 'nearest'
       });
     }
+    setIsOpen(isActive);
   }, [isActive]);
+
+  const handleClick = () => {
+    setSelectedArtist(isActive ? null : artist);
+  };
 
   return (
     <div className="w-full" ref={cardRef}>
       <button
         className={`flex justify-between bg-[#192132] ${isActive ? "bg-[#374151] cursor-default" : "bg-transparent"
           } hover:bg-[#374151] rounded-lg items-center p-2 sm:border-opacity-0 space-x-2 w-full`}
-        onClick={toggleOpen}
+        onClick={handleClick}
       >
         <div className="flex items-center gap-8">
           <p className="text-white font-bold text-bas">{rank}</p>
@@ -103,15 +111,17 @@ const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
             />
           </div>
           <p
-            className={`${isActive ? "text-theme-green-1" : "text-white"
+            className={`${isOpen && isActive ? "text-theme-green-1" : "text-white"
               } font-bold text-xl sm:text-left whitespace-nowrap`}
           >
             {artist.name}
           </p>
         </div>
-        {isMobile && <span className="text-white">{isOpen ? '-' : '+'}</span>}
+        <div>
+          {isMobile && <span className="text-white text-xl font-bold">{isOpen && isActive ? '-' : '+'}</span>}
+        </div>
       </button>
-      {isMobile && isOpen && <div className="animated-collapse-2">
+      {isActive && isMobile && isOpen && <div className="w-full animated-collapse-2">
         <ArtistDetailsPanel artist={artist} />
       </div>}
     </div>
@@ -144,7 +154,7 @@ const ArtistsSelectionList = ({
 
   return (
     <div
-      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2 w-1/2 `}
+      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2 w-full `}
     >
       {userTopArtists ? (
         userTopArtists
