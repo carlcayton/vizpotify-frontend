@@ -61,20 +61,8 @@ import ArtistDetailsPanel from "components/TopArtists/ArtistDetailsPanel";
 const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
   const cardRef = useRef(null);
   let isActive = artist === selectedArtist;
-  if (artist === selectedArtist) {
-    console.log(artist)
-  }
   const [isOpen, setIsOpen] = useState(isActive ? true : false);
   const isMobile = useIsMobile();
-
-  // const toggleOpen = () => {
-  //   if (isMobile) {
-  //     setIsOpen(!isOpen);
-  //   }
-  //   if (!isActive) {
-  //     setSelectedArtist(artist);
-  //   }
-  // };
 
   useEffect(() => {
     if (isActive && cardRef.current) {
@@ -149,13 +137,11 @@ const ArtistsSelectionList = ({
   //   }
   // }, [isMobile, setSelectedArtist])
 
-  const classForBaseScreen = "flex-row flex-wrap  px-5";
-  const classForSMScreen = "sm:flex-col grow";
+  const classForBaseScreen = "flex-row flex-wrap  ";
+  const classForSMScreen = "sm:flex-col grow align-center";
 
   return (
-    <div
-      className={`flex ${classForBaseScreen} ${classForSMScreen} items-left gap-2 w-full `}
-    >
+    <div className="flex flex-row flex-wrap px-5 sm:flex-col grow items-left gap-2 w-full">
       {userTopArtists ? (
         userTopArtists
           .slice(0, showMore.itemsToShow)

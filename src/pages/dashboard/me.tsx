@@ -16,7 +16,7 @@ export default function Dashboard() {
   const userTopArtists = useLazyLoadData(getUserTopArtist, userTopArtistsRef)
   const userTopTracks = useLazyLoadData(getUserTopTrack, userTopTracksRef)
   return (
-    <div className="flex flex-col  justify-center ">
+    <div className="flex flex-col  justify-center w-full">
       <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData} />
       <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />
       <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} />

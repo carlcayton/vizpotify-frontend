@@ -27,7 +27,7 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
     const isMobile = useIsMobile();
 
     return (
-        <div className="flex flex-row top-0 justify-between w-full ">
+        <div className="flex flex-row top-0 justify-between px-4 w-full ">
             <p className="text-white font-bold text-xl">
                 Top
                 <span className="text-theme-green-1 font-bold text-2xl pl-1">
@@ -38,7 +38,7 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
             <select
                 value={selectedTimeRange}
                 onChange={(e) => setSelectedTimeRange(e.target.value)}
-                className={`bg-[#111827] text-theme-green-1 rounded px-2 py-1 block sm:hidden}`}
+                className={`bg-[#111827] text-theme-green-1 rounded px-2 py-1 block sm:hidden sm:hidden}`}
             >
                 {timeRanges.map((timeRange) => (
                     <option key={timeRange} value={timeRange} className={`bg-white text-[#111827]`}>
@@ -51,7 +51,7 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
                 ))}
             </select>
 
-            <div className={`flex flex-row space-x-3 hidden sm:block}`}>
+            <div className={`flex flex-row space-x-3 hidden sm:block sm:block}`}>
                 {timeRanges.map((timeRange, index) => {
                     return (
                         <TimeRangeButton

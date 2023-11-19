@@ -8,6 +8,8 @@ import ProgressBar from 'components/base/ProgressBar';
 import { useStoreTrackDetails, useTrackDetails } from "contexts/TrackDetailContext";
 import { getTrackAudioFeature } from "pages/api/dashboard/dashboardApi";
 
+const baseTextSizeClass = "text-base sm:text-lg md:text-xl";
+
 const AlbumSection = ({ albumImageUrl, albumName }) => {
     return (
 
@@ -100,11 +102,11 @@ const TrackDetailsPanel = () => {
                 <ProgressBar percentage={track.popularity} />
                 <AlbumSection albumImageUrl={track.albumImageUrl} albumName={track.albumName} />
                 <div className="text-white rounded-lg flex justify-normal">
-                    <div className="w-full">
+                    <div className="w-full pr-2">
                         <SectionTitle sectionName={"Duration"} />
                         <p className="">{formatDuration(track.duration)}</p>
                     </div>
-                    <div className="w-full">
+                    <div className="w-full pl-2">
                         <SectionTitle sectionName={"Release Date"} />
                         <p className="">{formatDate(track.releaseDate)}</p>
                     </div>
