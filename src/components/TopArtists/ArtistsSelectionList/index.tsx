@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { SelectedArtistContext, SelectedArtistDispatchContext } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
 import ArtistDetailsPanel from "components/TopArtists/ArtistDetailsPanel";
 
 
 const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
+  const cardRef = useRef(null);
   let isActive = false
   if (selectedArtist === null && rank === 1) {
     isActive = true
@@ -15,9 +16,18 @@ const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
   const isMobile = useIsMobile();
   // const classForBaseScreenButton = "flex-col flex-1 basis-[40%] space-y-2";
   const classForSMSizeScreenButton = "sm:flex-row sm:gap-10 sm:basis-0  ";
+  useEffect(() => {
+    if (isActive && cardRef.current) {
+      // Scroll the active card into view
+      cardRef.current.scrollIntoView({
+        behavior: 'smooth',  // Smooth scroll
+        block: 'start'       // Scroll to align with the top of the viewport
+      });
+    }
+  }, [isActive]);
   return (
     <div className="w-full">
-      <button
+      <button ref={cardRef}
         className={`flex gap-8 bg-[#192132] ${isActive ? "bg-[#374151] cursor-default" : "bg-transparent"
           } hover:bg-[#374151] rounded-lg items-center p-2  sm:border-opacity-0 space-x-2 w-full`}
         onClick={() => setSelectedArtist(artist)}

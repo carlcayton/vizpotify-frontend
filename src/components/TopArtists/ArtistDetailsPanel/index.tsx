@@ -11,13 +11,11 @@ import ProgressBar from "components/base/ProgressBar";
 
 const GenreItem = ({ genre }) => {
   return (
-    <div
-      className="bg-[#484E5B] rounded-full border  px-2 pb-1.5 text-white font-bold"
-    >
+    <div className="bg-[#484E5B] rounded-full border px-2 pb-1.5 text-white font-bold text-xs sm:text-sm md:text-base">
       {genre.name}
     </div>
-  )
-}
+  );
+};
 
 const ArtistGenresSection = ({ genres }) => {
   return (
@@ -52,30 +50,31 @@ const ArtistPopularitySection = ({ popularity }) => {
   );
 };
 const TopTrackHeading = () => {
-  let fontColor = "text-white"
+  let fontColor = "text-white";
   return (
-
-    <div className="flex flex-row  rounded-md gap-x-6  p-2 justify-between justify-items-start w-full ">
-      <p className={`${fontColor}  truncate w-full`}>Title</p> {/* Truncate text if it overflows */}
-      <p className={`${fontColor}  truncate w-full`}>Album</p> {/* Truncate text if it overflows */}
-      <p className={`${fontColor}  `}>Duration</p> {/* Truncate text if it overflows */}
-    </div>
-  )
-}
-
-const TopTrackCard = ({ rank, track }) => {
-  let fontColor = "text-white"
-  return (
-    <div className="flex flex-row items-center bg-[#484E5B] rounded-md gap-x-4 p-4 justify-between shadow-lg hover:shadow-2xl transition duration-300 ease-in-out transform hover:-translate-y-1">
-      <div className="flex items-center w-2/5">
-        <span className="text-sm font-bold text-gray-400 mr-2">{rank}.</span>
-        <p className={`${fontColor} font-semibold truncate`}>{track.name}</p>
-      </div>
-      <p className={`${fontColor} truncate w-1/4 text-sm`}>{track.albumName}</p>
-      <p className={`${fontColor} w-1/6 text-right text-sm`}>{formatDuration(track.duration)}</p>
+    <div className="flex flex-row rounded-md gap-x-6 p-2 justify-between justify-items-start w-full">
+      <p className={`${fontColor} truncate w-full text-xs sm:text-sm md:text-base`}>Title</p>
+      <p className={`${fontColor} truncate w-full text-xs sm:text-sm md:text-base`}>Album</p>
+      <p className={`${fontColor} text-xs sm:text-sm md:text-base`}>Duration</p>
     </div>
   );
 };
+
+
+const TopTrackCard = ({ rank, track }) => {
+  let fontColor = "text-white";
+  return (
+    <div className="flex flex-row items-center bg-[#484E5B] rounded-md gap-x-4 p-4 justify-between shadow-lg hover:shadow-2xl transition duration-300 ease-in-out transform hover:--translate-y-1">
+      <div className="flex items-center w-2/5">
+        <span className={`text-xs font-bold text-gray-400 mr-2 sm:text-sm md:text-base`}>{rank}.</span>
+        <p className={`${fontColor} font-semibold truncate text-xs sm:text-sm md:text-base`}>{track.name}</p>
+      </div>
+      <p className={`${fontColor} truncate w-1/4 text-xs sm:text-sm md:text-base`}>{track.albumName}</p>
+      <p className={`${fontColor} w-1/6 text-right text-xs sm:text-sm md:text-base`}>{formatDuration(track.duration)}</p>
+    </div>
+  );
+};
+
 
 const TopTrackSection = ({ artistTopTracks }) => {
   return (
@@ -118,12 +117,14 @@ const SimilarArtistCard = ({ artist }) => {
 };
 
 const SimilarArtistSection = ({ similarArtists }) => {
+  const isMobile = useIsMobile()
+  const numberOfSimArtistToDisplay = isMobile ? 9 : 8;
   return (
     <div className="flex flex-col align-left space-y-2 gap-2 w-full">
       <SectionTitle sectionName="Similar Artists" />
       {similarArtists ? (
         <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {similarArtists.slice(0, 8).map((artist, index) => {
+          {similarArtists.slice(0, numberOfSimArtistToDisplay).map((artist, index) => {
             return <SimilarArtistCard artist={artist} key={artist.id} />;
           })}
         </div>
@@ -184,7 +185,7 @@ const ArtistDetailsPanel = () => {
       {selectedArtist ? (
         <div
           className={` ${classForSMScreen} 
-        flex-col rounded-lg px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539] w-full`}
+        flex-col px-1 md:px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539] w-full`}
         >
           <ArtistGenresSection genres={artist.genres} />
           <ArtistPopularitySection popularity={artist.popularity} />

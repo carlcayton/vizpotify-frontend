@@ -39,13 +39,16 @@ const AudioFeatureSection = ({ audioFeatures }) => {
     }
     const { id, tempo, ...otherFeatures } = audioFeatures;
     return (
-        <div className="grid grid-cols-2 gap-4">
-            {Object.entries(otherFeatures).map(([key, value]) => (
-                <div key={key} className="flex flex-col space-y-2">
-                    <span className="text-sm text-white font-semibold capitalize">{key}:</span>
-                    <ProgressBar percentage={value * 100} />
-                </div>
-            ))}
+        <div>
+            <SectionTitle sectionName={"Audio Features"} />
+            <div className="grid grid-cols-2 gap-4">
+                {Object.entries(otherFeatures).map(([key, value]) => (
+                    <div key={key} className="flex flex-col space-y-2">
+                        <span className="text-sm text-white font-semibold capitalize">{key}:</span>
+                        <ProgressBar percentage={value * 100} />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
@@ -96,12 +99,12 @@ const TrackDetailsPanel = () => {
                 <SectionTitle sectionName={"Popularity"} />
                 <ProgressBar percentage={track.popularity} />
                 <AlbumSection albumImageUrl={track.albumImageUrl} albumName={track.albumName} />
-                <div className="text-white rounded-lg flex justify-between">
-                    <div>
+                <div className="text-white rounded-lg flex justify-normal">
+                    <div className="w-full">
                         <SectionTitle sectionName={"Duration"} />
                         <p className="">{formatDuration(track.duration)}</p>
                     </div>
-                    <div>
+                    <div className="w-full">
                         <SectionTitle sectionName={"Release Date"} />
                         <p className="">{formatDate(track.releaseDate)}</p>
                     </div>
