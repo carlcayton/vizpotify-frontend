@@ -1,10 +1,12 @@
 import Image from "next/image";
 import React, { useContext, useState, useEffect } from 'react';
-import { SelectedTrackContext } from 'contexts/SelectedTrackContext';
+import { SelectedTrackContext, SelectedTrackProvider } from 'contexts/SelectedTrackContext';
 import { useIsMobile } from 'utils/detectScreenSize';
 import { formatDuration, formatDate } from 'utils/util';
 import SectionTitle from 'components/base/SectionTitle';
 import ProgressBar from 'components/base/ProgressBar';
+import { useStoreTrackDetails, useTrackDetails } from "contexts/TrackDetailContext";
+import { getTrackAudioFeature } from "pages/api/dashboard/dashboardApi";
 
 const AlbumSection = ({ albumImageUrl, albumName }) => {
     return (
@@ -30,26 +32,56 @@ const AlbumSection = ({ albumImageUrl, albumName }) => {
         </div>
     )
 }
+
+const AudioFeatureSection = ({ audioFeatures }) => {
+    if (!audioFeatures) {
+        return null;
+    }
+    const { id, tempo, ...otherFeatures } = audioFeatures;
+    return (
+        <div className="grid grid-cols-2 gap-4">
+            {Object.entries(otherFeatures).map(([key, value]) => (
+                <div key={key} className="flex flex-col space-y-2">
+                    <span className="text-sm text-white font-semibold capitalize">{key}:</span>
+                    <ProgressBar percentage={value * 100} />
+                </div>
+            ))}
+        </div>
+    );
+}
+
 const TrackDetailsPanel = () => {
-    const selectedTrack = useContext(SelectedTrackContext);
-    const track = selectedTrack;
     const isMobile = useIsMobile();
     const classForSMScreen = isMobile ? 'border' : 'sticky';
 
-    // Assuming getTrackExtraInfo is a function that fetches additional information about the track
-    //   const [trackDetails, setTrackDetails] = useState(null);
+    const selectedTrack = useContext(SelectedTrackContext);
+    const track = selectedTrack;
+    const trackDetails = useTrackDetails()
+    const storeTrackDetails = useStoreTrackDetails()
+    const [audioFeatures, setAudioFeatures] = useState(null);
 
-    //   useEffect(() => {
-    //     if (selectedTrack) {
-    //       getTrackExtraInfo(selectedTrack.id)
-    //         .then(data => {
-    //           setTrackDetails(data);
-    //         })
-    //         .catch(error => {
-    //           console.error('Error fetching track details:', error);
-    //         });
-    //     }
-    //   }, [selectedTrack]);
+    useEffect(() => {
+        if (selectedTrack) {
+            const details = trackDetails ? trackDetails[selectedTrack.id] : undefined;
+            if (details) {
+                setAudioFeatures(details.audioFeatures);
+            } else {
+                getTrackAudioFeature(selectedTrack.id)
+                    .then(data => {
+                        setAudioFeatures(data);
+                        if (storeTrackDetails) {
+                            storeTrackDetails(selectedTrack.id, {
+                                audioFeatures: data
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching audio features:', error);
+                    });
+            }
+        }
+    }, [selectedTrack, trackDetails, storeTrackDetails]);
+
     if (!track) {
         return null;
     }
@@ -58,12 +90,8 @@ const TrackDetailsPanel = () => {
         <div className="flex flex-col w-full">
             <div
                 className={` ${classForSMScreen} 
-        flex-col rounded-lg px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539]`}
+        flex-col rounded-lg px-8 py-8 space-y-4  mr-4 top-0 w-full bg-[#1B2539]`}
             >
-                {/* Render AttributesPanel only if track.attributes is not empty */}
-                {/* {track.attributes && track.attributes.length > 0 && (
-                <AttributesPanel attributes={track.attributes} />
-            )} */}
 
                 <SectionTitle sectionName={"Popularity"} />
                 <ProgressBar percentage={track.popularity} />
@@ -78,6 +106,7 @@ const TrackDetailsPanel = () => {
                         <p className="">{formatDate(track.releaseDate)}</p>
                     </div>
                 </div>
+                <AudioFeatureSection audioFeatures={audioFeatures} />
 
             </div>
         </div>

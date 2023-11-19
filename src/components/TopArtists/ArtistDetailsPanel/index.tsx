@@ -189,7 +189,7 @@ const ArtistDetailsPanel = () => {
           <ArtistGenresSection genres={artist.genres} />
           <ArtistPopularitySection popularity={artist.popularity} />
           <TopTrackSection artistTopTracks={artistTopTracks} />
-          {/* <SimilarArtistSection similarArtists={similarArtists} /> */}
+          <SimilarArtistSection similarArtists={similarArtists} />
         </div>
       ) : null}
     </div>

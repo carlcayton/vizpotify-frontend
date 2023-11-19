@@ -23,6 +23,16 @@ const getArtistExtraInfo = async (artistId) => {
     }
 }
 
+const getTrackAudioFeature = async (trackId) => {
+    let endpoint = `http://localhost:8080/api/v1/track/audiofeature/${trackId}`
+    try{
+        const response = await axios.get(endpoint)
+        return response.data
+    } catch (error) {
+        console.log("Error fetching track's audio features")
+    }
+}
+
 const fetchData = async (spotifyId, dataType) => {
     let endpoint = createBaseEndpoint(spotifyId, dataType);
     try {
@@ -51,5 +61,6 @@ export {
     getProfileHeaderData,
     getUserTopArtist,
     getUserTopTrack,
-    getArtistExtraInfo
+    getArtistExtraInfo,
+    getTrackAudioFeature
 }
