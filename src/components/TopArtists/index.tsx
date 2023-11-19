@@ -54,7 +54,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
   }, [userTopArtistsAllTimeRange, selectedTimeRange,]);
 
   const isMobile = useIsMobile()
-  const classForMobile = isMobile ? `` : `px-12 md:px-12 xl:px-56`
+  const classForMobile = isMobile ? `px-1` : ` md:px-12 xl:px-56`
   return (
     <div ref={innerRef} className={`flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full ${classForMobile}`}>
       <UpperSection sectionType={"Artists"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
@@ -65,7 +65,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
               userTopArtists={userTopArtists}
               showMore={showMore}
             />
-            {isMobile ? null : <ArtistDetailsPanel />}
+            {isMobile ? <div /> : <ArtistDetailsPanel />}
           </SelectedArtistProvider>
         </div>
       </ArtistDetailsProvider>

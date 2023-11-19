@@ -97,7 +97,7 @@ const TopTrackSection = ({ artistTopTracks }) => {
 
 const SimilarArtistCard = ({ artist }) => {
   return (
-    <div className="relative hover:scale-110">
+    <div className="w-full relative hover:scale-110">
       <Image
         src={artist.imageUrl}
         height="100%"
@@ -118,12 +118,12 @@ const SimilarArtistCard = ({ artist }) => {
 
 const SimilarArtistSection = ({ similarArtists }) => {
   const isMobile = useIsMobile()
-  const numberOfSimArtistToDisplay = isMobile ? 9 : 8;
+  const numberOfSimArtistToDisplay = isMobile ? 9 : 10;
   return (
-    <div className="flex flex-col align-left space-y-2 gap-2 w-full">
+    <div className="flex flex-col align-center space-y-2 gap-2 h">
       <SectionTitle sectionName="Similar Artists" />
       {similarArtists ? (
-        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-2">
           {similarArtists.slice(0, numberOfSimArtistToDisplay).map((artist, index) => {
             return <SimilarArtistCard artist={artist} key={artist.id} />;
           })}
@@ -185,8 +185,9 @@ const ArtistDetailsPanel = () => {
       {selectedArtist ? (
         <div
           className={` ${classForSMScreen} 
-        flex-col px-1 md:px-6 py-6 space-y-4  mr-4 top-0 w-full bg-[#1B2539] w-full`}
+        flex-col px-1 md:px-6 py-6 space-y-4   top-0 w-full bg-[#1B2539] w-full`}
         >
+          <p className="text-3xl text-white font-bold">{artist.name}</p>
           <ArtistGenresSection genres={artist.genres} />
           <ArtistPopularitySection popularity={artist.popularity} />
           <TopTrackSection artistTopTracks={artistTopTracks} />
