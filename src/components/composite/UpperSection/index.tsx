@@ -27,7 +27,7 @@ const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) 
     const isMobile = useIsMobile();
 
     return (
-        <div className="flex flex-row top-0 justify-between px-4 w-full ">
+        <div className="flex flex-row top-0 justify-between px-4 pt-20 w-full ">
             <p className="text-white font-bold text-xl">
                 Top
                 <span className="text-theme-green-1 font-bold text-2xl pl-1">

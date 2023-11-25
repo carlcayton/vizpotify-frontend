@@ -5,42 +5,6 @@ import { SelectedTrackContext, SelectedTrackDispatchContext } from "contexts/Sel
 import { useIsMobile } from "utils/detectScreenSize";
 import TrackDetailsPanel from "components/TopTracks/TrackDetailsPanel";
 
-// const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
-//     const isActive = selectedTrack === null && rank === 1 || track === selectedTrack;
-//     const isMobile = useIsMobile();
-
-//     return (
-//         <div className="w-full">
-//             <button
-//                 className={`flex gap-8 bg-[#192132] ${isActive ? "bg-[#374151] cursor-default" : "bg-transparent"} hover:bg-[#374151] rounded-lg items-center p-2 space-x-2 w-full`}
-//                 onClick={() => setSelectedTrack(track)}
-//             >
-//                 <p className="text-white font-bold text-base w-8">{rank}</p>
-
-//                 <div className="w-16 h-16 sm:w-24 sm:h-24 flex-shrink-0">
-//                     <img
-//                         src={track.albumImageUrl}
-//                         alt={`${track.name}`}
-//                         className="w-full h-full object-cover rounded-lg"
-//                     />
-//                 </div>
-
-//                 <div className="flex flex-col items-start overflow-hidden">
-//                     <h2 className={`text-white font-bold ${isActive ? "text-theme-green-1" : "text-white"} text-sm sm:text-base md:text-lg whitespace-nowrap overflow-ellipsis`}>
-//                         {track.name}
-//                     </h2>
-
-//                     {track.artists && (
-//                         <p className={`text-white sm:text-xs text-sm font-medium whitespace-nowrap overflow-ellipsis`}>
-//                             {track.artists.join(', ')}
-//                         </p>
-//                     )}
-//                 </div>
-//             </button>
-//             {isMobile && isActive && <TrackDetailsPanel track={track} />}
-//         </div>
-//     );
-// };
 const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
     const cardRef = useRef(null); // Ref for the card element
     const isActive = selectedTrack === track; // Check if the track is the selected track
@@ -60,7 +24,11 @@ const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
 
     const handleClick = () => {
         // Toggle the selected track, effectively opening or closing the details panel
-        setSelectedTrack(isActive ? null : track);
+        if (isMobile) {
+            setSelectedTrack(isActive ? null : track);
+        } else {
+            setSelectedTrack(track)
+        }
     };
 
     return (

@@ -19,8 +19,21 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', options);
 }
+const getDataByTimeRange = ({ analyticsData, section, timeRange }) => {
+    switch (timeRange) {
+        case "short_term":
+            return analyticsData?.[section]?.short_term || [];
+        case "medium_term":
+            return analyticsData?.[section]?.medium_term || [];
+        case "long_term":
+            return analyticsData?.[section]?.long_term || [];
+        default:
+            return [];
+    }
+}
 
 export {
     formatDuration,
-    formatDate
+    formatDate,
+    getDataByTimeRange
 }

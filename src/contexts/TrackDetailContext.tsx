@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Define your TrackDetail interface
 interface TrackDetail {
-    audioFeatures: any[]; // Define the structure more specifically based on your data
+    audioFeatures: any[];
 }
 
-// Define the state structure for TrackDetails
 interface TrackDetailsState {
     [trackId: string]: TrackDetail;
 }

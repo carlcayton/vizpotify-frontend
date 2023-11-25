@@ -75,7 +75,12 @@ const ArtistCard = ({ artist, rank, selectedArtist, setSelectedArtist }) => {
   }, [isActive]);
 
   const handleClick = () => {
-    setSelectedArtist(isActive ? null : artist);
+
+    if (isMobile) {
+      setSelectedArtist(isActive ? null : artist);
+    } else {
+      setSelectedArtist(artist)
+    }
   };
 
   return (

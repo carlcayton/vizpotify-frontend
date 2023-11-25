@@ -105,6 +105,7 @@ const SimilarArtistCard = ({ artist }) => {
         layout="responsive"
         objectFit="cover"
         alt={`${artist.name}`}
+        priority={false}
         className="rounded-lg"
       />
       <div
@@ -145,27 +146,20 @@ const ArtistDetailsPanel = () => {
   const artistDetails = useArtistDetails();
   const storeArtistDetails = useStoreArtistDetails();
 
-  // Use local state to set similar artists and top tracks if needed.
-  // This could be removed if you decide to rely solely on context.
   const [similarArtists, setSimilarArtists] = useState([]);
   const [artistTopTracks, setArtistTopTracks] = useState([]);
 
   useEffect(() => {
     if (selectedArtist) {
-      // Check if we already have details for this artist
       const details = artistDetails ? artistDetails[selectedArtist.id] : undefined;
       if (details) {
-        // If details exist in context, use them instead of fetching
         setSimilarArtists(details.relatedArtists);
         setArtistTopTracks(details.topTracks);
       } else {
-        // Fetch the extra info if not already in the context
         getArtistExtraInfo(selectedArtist.id)
           .then(data => {
-            // Update local state
             setSimilarArtists(data.artistDTOS);
             setArtistTopTracks(data.trackDTOS);
-            // Update context with the new data
             if (storeArtistDetails) {
               storeArtistDetails(selectedArtist.id, {
                 relatedArtists: data.artistDTOS,

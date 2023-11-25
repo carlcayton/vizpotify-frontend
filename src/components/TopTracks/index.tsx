@@ -6,6 +6,7 @@ import UpperSection from 'components/composite/UpperSection';
 
 import TracksSelectionList from './TrackSelectionList';
 import TrackDetailsPanel from './TrackDetailsPanel';
+import { TrackDetailsProvider } from 'contexts/TrackDetailContext';
 
 const getTracksByTimeRange = ({ userTopTracksAllTimeRange, timeRange }) => {
   switch (timeRange) {
@@ -44,13 +45,15 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
     <div ref={innerRef} className={`flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full ${classForMobile}`}>
       <UpperSection sectionType={"Tracks"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
       <div className="flex flex-row justify-center bg-[#111827] space-x-1 w-full ">
-        <SelectedTrackProvider>
-          <TracksSelectionList
-            userTopTracks={userTopTracks}
-            showMore={showMore}
-          />
-          {isMobile ? null : <TrackDetailsPanel />}
-        </SelectedTrackProvider>
+        <TrackDetailsProvider>
+          <SelectedTrackProvider>
+            <TracksSelectionList
+              userTopTracks={userTopTracks}
+              showMore={showMore}
+            />
+            {isMobile ? null : <TrackDetailsPanel />}
+          </SelectedTrackProvider>
+        </TrackDetailsProvider>
       </div>
     </div>
   );
