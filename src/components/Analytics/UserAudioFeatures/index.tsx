@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import UpperSection from 'components/composite/UpperSection';
 import BarChart from 'components/charts/BarChart';
 import { getDataByTimeRange } from 'utils/util';
 
-const UserAudioFeatures = ({ innerRef, userAudioFeaturesData }) => {
-    const [selectedTimeRange, setSelectedTimeRange] = useState("shortTerm");
+
+const AudioFeaturesData = ({ audioFeaturesData }) => {
+    console.log(audioFeaturesData)
+    const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
     const [audioFeatures, setAudioFeatures] = useState([]);
 
     useEffect(() => {
-        if (userAudioFeaturesData) {
-            const features = ({ userAudioFeaturesData, timeRange: selectedTimeRange });
-            setAudioFeatures(features);
-        }
-    }, [userAudioFeaturesData, selectedTimeRange]);
+        const features = getDataByTimeRange({ data: audioFeaturesData, timeRange: selectedTimeRange });
+        setAudioFeatures(features);
+    }, [audioFeaturesData, selectedTimeRange]);
 
+    if (!audioFeatures.length) {
+        return null;
+    }
 
-    const dataForChart = {
-        labels: audioFeatures.length > 0 ? Object.keys(audioFeatures[0]) : [],
+    const chartData = {
+        labels: Object.keys(audioFeatures[0]),
         datasets: [{
-            label: 'Audio Features',
-            data: audioFeatures.length > 0 ? Object.values(audioFeatures[0]) : [],
+            data: Object.values(audioFeatures[0])
+                .filter(value => typeof value === 'number')
+                .map(value => value * 100),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
@@ -26,11 +31,11 @@ const UserAudioFeatures = ({ innerRef, userAudioFeaturesData }) => {
     };
 
     return (
-        <div ref={innerRef} className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
-            <UpperSection sectionType={"Audio Features"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-            <BarChart data={dataForChart} />
+        <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
+            <UpperSection sectionType="Audio Features" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
+            <BarChart data={chartData} />
         </div>
     );
 };
 
-export default UserAudioFeatures;
+export default AudioFeaturesData;

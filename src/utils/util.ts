@@ -19,14 +19,14 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', options);
 }
-const getDataByTimeRange = ({ analyticsData, section, timeRange }) => {
+const getDataByTimeRange = ({ data, timeRange }) => {
     switch (timeRange) {
-        case "short_term":
-            return analyticsData?.[section]?.short_term || [];
-        case "medium_term":
-            return analyticsData?.[section]?.medium_term || [];
-        case "long_term":
-            return analyticsData?.[section]?.long_term || [];
+        case "shortTerm":
+            return data?.shortTerm || [];
+        case "mediumTerm":
+            return data?.mediumTerm || [];
+        case "longTerm":
+            return data?.longTerm || [];
         default:
             return [];
     }

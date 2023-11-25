@@ -33,7 +33,8 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
   }, [userTopTracksAllTimeRange, selectedTimeRange]);
 
   const isMobile = useIsMobile();
-  const classForMobile = isMobile ? '' : 'md:px-12 xl:px-56 ';
+  // const classForMobile = isMobile ? '' : 'md:px-12 xl:px-56 ';
+  const classForMobile = isMobile ? '' : '';
 
   const [showMore, setShowMore] = useState({
     isExpanded: false,
@@ -43,7 +44,7 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
 
   return (
     <div ref={innerRef} className={`flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full ${classForMobile}`}>
-      <UpperSection sectionType={"Tracks"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
+      <UpperSection sectionType={"Top Tracks"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
       <div className="flex flex-row justify-center bg-[#111827] space-x-1 w-full ">
         <TrackDetailsProvider>
           <SelectedTrackProvider>
