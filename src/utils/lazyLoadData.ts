@@ -15,12 +15,11 @@ const useLazyLoadData = (fetchFunction, ref) => {
                     if (entry.isIntersecting) {
                         const responseData = await fetchFunction('');
                         setData(responseData);
-                        // Disconnect the observer after fetching the data once
                         observer.disconnect();
                     }
                 }
             },
-            { threshold: 0.1 }
+            { threshold: 0.50 }
         );
 
         if (ref.current) {

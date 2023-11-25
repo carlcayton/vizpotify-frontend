@@ -19,7 +19,7 @@ ChartJS.register(
 );
 const BarChart = ({ data }) => {
     const options = {
-        indexAxis: 'y', // Set the index axis to 'y' for horizontal bar chart
+        indexAxis: 'y',
         responsive: true,
         scales: {
             y: {
@@ -39,9 +39,18 @@ const BarChart = ({ data }) => {
                     }
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.1)' // Optional: Adjust grid line color
+                    color: 'rgba(255, 255, 255, 0.1)'
                 }
             }
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+        },
+        animation: {
+            duration: 5000,
+            easing: 'easeOutCubic',
         },
 
     };
