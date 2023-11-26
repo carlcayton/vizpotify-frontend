@@ -23,7 +23,7 @@ const PercentageBarChart = ({ data }) => {
                     color: 'white'
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.1)'
+                    // color: 'rgba(255, 255, 255, 0.1)'
                 }
             }
         },
@@ -41,10 +41,13 @@ const PercentageBarChart = ({ data }) => {
         }
     };
 
-    return <Bar data={data} options={options} />;
+    return (
+        <div className="flex justify-center items-center h-full w-full ">
+           <Bar data={data} options={options} />;
+        </div>
+    )
 };
 
-// VerticalBarChart Component
 const VerticalBarChart = ({ data }) => {
     const options = {
         indexAxis: 'x',
@@ -52,8 +55,11 @@ const VerticalBarChart = ({ data }) => {
         scales: {
             x: {
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                }
+                    // color: 'rgba(255, 255, 255, 0.1)'
+                },
+                ticks: {
+                    color: 'white'
+                },
             },
             y: {
                 beginAtZero: true,
@@ -71,7 +77,12 @@ const VerticalBarChart = ({ data }) => {
             },
             datalabels: {
                 display: false
-            }
+            },
+            title: {
+                display: true,
+                text: data.title,
+                color: 'white'
+            },
         },
         animation: {
             duration: 500,
@@ -79,7 +90,11 @@ const VerticalBarChart = ({ data }) => {
         }
     };
 
-    return <Bar data={data} options={options} />;
+    return (
+        <div className="flex justify-center items-center h-full w-full ">
+            <Bar data={data} options={options} />;
+        </div>
+    )
 };
 
 export { PercentageBarChart, VerticalBarChart };

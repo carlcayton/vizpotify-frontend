@@ -6,8 +6,6 @@ import GenreDistribution from './UserGenreDisitribution';
 // import UserMusicEraSummary from './UserMusicEraSummary';
 
 const Analytics = ({ innerRef, userAnalyticsData }) => {
-    // 
-    // Extract data for each component based on the selected time range
     const audioFeaturesData = userAnalyticsData?.audio_features;
     const genreDistributionData = userAnalyticsData?.genre_distribution;
     const musicEraSummaryData = userAnalyticsData?.music_era_summary;

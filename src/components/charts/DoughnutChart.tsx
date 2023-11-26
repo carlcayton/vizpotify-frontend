@@ -27,10 +27,13 @@ const DoughnutChart = ({ data }) => {
         plugins: {
             legend: {
                 position: 'top',
+                color: 'white'
             },
             title: {
                 display: true,
-                text: 'Genre Distribution'
+                text: data.title,
+                color: 'white',
+                size: 32
             },
             datalabels: {
                 display: true,
@@ -42,7 +45,6 @@ const DoughnutChart = ({ data }) => {
         },
     };
 
-    // Use the hardcoded hex colors
     const backgroundColors = colors.slice(0, data.datasets[0].data.length);
     const chartData = {
         labels: data.labels,
@@ -57,7 +59,7 @@ const DoughnutChart = ({ data }) => {
     };
 
     return (
-        <div className="flex justify-center items-center h-1/2 w-full sm:w-1/2">
+        <div className="flex h-full w-full">
             <Doughnut data={chartData} options={options} />
         </div>
     );

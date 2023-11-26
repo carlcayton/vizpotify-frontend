@@ -19,6 +19,9 @@ const RadarChart = ({ data }) => {
                 },
                 pointLabels: {
                     color: 'white',
+                    font: {
+                        size: 14
+                    }
                 }
             },
         },
@@ -32,7 +35,7 @@ const RadarChart = ({ data }) => {
         },
     };
     return (
-        <div className="h-1/2 w-full sm:w-1/2">
+        <div className="h-full w-full">
             <Radar data={data} options={options} />
         </div>
     );

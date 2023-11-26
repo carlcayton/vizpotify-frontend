@@ -42,7 +42,7 @@ const LazyLoadedChart = ({ data, chartType }) => {
     };
 
     return (
-        <div ref={chartRef} className='h-full w-full'>
+        <div ref={chartRef} className='h-full w-full '>
             {isVisible ? renderChart() : <div>Loading chart...</div>}
         </div>
     );
