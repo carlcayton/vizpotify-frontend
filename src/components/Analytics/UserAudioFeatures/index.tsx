@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import UpperSection from 'components/composite/UpperSection';
-import BarChart from 'components/charts/BarChart';
-import RadarChart from 'components/charts/RadarChart';
 import { getDataByTimeRange } from 'utils/util';
-
+import LazyLoadedChart from 'components/charts/LazyLoadedChart'; // Import LazyLoadedChart
 
 const AudioFeaturesData = ({ audioFeaturesData }) => {
-    console.log(audioFeaturesData)
     const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
     const [audioFeatures, setAudioFeatures] = useState([]);
 
@@ -22,7 +19,7 @@ const AudioFeaturesData = ({ audioFeaturesData }) => {
     const chartData = {
         labels: Object.keys(audioFeatures[0]),
         datasets: [{
-            label: '',
+            label: 'Percentage',
             data: Object.values(audioFeatures[0])
                 .filter(value => typeof value === 'number')
                 .map(value => value * 100),
@@ -35,9 +32,9 @@ const AudioFeaturesData = ({ audioFeaturesData }) => {
     return (
         <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
             <UpperSection sectionType="Audio Features" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-            <BarChart data={chartData} />
+            <LazyLoadedChart data={chartData} chartType="percentage" />
             <UpperSection sectionType="Audio Features Radar" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-            <RadarChart data={chartData} />
+            <LazyLoadedChart data={chartData} chartType="radar" />
         </div>
     );
 };

@@ -1,42 +1,26 @@
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    BarController,
-    Tooltip,
-} from 'chart.js';
-
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-// Register ChartJS components using ChartJS.register
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    BarController,
-    Tooltip,
-);
-const BarChart = ({ data }) => {
+
+
+const PercentageBarChart = ({ data }) => {
     const options = {
         indexAxis: 'y',
         responsive: true,
         scales: {
-            y: {
-                ticks: {
-                    color: 'white', // Set y-axis tick color to white
-                },
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.1)' // Optional: Adjust grid line color
-                }
-            },
             x: {
                 beginAtZero: true,
-                max: 100,
                 ticks: {
-                    color: 'white', // Set x-axis tick color to white
-                    font: {
-                    }
+                    color: 'white',
+                    callback: (value) => `${value}%`,
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                }
+            },
+            y: {
+                ticks: {
+                    color: 'white'
                 },
                 grid: {
                     color: 'rgba(255, 255, 255, 0.1)'
@@ -47,17 +31,55 @@ const BarChart = ({ data }) => {
             legend: {
                 display: false
             },
+            datalabels: {
+                display: false
+            }
         },
         animation: {
-            duration: 5000,
+            duration: 1500,
             easing: 'easeOutCubic',
-        },
-
+        }
     };
 
-    return (
-        <Bar data={data} options={options} />
-    );
+    return <Bar data={data} options={options} />;
 };
 
-export default BarChart;
+// VerticalBarChart Component
+const VerticalBarChart = ({ data }) => {
+    const options = {
+        indexAxis: 'x',
+        responsive: true,
+        scales: {
+            x: {
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'white'
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+            datalabels: {
+                display: false
+            }
+        },
+        animation: {
+            duration: 500,
+            easing: 'easeOutCubic',
+        }
+    };
+
+    return <Bar data={data} options={options} />;
+};
+
+export { PercentageBarChart, VerticalBarChart };
