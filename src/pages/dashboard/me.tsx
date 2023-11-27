@@ -26,7 +26,7 @@ export default function Dashboard() {
       <div className={`flex flex-col  justify-center w-full px-10 bg-[#111827] sm:px-32 md:px-64 `}>
         <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />
         <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} />
-        {/* <Analytics innerRef={analyticsRef} userAnalyticsData={analyticsData} /> */}
+        <Analytics innerRef={analyticsRef} userAnalyticsData={analyticsData} />
       </div>
     </div>
   );

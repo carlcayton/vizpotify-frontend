@@ -12,7 +12,7 @@ import ProgressBar from "components/base/ProgressBar";
 const GenreItem = ({ genre }) => {
   return (
     <div className="bg-[#484E5B] rounded-full border px-2 pb-1.5 text-white font-bold text-xs sm:text-sm md:text-base">
-      {genre.name}
+      {genre}
     </div>
   );
 };
