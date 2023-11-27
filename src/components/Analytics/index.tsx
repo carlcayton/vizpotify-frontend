@@ -3,7 +3,7 @@ import { useAnalyticsData } from 'contexts/AnalyticsContext';
 import UserAudioFeatures from './UserAudioFeatures';
 import BarChart from 'components/charts/BarChart';
 import GenreDistribution from './UserGenreDisitribution';
-// import UserMusicEraSummary from './UserMusicEraSummary';
+import UserMusicEraSummary from './UserMusicEraSummary';
 
 const Analytics = ({ innerRef, userAnalyticsData }) => {
     const audioFeaturesData = userAnalyticsData?.audio_features;
@@ -14,6 +14,7 @@ const Analytics = ({ innerRef, userAnalyticsData }) => {
         <div ref={innerRef} className="flex flex-col w-full">
             <UserAudioFeatures audioFeaturesData={audioFeaturesData} />
             <GenreDistribution genreDistributionData={genreDistributionData} />
+            <UserMusicEraSummary userMusicEraData={musicEraSummaryData} />
         </div>
     );
 };

@@ -24,11 +24,6 @@ const PercentageBarChart = ({ data }) => {
                     format: {
                         style: 'percent'
                     },
-
-                    // callback: function(value, index, ticks) {
-                    //     return '$' + value;
-                    // }
-
                 },
                 grid: {
                     // color: 'rgba(255, 255, 255, 0.1)'
