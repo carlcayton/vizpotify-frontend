@@ -59,8 +59,10 @@ const DoughnutChart = ({ data }) => {
     };
 
     return (
-        <div className="flex h-full w-full">
-            <Doughnut data={chartData} options={options} />
+        <div className="flex justify-center items-center">
+            <div className="xl:w-1/2">
+                <Doughnut data={chartData} options={options} />
+            </div>
         </div>
     );
 };

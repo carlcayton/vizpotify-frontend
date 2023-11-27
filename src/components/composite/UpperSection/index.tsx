@@ -22,12 +22,12 @@ const TimeRangeButton = ({ selectedTimeRange, setSelectedTimeRange, timeRange })
         </button>
     )
 }
-const UpperSection = ({ sectionType, selectedTimeRange, setSelectedTimeRange }) => {
+const UpperSection = ({ customTWClass, sectionType, selectedTimeRange, setSelectedTimeRange }) => {
     const timeRanges = ["shortTerm", "mediumTerm", "longTerm"];
     const isMobile = useIsMobile();
 
     return (
-        <div className="flex flex-row top-0 justify-between pt-20 w-full ">
+        <div className={`${customTWClass} flex flex-row top-0 justify-between pt-20 w-full`}>
             <p className="text-white font-bold text-xl">
                 <span className="text-theme-green-1 font-bold text-2xl pl-1">
                     {sectionType}

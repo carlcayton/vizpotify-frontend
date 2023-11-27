@@ -32,10 +32,9 @@ const AudioFeaturesData = ({ audioFeaturesData }) => {
     return (
         <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
             <UpperSection sectionType="Audio Features" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-            <div className='flex flex-col xl:flex-row w-full h-full items-center'>
-                <LazyLoadedChart data={chartData} chartType="percentage" />
-                <LazyLoadedChart data={chartData} chartType="radar" />
-            </div>
+            <LazyLoadedChart data={chartData} chartType="percentage" />
+            <UpperSection customTWClass={"hidden xl:flex"} sectionType="Audio Features" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
+            <LazyLoadedChart data={chartData} chartType="radar" />
         </div>
     );
 };

@@ -5,6 +5,7 @@ const RadarChart = ({ data }) => {
     const options = {
 
         responsive: true,
+        maintainAspectRatio: true,
         scales: {
             r: {
                 angleLines: {
@@ -35,9 +36,12 @@ const RadarChart = ({ data }) => {
         },
     };
     return (
-        <div className="h-full w-full">
-            <Radar data={data} options={options} />
+        <div className="flex justify-center items-center">
+            <div className="xl:w-1/2">
+                <Radar data={data} options={options} />
+            </div>
         </div>
+
     );
 };
 

@@ -20,19 +20,40 @@ const PercentageBarChart = ({ data }) => {
             },
             y: {
                 ticks: {
-                    color: 'white'
+                    color: 'white',
+                    format: {
+                        style: 'percent'
+                    },
+
+                    // callback: function(value, index, ticks) {
+                    //     return '$' + value;
+                    // }
+
                 },
                 grid: {
                     // color: 'rgba(255, 255, 255, 0.1)'
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: "Percentage"
                 }
-            }
+
+            },
+
         },
         plugins: {
             legend: {
                 display: false
             },
             datalabels: {
-                display: false
+                display: true,
+                align: 'right',
+                formatter: function (value) {
+                    return Math.round(value) + "%";
+                    // eq. return ['line1', 'line2', value]
+                },
+                color: 'white',
+
             }
         },
         animation: {
@@ -43,7 +64,7 @@ const PercentageBarChart = ({ data }) => {
 
     return (
         <div className="flex justify-center items-center h-full w-full ">
-           <Bar data={data} options={options} />;
+            <Bar data={data} options={options} />;
         </div>
     )
 };
