@@ -21,6 +21,7 @@ const getArtistExtraInfo = async (artistId) => {
     let endpoint = `http://localhost:8080/api/v1/artist/${artistId}`
     try {
         const response = await axios.get(endpoint)
+        
         return response.data
     } catch (error) {
         console.log("Error fetching data for Artist Top Tracks and Artist Related Artists", error)
@@ -31,6 +32,7 @@ const getTrackAudioFeature = async (trackId) => {
     let endpoint = `http://localhost:8080/api/v1/track/audiofeature/${trackId}`
     try {
         const response = await axios.get(endpoint)
+        
         return response.data
     } catch (error) {
         console.log("Error fetching track's audio features")
@@ -44,6 +46,7 @@ const fetchData = async (spotifyId, dataType) => {
         const response = await axios.get(endpoint, {
             withCredentials: spotifyId === "" ? true : false
         });
+        console.log(response.data)
         return response.data;
     } catch (error) {
         console.error(`Error fetching data for ${dataType}:`, error);

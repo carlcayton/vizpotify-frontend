@@ -1,8 +1,10 @@
 import { useEffect, useState, useContext, createContext } from "react";
 import { SelectedArtistProvider } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
+import { getDataByTimeRange } from "utils/util";
 import UpperSection from "components/composite/UpperSection"
 import { ArtistDetailsProvider } from "contexts/ArtistDetailsContext";
+
 
 import ArtistsSelectionList from "./ArtistsSelectionList";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
@@ -25,16 +27,6 @@ const ShowMoreButton = ({ showMore, setShowMore }) => {
   );
 };
 
-const getArtistsByTimeRange = ({ userTopArtistsAllTimeRange, timeRange }) => {
-  switch (timeRange) {
-    case "shortTerm":
-      return userTopArtistsAllTimeRange?.shortTerm;
-    case "mediumTerm":
-      return userTopArtistsAllTimeRange?.mediumTerm;
-    case "longTerm":
-      return userTopArtistsAllTimeRange?.longTerm;
-  }
-}
 const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
 
   const [selectedTimeRange, setSelectedTimeRange] = useState<string>("shortTerm");
@@ -48,10 +40,10 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
 
   useEffect(() => {
     if (userTopArtistsAllTimeRange) {
-      const artists = getArtistsByTimeRange({ userTopArtistsAllTimeRange, timeRange: selectedTimeRange });
+      const artists = getDataByTimeRange({ data: userTopArtistsAllTimeRange, timeRange: selectedTimeRange });
       setUserTopArtists(artists);
     }
-  }, [userTopArtistsAllTimeRange, selectedTimeRange,]);
+  }, [userTopArtistsAllTimeRange, selectedTimeRange]);
 
   const isMobile = useIsMobile()
   return (

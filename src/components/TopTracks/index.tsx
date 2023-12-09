@@ -3,23 +3,13 @@ import React, { useEffect, useState, createContext } from 'react';
 import { useIsMobile } from 'utils/detectScreenSize';
 import { SelectedTrackProvider } from 'contexts/SelectedTrackContext';
 import UpperSection from 'components/composite/UpperSection';
+import { getDataByTimeRange } from 'utils/util';
 
 import TracksSelectionList from './TrackSelectionList';
 import TrackDetailsPanel from './TrackDetailsPanel';
 import { TrackDetailsProvider } from 'contexts/TrackDetailContext';
 
-const getTracksByTimeRange = ({ userTopTracksAllTimeRange, timeRange }) => {
-  switch (timeRange) {
-    case "shortTerm":
-      return userTopTracksAllTimeRange?.shortTerm;
-    case "mediumTerm":
-      return userTopTracksAllTimeRange?.mediumTerm;
-    case "longTerm":
-      return userTopTracksAllTimeRange?.longTerm;
-    default:
-      return [];
-  }
-}
+
 
 const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState("shortTerm");
@@ -27,7 +17,7 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
 
   useEffect(() => {
     if (userTopTracksAllTimeRange) {
-      const tracks = getTracksByTimeRange({ userTopTracksAllTimeRange, timeRange: selectedTimeRange });
+      const tracks = getDataByTimeRange({ data: userTopTracksAllTimeRange, timeRange: selectedTimeRange });
       setUserTopTracks(tracks);
     }
   }, [userTopTracksAllTimeRange, selectedTimeRange]);

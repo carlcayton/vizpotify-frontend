@@ -34,6 +34,18 @@ const getDataByTimeRange = ({ data, timeRange }) => {
             return [];
     }
 }
+const getDataByTimeRange2 = ({ data, timeRange }) => {
+    switch (timeRange) {
+        case "short_term":
+            return data?.shortTerm || [];
+        case "medium_term":
+            return data?.mediumTerm || [];
+        case "long_term":
+            return data?.longTerm || [];
+        default:
+            return [];
+    }
+}
 
 export {
     formatDuration,
