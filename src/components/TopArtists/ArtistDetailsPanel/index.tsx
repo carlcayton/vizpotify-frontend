@@ -179,7 +179,7 @@ const ArtistDetailsPanel = () => {
       {selectedArtist ? (
         <div
           className={` border sticky sm:border-none  
-        flex-col px-1 md:px-6 py-6 space-y-4   top-0 w-full bg-[#1B2539] w-full`}
+        flex-col px-1 md:px-6 py-6 space-y-4 rounded-lg top-0 w-full bg-[#1B2539] w-full`}
         >
           <p className="text-3xl text-white font-bold">{artist.name}</p>
           <ArtistGenresSection genres={artist.genres} />

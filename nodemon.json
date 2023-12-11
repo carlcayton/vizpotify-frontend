@@ -1,0 +1,13 @@
+{
+    "watch": [
+        "pages",
+        "components",
+        "utils",
+        "styles"
+    ],
+    "ext": "js,jsx,ts,tsx,json",
+    "ignore": [
+        "node_modules"
+    ],
+    "exec": "next"
+}

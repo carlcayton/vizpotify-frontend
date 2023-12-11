@@ -13,7 +13,7 @@ const ShowMoreButton = ({ showMore, setShowMore }) => {
   const handleShowMore = () => {
     setShowMore((prevState) => ({
       isExpanded: !showMore.isExpanded,
-      itemsToShow: !showMore.isExpanded ? showMore.totalItems : 4,
+      itemsToShow: !showMore.isExpanded ? showMore.totalItems : 10,
       totalItems: showMore.totalItems,
     }));
   };
@@ -35,7 +35,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
   const [showMore, setShowMore] = useState({
     isExpanded: false,
     itemsToShow: 10,
-    totalItems: 0,
+    totalItems: userTopArtists.length,
   });
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
         </SelectedArtistProvider>
       </ArtistDetailsProvider>
 
-      {/* <ShowMoreButton showMore={showMore} setShowMore={setShowMore} /> */}
+      <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />
     </div>
   );
 };

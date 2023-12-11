@@ -6,19 +6,45 @@ import { getProviders, signIn } from "next-auth/react";
 
 import NavBar from "components/composite/NavBar";
 
+import axios from 'axios';
+
+export async function getServerSideProps(context) {
+  try {
+
+    const response = await axios.get('http://localhost:8080/api/v1/auth/status', {
+      withCredentials: true,
+      headers: {
+        Cookie: context.req.headers.cookie,
+      },
+    });
+    if (response.data) {
+      return {
+        redirect: {
+          destination: '/dashboard/me',
+          permanent: false,
+        },
+      };
+    }
+  } catch (error) {
+    console.error('Authentication check failed', error);
+  }
+
+  return { props: {} };
+}
+
 
 const LandingPage = () => {
 
   const [hoveredCard, setHoveredCard] = useState(0);
 
   const cardsInfo = [
-    {
-      src: "/LandingPage/Logo/gear_logo.svg",
-      title: "Modify",
-      desc: "Browse your statistics according to your liking",
-      illuSrc: "/LandingPage/Illustration/Sort.svg",
-      isHovered: false,
-    },
+    // {
+    //   src: "/LandingPage/Logo/gear_logo.svg",
+    //   title: "Modify",
+    //   desc: "Browse your statistics according to your liking",
+    //   illuSrc: "/LandingPage/Illustration/Sort.svg",
+    //   isHovered: false,
+    // },
 
     {
       src: "/LandingPage/Logo/share_logo.svg",
@@ -112,7 +138,6 @@ const LandingPage = () => {
             <p className="text-white text-xl font-semibold">
               Ready to start exploring?
             </p>
-            {/* <LoginButton authUrl={AUTH_URL} /> */}
           </div>
         </div>
       </div>
