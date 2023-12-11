@@ -6,12 +6,11 @@ import { useIsMobile } from "utils/detectScreenSize";
 import TrackDetailsPanel from "components/TopTracks/TrackDetailsPanel";
 
 const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
-    const cardRef = useRef(null); // Ref for the card element
-    const isActive = selectedTrack === track; // Check if the track is the selected track
-    const [isOpen, setIsOpen] = useState(isActive); // State for the details panel visibility
-    const isMobile = useIsMobile(); // Check for mobile screen size
+    const cardRef = useRef(null);
+    const isActive = selectedTrack === track;
+    const [isOpen, setIsOpen] = useState(isActive);
+    const isMobile = useIsMobile();
 
-    // Effect for scrolling into view and toggling the details panel
     useEffect(() => {
         if (isActive && cardRef.current) {
             cardRef.current.scrollIntoView({
@@ -19,11 +18,10 @@ const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
                 block: 'nearest'
             });
         }
-        setIsOpen(isActive); // Set isOpen to the value of isActive
+        setIsOpen(isActive);
     }, [isActive]);
 
     const handleClick = () => {
-        // Toggle the selected track, effectively opening or closing the details panel
         if (isMobile) {
             setSelectedTrack(isActive ? null : track);
         } else {
@@ -46,9 +44,10 @@ const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
                     />
                 </div>
                 <div className="flex flex-col items-start overflow-hidden w-full">
-                    <h2 className={`text-white font-bold ${isActive ? "text-theme-green-1" : "text-white"} text-sm sm:text-base md:text-lg whitespace-nowrap overflow-ellipsis`}>
-                        {track.name}
+                    <h2 className={`text-white font-bold ${isActive ? "text-theme-green-1" : "text-white"} text-sm sm:text-base md:text-lg whitespace-nowrap truncate`}>
+                        {track.name.length > 35 ? `${track.name.slice(0, 35)}...` : track.name}
                     </h2>
+
 
                     {track.artists && (
                         <p className={`text-white sm:text-xs text-sm font-medium whitespace-nowrap overflow-ellipsis`}>
@@ -62,7 +61,6 @@ const TrackCard = ({ track, rank, selectedTrack, setSelectedTrack }) => {
             </button>
             {isMobile && isOpen && (
                 <div className="w-full animated-collapse-2">
-                    {/* Replace with your actual details panel for the track */}
                     <TrackDetailsPanel track={track} />
                 </div>
             )}

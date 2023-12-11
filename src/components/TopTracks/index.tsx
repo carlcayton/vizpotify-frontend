@@ -8,8 +8,7 @@ import { getDataByTimeRange } from 'utils/util';
 import TracksSelectionList from './TrackSelectionList';
 import TrackDetailsPanel from './TrackDetailsPanel';
 import { TrackDetailsProvider } from 'contexts/TrackDetailContext';
-
-
+import ShowMoreButton from 'components/base/ShowMoreButton';
 
 const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState("shortTerm");
@@ -29,7 +28,7 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
   const [showMore, setShowMore] = useState({
     isExpanded: false,
     itemsToShow: 10,
-    totalItems: 0,
+    totalItems: 50,
   });
 
   return (
@@ -46,6 +45,7 @@ const TopTracks = ({ innerRef, userTopTracksAllTimeRange }) => {
           </SelectedTrackProvider>
         </TrackDetailsProvider>
       </div>
+      <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />
     </div>
   );
 };

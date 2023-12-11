@@ -4,28 +4,28 @@ import { useIsMobile } from "utils/detectScreenSize"
 import { getDataByTimeRange } from "utils/util";
 import UpperSection from "components/composite/UpperSection"
 import { ArtistDetailsProvider } from "contexts/ArtistDetailsContext";
-
+import ShowMoreButton from "components/base/ShowMoreButton";
 
 import ArtistsSelectionList from "./ArtistsSelectionList";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
 
-const ShowMoreButton = ({ showMore, setShowMore }) => {
-  const handleShowMore = () => {
-    setShowMore((prevState) => ({
-      isExpanded: !showMore.isExpanded,
-      itemsToShow: !showMore.isExpanded ? showMore.totalItems : 10,
-      totalItems: showMore.totalItems,
-    }));
-  };
-  return (
-    <button
-      className="px-3 pb-1 flex text-white text-sm items-center mt-5 rounded-full ease-in-out hover:translate-y-1 transition-all group border border-white"
-      onClick={handleShowMore}
-    >
-      {showMore.isExpanded ? "Show Less" : "Show More"}
-    </button>
-  );
-};
+// const ShowMoreButton = ({ showMore, setShowMore }) => {
+//   const handleShowMore = () => {
+//     setShowMore((prevState) => ({
+//       isExpanded: !showMore.isExpanded,
+//       itemsToShow: !showMore.isExpanded ? showMore.totalItems : 10,
+//       totalItems: showMore.totalItems,
+//     }));
+//   };
+//   return (
+//     <button
+//       className="px-3 pb-1 flex text-white text-sm items-center mt-5 rounded-full ease-in-out hover:translate-y-1 transition-all group border border-white"
+//       onClick={handleShowMore}
+//     >
+//       {showMore.isExpanded ? "Show Less" : "Show More"}
+//     </button>
+//   );
+// };
 
 const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
 
@@ -35,7 +35,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
   const [showMore, setShowMore] = useState({
     isExpanded: false,
     itemsToShow: 10,
-    totalItems: userTopArtists.length,
+    totalItems: 50,
   });
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
       const artists = getDataByTimeRange({ data: userTopArtistsAllTimeRange, timeRange: selectedTimeRange });
       setUserTopArtists(artists);
     }
-  }, [userTopArtistsAllTimeRange, selectedTimeRange]);
+  }, [userTopArtistsAllTimeRange, selectedTimeRange, userTopArtists]);
 
   const isMobile = useIsMobile()
   return (
