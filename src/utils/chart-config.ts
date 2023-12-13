@@ -1,3 +1,4 @@
+
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {
@@ -10,15 +11,17 @@ import {
     ArcElement,
     Legend
 } from 'chart.js';
-Chart.register(
+import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
+ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
     BarController,
     Tooltip,
-
     ArcElement,
     Legend,
-
+    TreemapController,
+    TreemapElement,
     ChartDataLabels
 );
+

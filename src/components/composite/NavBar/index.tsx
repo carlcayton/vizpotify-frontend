@@ -5,10 +5,11 @@ const NavBar = () => {
   return (
     <nav className="bg-theme-green">
       <div className="flex justify-between lg:px-40 sm:px-14 py-1.5">
-        {/* <Link href="http://localhost:3000"> */}
-        <a className="flex items-center">
-          <p className="text-2xl text-theme-black font-bold">Vizpotify</p>
-        </a>
+        <Link href="/">
+          <a className="flex items-center">
+            <p className="text-2xl text-theme-black font-bold">Vizpotify</p>
+          </a>
+        </Link>
       </div>
     </nav>
   );

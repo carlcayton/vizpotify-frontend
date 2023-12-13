@@ -12,9 +12,6 @@ const GenreDistributionData = ({ genreDistributionData }) => {
         setGenreDistribution(distribution);
     }, [genreDistributionData, selectedTimeRange]);
 
-    if (!genreDistribution.length) {
-        return <div>Loading or Placeholder Content</div>;
-    }
 
     const percentageChartData = {
         labels: genreDistribution.map(item => item.genre),

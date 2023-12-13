@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "chart.js": "^4.4.0",
+    "chartjs-chart-treemap": "^2.3.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

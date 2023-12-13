@@ -92,7 +92,7 @@ const VerticalBarChart = ({ data }) => {
                 display: false
             },
             datalabels: {
-                display: false
+                display: true,
             },
             title: {
                 display: true,

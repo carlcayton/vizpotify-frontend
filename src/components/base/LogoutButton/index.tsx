@@ -1,14 +1,12 @@
 
 const signOut = async () => {
   try {
-    // Call the logout endpoint
     const response = await fetch('http://localhost:8080/api/v1/auth/logout', {
       method: 'POST',
-      credentials: 'include', // Include credentials for cookie-based authentication
+      credentials: 'include',
     });
 
     if (response.ok) {
-      // Redirect to the home page
       window.location.href = 'http://localhost:3000';
     } else {
       console.error('Logout failed:', response.status, response.statusText);

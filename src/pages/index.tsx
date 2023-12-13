@@ -8,19 +8,21 @@ import NavBar from "components/composite/NavBar";
 
 import axios from 'axios';
 
+
 export async function getServerSideProps(context) {
   try {
-
     const response = await axios.get('http://localhost:8080/api/v1/auth/status', {
       withCredentials: true,
       headers: {
         Cookie: context.req.headers.cookie,
       },
     });
-    if (response.data) {
+
+    const { isAuthenticated, spotifyId } = response.data;
+    if (isAuthenticated) {
       return {
         redirect: {
-          destination: '/dashboard/me',
+          destination: `/dashboard/${spotifyId}`,
           permanent: false,
         },
       };
@@ -92,9 +94,6 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {/**
-         * Second
-         */}
         <div
           className={`${tailwindForDivs} bg-theme-green lg:pl-64 xl:pl-50 2xl:pl-80 py-10 `}
         >
@@ -130,9 +129,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-        {/**
-         * Third
-         */}
+       
         <div className={`${tailwindForDivs} bg-theme-black justify-center`}>
           <div className="bg-[#374151] p-10 flex flex-row justify-around gap-10 items-center rounded-xl">
             <p className="text-white text-xl font-semibold">

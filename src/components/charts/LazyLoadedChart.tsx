@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PercentageBarChart, VerticalBarChart } from './BarChart';
 import RadarChart from './RadarChart';
 import DoughnutChart from './DoughnutChart';
+import TreeMap from './TreeMap';
 
 const LazyLoadedChart = ({ data, chartType }) => {
     const [isVisible, setIsVisible] = useState(false);
@@ -36,6 +37,8 @@ const LazyLoadedChart = ({ data, chartType }) => {
                 return <RadarChart data={data} />;
             case 'doughnut':
                 return <DoughnutChart data={data} />;
+            case 'tree':
+                return <TreeMap treeData={data} />;
             default:
                 return <div>Chart type not supported</div>;
         }

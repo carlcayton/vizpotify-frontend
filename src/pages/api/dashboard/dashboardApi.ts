@@ -42,6 +42,9 @@ const fetchData = async (spotifyId, dataType) => {
         const response = await axios.get(endpoint, {
             withCredentials: !spotifyId
         });
+        if (dataType === "analytics") {
+            console.log(response.data)
+        }
         return response.data;
     } catch (error) {
         console.error(`Error fetching data for ${dataType}:`, error);

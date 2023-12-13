@@ -4,7 +4,6 @@ const useLazyLoadData = (fetchFunction, ref) => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        // If data is already loaded, don't set up the observer again
         if (data) {
             return;
         }
@@ -13,7 +12,7 @@ const useLazyLoadData = (fetchFunction, ref) => {
             async (entries) => {
                 for (const entry of entries) {
                     if (entry.isIntersecting) {
-                        const responseData = await fetchFunction('');
+                        const responseData = await fetchFunction();
                         setData(responseData);
                         observer.disconnect();
                     }

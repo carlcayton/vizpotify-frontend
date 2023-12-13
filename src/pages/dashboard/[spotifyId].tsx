@@ -13,27 +13,30 @@ import {
 } from "../api/dashboard/dashboardApi";
 import useLazyLoadData from "../../utils/lazyLoadData";
 import { useIsMobile } from "utils/detectScreenSize";
+import NavBar from 'components/composite/NavBar';
 
 
 
 
 export default function Dashboard() {
   const isMobile = useIsMobile();
-
+  const router = useRouter()
+  const { spotifyId } = router.query;
   const profileHeaderRef = useRef(null);
   const userTopArtistsRef = useRef(null);
   const userTopTracksRef = useRef(null);
   const analyticsRef = useRef(null);
 
-  const profileHeaderData = useLazyLoadData(getProfileHeaderData, profileHeaderRef);
-  const userTopArtists = useLazyLoadData(getUserTopArtist, userTopArtistsRef);
-  const userTopTracks = useLazyLoadData(getUserTopTrack, userTopTracksRef);
-  const analyticsData = useLazyLoadData(getUserAnalyticsData, analyticsRef);
+  const profileHeaderData = useLazyLoadData(() => getProfileHeaderData(spotifyId), profileHeaderRef);
+  const userTopArtists = useLazyLoadData(() => getUserTopArtist(spotifyId), userTopArtistsRef);
+  const userTopTracks = useLazyLoadData(() => getUserTopTrack(spotifyId), userTopTracksRef);
+  const analyticsData = useLazyLoadData(() => getUserAnalyticsData(spotifyId), analyticsRef);
 
   // Removed redundant client-side token check
 
   return (
     <div className="flex flex-col justify-center w-full">
+      <NavBar />
       <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData} />
       <div className={`flex flex-col justify-center w-full px-10 bg-[#111827] ${isMobile ? 'sm:px-32' : 'md:px-64'}`}>
         <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />
