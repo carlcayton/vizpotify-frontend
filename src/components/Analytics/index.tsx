@@ -9,7 +9,6 @@ const Analytics = ({ innerRef, userAnalyticsData }) => {
     const audioFeaturesData = userAnalyticsData?.audio_features;
     const genreDistributionData = userAnalyticsData?.genre_distribution;
     const musicEraSummaryData = userAnalyticsData?.music_era_summary;
-    // const artistTrackCountData = userAnalyticsData?.artist_track_count;
 
     return (
         <div ref={innerRef} className="flex flex-col w-full">

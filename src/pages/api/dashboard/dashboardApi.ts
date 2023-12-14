@@ -37,10 +37,11 @@ const getTrackAudioFeature = async (trackId) => {
 };
 
 const fetchData = async (spotifyId, dataType) => {
+    console.log(spotifyId)
     let endpoint = createBaseEndpoint(spotifyId, dataType);
     try {
         const response = await axios.get(endpoint, {
-            withCredentials: !spotifyId
+            // withCredentials: !spotifyId
         });
         if (dataType === "analytics") {
             console.log(response.data)

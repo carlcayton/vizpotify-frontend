@@ -14,7 +14,7 @@ import {
 import useLazyLoadData from "../../utils/lazyLoadData";
 import { useIsMobile } from "utils/detectScreenSize";
 import NavBar from 'components/composite/NavBar';
-
+import CommentSection from 'components/CommentSection';
 
 
 
@@ -32,8 +32,6 @@ export default function Dashboard() {
   const userTopTracks = useLazyLoadData(() => getUserTopTrack(spotifyId), userTopTracksRef);
   const analyticsData = useLazyLoadData(() => getUserAnalyticsData(spotifyId), analyticsRef);
 
-  // Removed redundant client-side token check
-
   return (
     <div className="flex flex-col justify-center w-full">
       <NavBar />
@@ -42,6 +40,7 @@ export default function Dashboard() {
         <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />
         <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} />
         <Analytics innerRef={analyticsRef} userAnalyticsData={analyticsData} />
+        <CommentSection onCommentSubmit={() => null} />
       </div>
     </div>
   );

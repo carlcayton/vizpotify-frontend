@@ -10,12 +10,17 @@
     "dev:watch": "nodemon"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
+    "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-slot": "^1.0.2",
     "axios": "^0.27.2",
     "chart.js": "^4.4.0",
     "chartjs-chart-treemap": "^2.3.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.293.0",
     "next": "12.2.5",
@@ -23,12 +28,13 @@
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.49.2",
     "react-responsive": "^9.0.2",
     "spotify-web-api-node": "^5.0.2",
     "styled-components": "^5.3.5",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.18.0"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
