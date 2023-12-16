@@ -33,30 +33,25 @@ const CommentForm = ({ onCommentSubmit }) => {
     };
 
     return (
-        <Form {...form} className="text-white">
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-gray-800 p-4 rounded-md">
-
+        <Form {...form} className="bg-gray-800 p-4 rounded-md">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center space-x-2">
                 <Avatar>
-                    <AvatarImage src={"https://github.com/shadcn.png"} />
-                    <AvatarFallback>{`test`}</AvatarFallback>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <FormField
-                    control={form.control}
-                    name="comment"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="text-white">Comment</FormLabel>
-                            <FormControl>
-                                <Textarea placeholder="Write your comment..." className="bg-gray-700 text-white border-gray-600 placeholder-gray-400" {...field} />
-                            </FormControl>
-                            <FormMessage className="text-red-400" />
-                        </FormItem>
-                    )}
+                <Input
+                    className="flex-grow bg-gray-700 text-white border border-gray-600 placeholder-gray-400 rounded-md py-2 px-4"
+                    placeholder="Add a comment..."
+                    {...form.register("comment")}
                 />
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">Post Comment</Button>
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md">
+                    Comment
+                </Button>
             </form>
         </Form>
     );
+
+
 }
 
 export default CommentForm;
