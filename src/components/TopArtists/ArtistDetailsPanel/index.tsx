@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import { SelectedArtistContext } from "contexts/SelectedArtistContext";
 import { useArtistDetails, useStoreArtistDetails } from "contexts/ArtistDetailsContext";
 import { useIsMobile } from "utils/detectScreenSize"
-import { getArtistExtraInfo } from "pages/api/dashboard/dashboardApi";
+import { getArtistExtraInfo } from "services/musicService";
 import { formatDuration } from 'utils/util';
 import SectionTitle from 'components/base/SectionTitle'
 import ProgressBar from "components/base/ProgressBar";
@@ -135,6 +135,36 @@ const SimilarArtistSection = ({ similarArtists }) => {
   );
 };
 
+
+const useArtistInfo = (selectedArtist, artistDetails, storeArtistDetails) => {
+  const [similarArtists, setSimilarArtists] = useState([]);
+  const [artistTopTracks, setArtistTopTracks] = useState([]);
+
+  useEffect(() => {
+    if (!selectedArtist) return;
+
+    const details = artistDetails ? artistDetails[selectedArtist.id] : undefined;
+    if (details) {
+      setSimilarArtists(details.relatedArtists);
+      setArtistTopTracks(details.topTracks);
+    } else {
+      getArtistExtraInfo(selectedArtist.id)
+        .then(data => {
+          setSimilarArtists(data.artistDTOS);
+          setArtistTopTracks(data.trackDTOS);
+          if (storeArtistDetails) {
+            storeArtistDetails(selectedArtist.id, {
+              relatedArtists: data.artistDTOS,
+              topTracks: data.trackDTOS
+            });
+          }
+        })
+        .catch(console.error);
+    }
+  }, [selectedArtist, artistDetails, storeArtistDetails]);
+
+  return { similarArtists, artistTopTracks };
+};
 const ArtistDetailsPanel = () => {
 
   const isMobile = useIsMobile();
@@ -146,33 +176,7 @@ const ArtistDetailsPanel = () => {
   const artistDetails = useArtistDetails();
   const storeArtistDetails = useStoreArtistDetails();
 
-  const [similarArtists, setSimilarArtists] = useState([]);
-  const [artistTopTracks, setArtistTopTracks] = useState([]);
-
-  useEffect(() => {
-    if (selectedArtist) {
-      const details = artistDetails ? artistDetails[selectedArtist.id] : undefined;
-      if (details) {
-        setSimilarArtists(details.relatedArtists);
-        setArtistTopTracks(details.topTracks);
-      } else {
-        getArtistExtraInfo(selectedArtist.id)
-          .then(data => {
-            setSimilarArtists(data.artistDTOS);
-            setArtistTopTracks(data.trackDTOS);
-            if (storeArtistDetails) {
-              storeArtistDetails(selectedArtist.id, {
-                relatedArtists: data.artistDTOS,
-                topTracks: data.trackDTOS
-              });
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching similar artists:', error);
-          });
-      }
-    }
-  }, [selectedArtist, artistDetails, storeArtistDetails]);
+  const { similarArtists, artistTopTracks } = useArtistInfo(selectedArtist, artistDetails, storeArtistDetails);
 
   return (
     <div className="flex flex-col w-full">

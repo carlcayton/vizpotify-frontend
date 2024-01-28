@@ -9,12 +9,14 @@ import {
   getUserTopArtist,
   getUserTopTrack,
   getUserAnalyticsData,
+  getCommentsForUser
 } from "../../services/userService";
 import { getMusicData } from "../../services/musicService";
 import useLazyLoadData from "../../utils/lazyLoadData";
 import { useIsMobile } from "utils/detectScreenSize";
 import NavBar from 'components/composite/NavBar';
 import CommentSection from 'components/CommentSection';
+import TopArtists from 'components/TopArtists';
 
 export default function Dashboard() {
   const isMobile = useIsMobile();
@@ -31,7 +33,7 @@ export default function Dashboard() {
   const userTopArtists = useLazyLoadData(() => spotifyId && getUserTopArtist(spotifyId), userTopArtistsRef);
   const userTopTracks = useLazyLoadData(() => spotifyId && getUserTopTrack(spotifyId), userTopTracksRef);
   const analyticsData = useLazyLoadData(() => spotifyId && getUserAnalyticsData(spotifyId), analyticsRef);
-  const commentsData = useLazyLoadData(() => spotifyId && getUserComments(spotifyId), commentsRef);
+  const commentsData = useLazyLoadData(() => spotifyId && getCommentsForUser(spotifyId), commentsRef);
 
   useEffect(() => {
     if (router.isReady) {
@@ -56,7 +58,8 @@ export default function Dashboard() {
       <NavBar />
       {profileHeaderData && <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData} />}
       <div className={`flex flex-col justify-center w-full px-10 bg-[#111827] ${isMobile ? 'sm:px-32' : 'md:px-64'}`}>
-        <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} />
+        <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} /> */}
+        <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />
         <Analytics innerRef={analyticsRef} userAnalyticsData={analyticsData} />
         {profileHeaderData && <CommentSection innerRef={commentsRef} spotifyId={spotifyId} />}
       </div>

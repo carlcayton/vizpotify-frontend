@@ -6,7 +6,7 @@ import { formatDuration, formatDate } from 'utils/util';
 import SectionTitle from 'components/base/SectionTitle';
 import ProgressBar from 'components/base/ProgressBar';
 import { useStoreTrackDetails, useTrackDetails } from "contexts/TrackDetailContext";
-import { getTrackAudioFeature } from "pages/api/dashboard/dashboardApi";
+import { getTrackAudioFeature } from "services/musicService";
 
 const baseTextSizeClass = "text-base sm:text-lg md:text-xl";
 

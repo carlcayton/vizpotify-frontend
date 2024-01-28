@@ -5,12 +5,17 @@ const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 const apiRequest = async (endpoint: string, method: 'get' | 'post', data = null) => {
     const url = `${apiBaseUrl}/${endpoint}`;
     try {
-        const response = await axios({ url, method, data });
+        const response = await axios({ url, method, data, withCredentials: true });
         return response.data;
     } catch (error) {
         console.error(`Error during API call to ${endpoint}:`, error);
         throw error;
     }
+};
+
+export const checkAuthentication = async () => {
+    const response = await apiRequest('auth/status', 'get');
+    return response;
 };
 
 const getUserData = (spotifyId: string, dataType: string) => {
@@ -22,9 +27,8 @@ const getComments = (spotifyId: string) => {
 };
 
 const postComment = (spotifyId: string, commentData: any) => {
-    return apiRequest(`comments/${spotifyId}`, 'post', commentData);
+    return apiRequest(`users/${spotifyId}`, 'post', commentData);
 };
-
 
 const getArtistInfo = (artistId: string) => {
     return apiRequest(`artist/${artistId}`, 'get');
