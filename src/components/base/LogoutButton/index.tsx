@@ -1,7 +1,7 @@
 
 const signOut = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/auth/logout', {
+    const response = await fetch('http://localhost:8081/api/v1/auth/logout', {
       method: 'POST',
       credentials: 'include',
     });

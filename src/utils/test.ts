@@ -1,7 +1,7 @@
 
 const http = require('http');
 
-http.get('http://host.docker.internal:8080/api/v1/auth/status', (res) => {
+http.get('http://host.docker.internal:8081/api/v1/auth/status', (res) => {
     console.log(`Status Code: ${res.statusCode}`);
 
     res.on('data', (chunk) => {

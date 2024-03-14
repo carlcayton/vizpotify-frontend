@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const getSpotifyUserLogin = async () => {
   try {
-    const { data: url } = await axios.get("http://localhost:8080/api/v1/auth/login");
+    const { data: url } = await axios.get("http://localhost:8081/api/v1/auth/login");
     window.location.replace(url);
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error.message);
@@ -17,7 +17,7 @@ const LoginButton = () => {
   return (
     <button
       className="p-3 flex items-center my-5 bg-theme-green  rounded-lg ease-in-out hover:translate-y-1 transition-all group"
-      onClick={() =>getSpotifyUserLogin()
+      onClick={() => getSpotifyUserLogin()
       }
     >
       <Image

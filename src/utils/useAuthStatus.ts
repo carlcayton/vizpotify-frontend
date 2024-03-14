@@ -11,7 +11,7 @@ const useAuthStatus = () => {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/auth/status', {
+        const response = await axios.get('http://localhost:8081/api/v1/auth/status', {
           withCredentials: true
         });
         if (response.data.isAuthenticated && response.data.spotifyId === spotifyId) {

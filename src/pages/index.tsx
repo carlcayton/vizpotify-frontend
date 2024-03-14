@@ -10,7 +10,7 @@ import axios from 'axios';
 
 export async function getServerSideProps(context) {
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/auth/status', {
+    const response = await axios.get('http://localhost:8081/api/v1/auth/status', {
       withCredentials: true,
       headers: {
         Cookie: context.req.headers.cookie,
@@ -128,7 +128,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-       
+
         <div className={`${tailwindForDivs} bg-theme-black justify-center`}>
           <div className="bg-[#374151] p-10 flex flex-row justify-around gap-10 items-center rounded-xl">
             <p className="text-white text-xl font-semibold">
