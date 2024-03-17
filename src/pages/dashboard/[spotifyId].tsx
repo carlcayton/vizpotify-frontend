@@ -34,8 +34,6 @@ export default function Dashboard() {
 
   const userTopArtists = useLazyLoadData(() => spotifyId && getUserTopArtist(spotifyId), userTopArtistsRef);
   const userTopTracks = useLazyLoadData(() => spotifyId && getUserTopTrack(spotifyId), userTopTracksRef);
-
-
   const commentsData = useLazyLoadData(() => spotifyId && getCommentsForUser(spotifyId), commentsRef);
 
   useEffect(() => {
@@ -46,6 +44,7 @@ export default function Dashboard() {
       }
     }
   }, [router.isReady, router.query.spotifyId]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (spotifyId) {
@@ -56,36 +55,15 @@ export default function Dashboard() {
     fetchData();
   }, [spotifyId]);
 
-  const POLL_INTERVAL = 3000;
-  useEffect(() => {
-    let intervalId;
-    const fetchAnalyticsData = async () => {
-      if (spotifyId) {
-        const data = await getUserAnalyticsData(spotifyId);
-        setAnalyticsData(data);
-      }
-    };
-
-    if (spotifyId) {
-      fetchAnalyticsData();
-      intervalId = setInterval(fetchAnalyticsData, POLL_INTERVAL);
-    }
-
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [spotifyId]);
 
   return (
     <div className="flex flex-col justify-center w-full">
       <NavBar />
-      {/* {profileHeaderData && <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData} />} */}
+      {profileHeaderData && <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData} />}
       <div className={`flex flex-col justify-center w-full px-10 bg-[#111827] ${isMobile ? 'sm:px-32' : 'md:px-64'}`}>
         <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} />
         <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />
-        <Analytics innerRef={analyticsRef} userAnalyticsData={analyticsData} />
+        <Analytics innerRef={analyticsRef} spotifyId={spotifyId} />
         {/* {profileHeaderData && <CommentSection innerRef={commentsRef} spotifyId={spotifyId} />} */}
       </div>
     </div>

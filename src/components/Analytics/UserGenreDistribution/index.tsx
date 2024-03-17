@@ -3,7 +3,7 @@ import UpperSection from 'components/composite/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
 import { getDataByTimeRange } from 'utils/util';
 
-const GenreDistributionData = ({ genreDistributionData }) => {
+const UserGenreDistribution= ({ genreDistributionData }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
     const [genreDistribution, setGenreDistribution] = useState([]);
 
@@ -47,4 +47,4 @@ const GenreDistributionData = ({ genreDistributionData }) => {
     );
 };
 
-export default GenreDistributionData;
+export default UserGenreDistribution;

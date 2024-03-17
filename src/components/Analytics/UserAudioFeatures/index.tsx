@@ -6,6 +6,7 @@ import LazyLoadedChart from 'components/charts/LazyLoadedChart'; // Import LazyL
 const AudioFeaturesData = ({ audioFeaturesData }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
     const [audioFeatures, setAudioFeatures] = useState([]);
+    console.log(audioFeaturesData);
 
     useEffect(() => {
         const features = getDataByTimeRange({ data: audioFeaturesData, timeRange: selectedTimeRange });
