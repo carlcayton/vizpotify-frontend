@@ -4,6 +4,7 @@ getUserAnalyticsData
 import UserAudioFeatures from './UserAudioFeatures';
 import UserGenreDistribution from './UserGenreDistribution';
 import UserMusicEraSummary from './UserMusicEraSummary';
+import UserArtistTrackCount from './UserArtistTrackCount';
 
 const Analytics = ({ innerRef, spotifyId }) => {
     const [userAnalyticsData, setUserAnalyticsData] = useState(null);
@@ -23,7 +24,6 @@ const Analytics = ({ innerRef, spotifyId }) => {
                 setIsLoading(false);
 
                 if (!data.isProcessing) {
-                    console.log(data.analyticsData);
                     clearInterval(intervalId);
                 }
             } catch (error) {
@@ -46,13 +46,14 @@ const Analytics = ({ innerRef, spotifyId }) => {
     const audioFeaturesData = userAnalyticsData?.audio_features;
     const genreDistributionData = userAnalyticsData?.genre_distribution;
     const musicEraSummaryData = userAnalyticsData?.music_era_summary;
+    const artistTrackCountData = userAnalyticsData?.artist_track_count;
 
     return (
         <div ref={innerRef} className="flex flex-col w-full">
             <UserAudioFeatures audioFeaturesData={audioFeaturesData} />
             <UserGenreDistribution genreDistributionData={genreDistributionData} />
             <UserMusicEraSummary userMusicEraData={musicEraSummaryData} />
-            {/* <UserArtistTrackCount userArtistTrackData={artistTrackCountData} /> */}
+            <UserArtistTrackCount userArtistTrackData={artistTrackCountData} />
         </div>
     );
 };

@@ -22,13 +22,15 @@ const getUserData = (spotifyId: string, dataType: string) => {
     return apiRequest(`users/${spotifyId}/${dataType}`, 'get');
 };
 
-const getComments = (spotifyId: string) => {
-    return apiRequest(`comments/${spotifyId}`, 'get');
+
+const getComments = (userId: string) => {
+    return apiRequest(`users/${userId}/comments`, 'get');
 };
 
-const postComment = (spotifyId: string, commentData: any) => {
-    return apiRequest(`users/${spotifyId}`, 'post', commentData);
+const postComment = (userId: string, commentData: any) => {
+    return apiRequest(`users/${userId}/comments`, 'post', commentData);
 };
+
 
 const getArtistInfo = (artistId: string) => {
     return apiRequest(`artist/${artistId}`, 'get');

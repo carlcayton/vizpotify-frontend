@@ -15,6 +15,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@syncfusion/ej2-react-treemap": "^25.1.35",
     "axios": "^0.27.2",
     "chart.js": "^4.4.0",
     "chartjs-chart-treemap": "^2.3.0",

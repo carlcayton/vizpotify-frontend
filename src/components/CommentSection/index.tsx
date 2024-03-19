@@ -30,10 +30,10 @@ const CommentSection = ({ innerRef, spotifyId }) => {
     const sortedComments = commentsData ? [...commentsData] : [];
     switch (sortMethod) {
       case 'newest':
-        sortedComments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        sortedComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case 'oldest':
-        sortedComments.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        sortedComments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         break;
       default:
         break;

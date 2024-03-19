@@ -40,7 +40,14 @@ interface AnalyticsData {
 const AnalyticsDataContext = createContext<AnalyticsData | undefined>(undefined);
 const AnalyticsDataDispatchContext = createContext<(data: AnalyticsData) => void | undefined>(undefined);
 
-export const AnalyticsDataProvider: React.FC = ({ children }) => {
+// provide alternatives to React.FC
+type AnalyticsDataProviderProps = {
+    children: React.ReactNode;
+};
+
+
+
+export const AnalyticsDataProvider = ({ children }: AnalyticsDataProviderProps) => {
     const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
         audioFeatures: {},
         genreDistribution: {},
