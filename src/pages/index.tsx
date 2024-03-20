@@ -6,18 +6,12 @@ import Image from "next/image";
 import NavBar from "components/composite/NavBar";
 
 import axios from 'axios';
-
+import { checkAuthentication } from 'services/commonService';
 
 export async function getServerSideProps(context) {
   try {
-    const response = await axios.get('http://localhost:8081/api/v1/auth/status', {
-      withCredentials: true,
-      headers: {
-        Cookie: context.req.headers.cookie,
-      },
-    });
+    const { isAuthenticated, spotifyId } = await checkAuthentication(context.req.headers.cookie);
 
-    const { isAuthenticated, spotifyId } = response.data;
     if (isAuthenticated) {
       return {
         redirect: {

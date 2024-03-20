@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { checkAuthentication } from 'services/commonService';
 
 const useAuthStatus = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -9,24 +10,15 @@ const useAuthStatus = () => {
   const { spotifyId } = router.query;
 
   useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        const response = await axios.get('http://localhost:8081/api/v1/auth/status', {
-          withCredentials: true
-        });
-        if (response.data.isAuthenticated && response.data.spotifyId === spotifyId) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.error('Error checking authentication status:', error);
-        setIsAuthenticated(false);
-      }
-    };
-
     if (spotifyId) {
-      checkAuthentication();
+      checkAuthentication()
+        .then(response => {
+          setIsAuthenticated(response.isAuthenticated && response.spotifyId === spotifyId);
+        })
+        .catch(error => {
+          console.error('Error checking authentication status:', error);
+          setIsAuthenticated(false);
+        });
     }
   }, [spotifyId]);
 

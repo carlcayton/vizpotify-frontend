@@ -1,6 +1,7 @@
 
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -9,9 +10,14 @@ import {
     BarController,
     Tooltip,
     ArcElement,
-    Legend
+    Legend,
+    RadarController,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    registerables
 } from 'chart.js';
-import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -20,8 +26,17 @@ ChartJS.register(
     Tooltip,
     ArcElement,
     Legend,
-    TreemapController,
-    TreemapElement,
-    ChartDataLabels
+    ChartDataLabels,
+    RadarController,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    ...registerables
 );
+// import { Chart, RadarController, RadialLinearScale, ArcElement, PointElement, LineElement } from 'chart.js';
+// 
+// Chart.register(RadarController, RadialLinearScale, ArcElement, PointElement, LineElement);
+
+// Now you can create your chart using the 'radar' type
+
 

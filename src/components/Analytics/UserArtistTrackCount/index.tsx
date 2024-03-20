@@ -3,10 +3,6 @@ import UpperSection from 'components/composite/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
 import { getDataByTimeRange } from 'utils/util';
 
-import { TreeMapComponent } from '@syncfusion/ej2-react-treemap';
-
-
-
 const UserArtistTrackCount = ({ userArtistTrackData }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
     const [artistTrackData, setArtistTrackData] = useState([]);

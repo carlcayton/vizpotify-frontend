@@ -64,7 +64,7 @@ export default function Dashboard() {
         {/* <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} /> */}
         {/* <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} /> */}
         <Analytics innerRef={analyticsRef} spotifyId={spotifyId} />
-        {profileHeaderData && <CommentSection innerRef={commentsRef} spotifyId={spotifyId} />}
+        {/* {profileHeaderData && <CommentSection innerRef={commentsRef} spotifyId={spotifyId} />} */}
       </div>
     </div>
   );

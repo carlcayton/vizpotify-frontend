@@ -38,7 +38,7 @@ const LazyLoadedChart = ({ data, chartType }) => {
             case 'doughnut':
                 return <DoughnutChart data={data} />;
             case 'tree':
-                return <TreeMap treeData={data} />;
+                return <TreeMap data={data} />;
             default:
                 return <div>Chart type not supported</div>;
         }

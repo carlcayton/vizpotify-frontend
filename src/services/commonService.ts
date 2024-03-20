@@ -13,10 +13,13 @@ const apiRequest = async (endpoint: string, method: 'get' | 'post', data = null)
     }
 };
 
-export const checkAuthentication = async () => {
-    const response = await apiRequest('auth/status', 'get');
+export const checkAuthentication = async (cookie = null) => {
+    const headers = cookie ? { Cookie: cookie } : undefined;
+    const response = await apiRequest('auth/status', 'get', null);
+    console.log('checkAuthentication response:', response);
     return response;
 };
+
 
 const getUserData = (spotifyId: string, dataType: string) => {
     return apiRequest(`users/${spotifyId}/${dataType}`, 'get');
