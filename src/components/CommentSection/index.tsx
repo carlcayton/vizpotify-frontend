@@ -40,7 +40,7 @@ const CommentSection = ({ innerRef, spotifyId }) => {
     }
     return sortedComments;
   }, [sortMethod, commentsData]);
-
+  console.log(comments)
   return (
     <div className="bg-gray-900 text-white p-4 rounded-lg">
       <hr className="my-4 border-t border-gray-700" />

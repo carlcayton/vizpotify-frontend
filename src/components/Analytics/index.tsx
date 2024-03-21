@@ -50,8 +50,8 @@ const Analytics = ({ innerRef, spotifyId }) => {
 
     return (
         <div ref={innerRef} className="flex flex-col w-full">
-            <UserAudioFeatures audioFeaturesData={audioFeaturesData} />
             <UserGenreDistribution genreDistributionData={genreDistributionData} />
+            <UserAudioFeatures audioFeaturesData={audioFeaturesData} />
             <UserMusicEraSummary userMusicEraData={musicEraSummaryData} />
             <UserArtistTrackCount userArtistTrackData={artistTrackCountData} />
         </div>

@@ -24,7 +24,6 @@ const PercentageBarChart = ({ data }) => {
                     },
                 },
                 grid: {
-                    // color: 'rgba(255, 255, 255, 0.1)'
                 },
                 scaleLabel: {
                     display: true,
@@ -43,7 +42,6 @@ const PercentageBarChart = ({ data }) => {
                 align: 'right',
                 formatter: function (value) {
                     return Math.round(value) + "%";
-                    // eq. return ['line1', 'line2', value]
                 },
                 color: 'white',
 
@@ -69,7 +67,7 @@ const VerticalBarChart = ({ data }) => {
         scales: {
             x: {
                 grid: {
-                    // color: 'rgba(255, 255, 255, 0.1)'
+                    color: 'rgba(255, 255, 255, 0.1)'
                 },
                 ticks: {
                     color: 'white'
@@ -91,6 +89,7 @@ const VerticalBarChart = ({ data }) => {
             },
             datalabels: {
                 display: true,
+                color: 'white',
             },
             title: {
                 display: true,

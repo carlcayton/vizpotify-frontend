@@ -3,7 +3,7 @@ import UpperSection from 'components/composite/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
 import { getDataByTimeRange } from 'utils/util';
 
-const UserGenreDistribution= ({ genreDistributionData }) => {
+const UserGenreDistribution = ({ genreDistributionData }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
     const [genreDistribution, setGenreDistribution] = useState([]);
 
@@ -39,9 +39,9 @@ const UserGenreDistribution= ({ genreDistributionData }) => {
 
     return (
         <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
-            <UpperSection sectionType="Genre Distribution" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
+            <UpperSection sectionType="Genre Distribution (Count)" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
             <LazyLoadedChart data={frequencyChartData} chartType="vertical" />
-            <UpperSection customTWClass={"hidden xl:flex"} sectionType="Audio Features" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
+            <UpperSection customTWClass={"hidden xl:flex"} sectionType="Genre Distribution (Percentage)" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
             <LazyLoadedChart data={percentageChartData} chartType="doughnut" />
         </div>
     );

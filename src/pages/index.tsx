@@ -5,7 +5,6 @@ import Image from "next/image";
 
 import NavBar from "components/composite/NavBar";
 
-import axios from 'axios';
 import { checkAuthentication } from 'services/commonService';
 
 export async function getServerSideProps(context) {
@@ -91,7 +90,7 @@ const LandingPage = () => {
           className={`${tailwindForDivs} bg-theme-green lg:pl-64 xl:pl-50 2xl:pl-80 py-10 `}
         >
           <div className="flex flex-col justify-center">
-            <p className="font-semibold text-2xl pb-4 sm:pb-6">
+            <p className="font-semibold text-2xl pb-4 sm:pb-6 text-black">
               Discover more about your music taste
             </p>
             <div className="flex xl:flex-row lg:flex-col items-center">

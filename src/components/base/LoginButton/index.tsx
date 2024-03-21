@@ -25,7 +25,7 @@ const LoginButton = () => {
         src={spotifyLogo}
         alt=""
       ></Image>
-      <p className="font-bold ml-3">Login With Spotify</p>
+      <p className="font-bold ml-3 text-black">Login With Spotify</p>
     </button>
   );
 };

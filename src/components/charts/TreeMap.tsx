@@ -8,9 +8,18 @@ const treemapColors = {
     text: '#FFFFFF',
     grid: 'rgba(255, 255, 255, 0.1)',
 };
+const chartEvents = [
+    {
+        eventName: 'select',
+        callback: ({ chartWrapper }) => {
+            const chart = chartWrapper.getChart();
+            chart.setSelection([]);
+        },
+    },
+];
 
 const TreemapChart = ({ data }) => {
-    console.log(data)
+
     const chartData = [
         ['Artist', 'Parent', 'Track Count (size)'],
         ['Artists', null, 0],
@@ -37,7 +46,7 @@ const TreemapChart = ({ data }) => {
                 showScale: true,
                 maxDepth: 0,
             }}
-            rootProps={{ 'data-testid': '1' }}
+            chartEvents={chartEvents}
         />
     );
 };

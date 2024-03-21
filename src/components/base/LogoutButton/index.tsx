@@ -1,13 +1,12 @@
-
 const signOut = async () => {
   try {
-    const response = await fetch('http://localhost:8081/api/v1/auth/logout', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include',
     });
 
     if (response.ok) {
-      window.location.href = 'http://localhost:3000';
+      window.location.href = process.env.REACT_APP_APP_URL;
     } else {
       console.error('Logout failed:', response.status, response.statusText);
     }

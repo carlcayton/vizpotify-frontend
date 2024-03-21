@@ -19,7 +19,7 @@ const CommentCard = ({ userName, content, createdAt, authorImageUrl }) => {
                 <div className="flex flex-col flex-grow">
                     <div className="flex justify-between items-center w-full">
                         <div>
-                            <span className="font-semibold text-white">User {userName}</span>
+                            <span className="font-semibold text-white">{userName}</span>
                             <span className="text-gray-300 text-xs ml-2">
                                 {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
                             </span>
