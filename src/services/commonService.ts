@@ -16,7 +16,6 @@ const apiRequest = async (endpoint: string, method: 'get' | 'post', data = null)
 export const checkAuthentication = async (cookie = null) => {
     const headers = cookie ? { Cookie: cookie } : undefined;
     const response = await apiRequest('auth/status', 'get', null);
-    console.log('checkAuthentication response:', response);
     return response;
 };
 

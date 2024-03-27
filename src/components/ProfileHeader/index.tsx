@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from 'next/router';
 import LogoutButton from "components/base/LogoutButton";
+import CompareButton from "components/base/CompareButton";
 import axios from 'axios'
 import useAuthStatus from "utils/useAuthStatus";
 
@@ -22,14 +23,12 @@ const ProfileHeader = ({
   profilePictureUrl,
   followedArtistCount,
   followerCount,
-  playlistCount,
 }) => {
-  const showLogout = useAuthStatus();
-
+  const { isAuthenticated, isViewingOwnProfile } = useAuthStatus();
   return (
-    <div ref={innerRef} className="flex flex-col space-y-4 items-center bg-gradient-to-b from-[#374151] to-[#111827] py-10  w-full">
+    <div ref={innerRef} className="flex flex-col space-y-4 items-center bg-gradient-to-b from-[#374151] to-[#111827] py-10 w-full">
       <Image
-        src={`${profilePictureUrl ? profilePictureUrl : "/Dashboard/user.svg"}`}
+        src={profilePictureUrl || "/Dashboard/user.svg"}
         alt={`${userDisplayName} image`}
         className="rounded-full"
         width="70%"
@@ -39,9 +38,12 @@ const ProfileHeader = ({
       <div className="flex flex-row space-x-4">
         <ProfileHeaderNumbers count={followedArtistCount} type="FOLLOWING" />
         <ProfileHeaderNumbers count={followerCount} type="FOLLOWERS" />
-        {/* <ProfileHeaderNumbers count={playlistCount} type="PLAYLISTS" /> */}
       </div>
-      {showLogout && <LogoutButton />}
+      {isViewingOwnProfile ? (
+        <LogoutButton />
+      ) : isAuthenticated ? (
+        <CompareButton />
+      ) : null}
     </div>
   );
 };

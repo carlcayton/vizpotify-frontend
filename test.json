@@ -1,0 +1,47 @@
+{
+  "common_items": {
+    "common_artists": {
+      "0rvjqX7ttXeg3mTy8Xscbt": "Journey",
+    },
+    "common_tracks": {
+      "7x9aauaA9cu6tyfpHnqDLo": {
+        "name": "Seven (feat. Latto)",
+        "artists": "Jung Kook,Latto"
+      }
+    },
+    "jaccard_similarity": {
+      "artist": 0.41237113402061853,
+      "track": 0.10112359550561797
+    },
+    "auio_feature": {
+      "ianc_arl": {
+        "shortTerm": [
+          {
+            "acousticness": 0.2429
+          }
+        ]
+      }
+    },
+    "music_era_summary": {
+      "ianc_arl": {
+        "shortTerm": [
+          {
+            "release_date_range": "1950s",
+            "track_count": 0,
+            "percentage": 0.0
+          }
+        ]
+      }
+    },
+    "tracks": {
+      "oldest": {
+        "ianc_arl": {
+          "id": "14gEDPQtsTcbZOWs7EXg4V",
+          "name": "Pick Yourself Up",
+          "album_image_url": "https://i.scdn.co/image/ab67616d0000b273a6650ef2d43bfb68aff585cd",
+          "artists": "Nat King Cole,George Shearing",
+          "release_date": "1962-03-01"
+        }
+      }
+    }
+  }

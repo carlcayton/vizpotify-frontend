@@ -22,6 +22,9 @@ const CommentSection = ({ innerRef, spotifyId }) => {
 
   const handleCommentSubmit = async (commentContent) => {
     const commentData = { content: commentContent, dashboardSpotifyId: spotifyId };
+    // print all comment related data
+    console.log(commentData);
+    console.log(spotifyId);
     await addCommentForUser(spotifyId, commentData);
     await fetchComments();
   };
@@ -40,7 +43,6 @@ const CommentSection = ({ innerRef, spotifyId }) => {
     }
     return sortedComments;
   }, [sortMethod, commentsData]);
-  console.log(comments)
   return (
     <div className="bg-gray-900 text-white p-4 rounded-lg">
       <hr className="my-4 border-t border-gray-700" />

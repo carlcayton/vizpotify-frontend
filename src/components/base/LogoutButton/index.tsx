@@ -1,11 +1,12 @@
+import axios from 'axios';
+
 const signOut = async () => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`, {
-      method: 'POST',
-      credentials: 'include',
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/logout`, null, {
+      withCredentials: true,
     });
 
-    if (response.ok) {
+    if (response.status === 200) {
       window.location.href = process.env.REACT_APP_APP_URL;
     } else {
       console.error('Logout failed:', response.status, response.statusText);
