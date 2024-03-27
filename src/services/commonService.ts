@@ -33,6 +33,9 @@ const postComment = (userId: string, commentData: any) => {
     return apiRequest(`users/${userId}/comments`, 'post', commentData);
 };
 
+const getComparisonData = (spotifyId: string) => {
+    return apiRequest(`comparison/${spotifyId}`, 'post');
+}
 
 const getArtistInfo = (artistId: string) => {
     return apiRequest(`artist/${artistId}`, 'get');
@@ -42,4 +45,4 @@ const getTrackFeatures = (trackId: string) => {
     return apiRequest(`track/audiofeature/${trackId}`, 'get');
 };
 
-export { getUserData, getComments, postComment, getArtistInfo, getTrackFeatures };
+export { getUserData, getComments, postComment, getArtistInfo, getTrackFeatures, getComparisonData };

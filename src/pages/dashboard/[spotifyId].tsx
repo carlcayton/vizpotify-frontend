@@ -60,11 +60,13 @@ export default function Dashboard() {
     };
     fetchData();
   }, [spotifyId]);
-
   return (
     <div className="flex flex-col justify-center w-full">
       <NavBar />
-      {profileHeaderData && <ProfileHeader innerRef={profileHeaderRef} profileHeaderData={profileHeaderData} />}
+      {profileHeaderData && (
+        <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData}
+        />
+      )}
       <div className={`flex flex-col justify-center w-full px-10 bg-[#111827] ${isMobile ? 'sm:px-32' : 'md:px-64'}`}>
         <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} />
         <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />

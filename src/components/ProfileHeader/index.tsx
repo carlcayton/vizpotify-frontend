@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from 'next/router';
 import LogoutButton from "components/base/LogoutButton";
 import CompareButton from "components/base/CompareButton";
-import axios from 'axios'
 import useAuthStatus from "utils/useAuthStatus";
 
 
@@ -15,7 +13,6 @@ const ProfileHeaderNumbers = ({ count, type }) => {
     </div>
   );
 };
-
 
 const ProfileHeader = ({
   innerRef,
