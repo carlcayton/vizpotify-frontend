@@ -5,8 +5,8 @@ import { useArtistDetails, useStoreArtistDetails } from "contexts/ArtistDetailsC
 import { useIsMobile } from "utils/detectScreenSize"
 import { getArtistExtraInfo } from "services/musicService";
 import { formatDuration } from 'utils/util';
-import SectionTitle from 'components/base/SectionTitle'
-import ProgressBar from "components/base/ProgressBar";
+import SectionTitle from 'components/common/SectionTitle'
+import ProgressBar from "components/common/ProgressBar";
 
 
 const GenreItem = ({ genre }) => {

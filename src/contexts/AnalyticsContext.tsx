@@ -40,7 +40,6 @@ interface AnalyticsData {
 const AnalyticsDataContext = createContext<AnalyticsData | undefined>(undefined);
 const AnalyticsDataDispatchContext = createContext<(data: AnalyticsData) => void | undefined>(undefined);
 
-// provide alternatives to React.FC
 type AnalyticsDataProviderProps = {
     children: React.ReactNode;
 };

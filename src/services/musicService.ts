@@ -14,4 +14,7 @@ export const getTrackAudioFeature = async (trackId: string) => {
     } catch (error) {
         console.log("Error fetching track's audio features", error);
     }
+    return null;
 };
+
+

@@ -11,11 +11,11 @@ import {
 } from "../../services/userService";
 import useLazyLoadData from "../../utils/lazyLoadData";
 import { useIsMobile } from "utils/detectScreenSize";
-import NavBar from 'components/composite/NavBar';
+import NavBar from 'components/layout/NavBar';
 import CommentSection from 'components/CommentSection';
 import TopArtists from 'components/TopArtists';
 
-import Modal from "components/base/Modal";
+import Modal from "components/common/Modal";
 
 export default function Dashboard() {
   const isMobile = useIsMobile();
