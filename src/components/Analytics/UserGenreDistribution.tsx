@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import UpperSection from 'components/composite/UpperSection';
+import UpperSection from 'components/layout/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
 import { getDataByTimeRange } from 'utils/util';
 

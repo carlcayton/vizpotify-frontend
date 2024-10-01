@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import LoginButton from "components/base/LoginButton";
+import LoginButton from "components/common/LoginButton";
 import LandingPageCards from "components/LandingPageCards";
 import Image from "next/image";
 
-import NavBar from "components/composite/NavBar";
+import NavBar from "components/layout/NavBar";
 
 import { checkAuthentication } from 'services/commonService';
 

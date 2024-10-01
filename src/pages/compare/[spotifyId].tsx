@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import NavBar from 'components/composite/NavBar';
+import NavBar from 'components/layout/NavBar';
 import ProfileHeader from 'components/ProfileHeader';
 import { getComparisonData, } from 'services/commonService';
 import { getProfileHeaderData } from 'services/userService';
-import Modal from "components/base/Modal";
-import SimilarityMeter from 'components/Comparison/Similarity';
+import Modal from "components/common/Modal";
+import SimilarityMeter from 'components/comparison/Similarity';
 
 export default function ComparisonPage() {
   const router = useRouter();
@@ -68,7 +68,7 @@ export default function ComparisonPage() {
           {...profileHeaderData}
         />
       )}
-      
+
       <div className="flex flex-col justify-center w-full px-10 bg-[#111827]">
         {comparisonData && (
           <>

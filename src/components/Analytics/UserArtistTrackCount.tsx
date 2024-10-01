@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import UpperSection from 'components/composite/UpperSection';
+import UpperSection from 'components/layout/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
 import { getDataByTimeRange } from 'utils/util';
 
@@ -17,7 +17,7 @@ const UserArtistTrackCount = ({ userArtistTrackData }) => {
     }
 
     const chartData = artistTrackData.map((artist, index) => ({
-        artist_name: artist.artist_name,
+        artist_name: artist.artistName,
         track_count: artist.track_count
     }));
 

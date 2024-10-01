@@ -50,5 +50,3 @@ export const useUserProfile = () => {
   }
   return context;
 };
-
-// ... [rest of your code]

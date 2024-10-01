@@ -3,8 +3,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { SelectedTrackContext, SelectedTrackProvider } from 'contexts/SelectedTrackContext';
 import { useIsMobile } from 'utils/detectScreenSize';
 import { formatDuration, formatDate } from 'utils/util';
-import SectionTitle from 'components/base/SectionTitle';
-import ProgressBar from 'components/base/ProgressBar';
+import SectionTitle from 'components/common/SectionTitle';
+import ProgressBar from 'components/common/ProgressBar';
 import { useStoreTrackDetails, useTrackDetails } from "contexts/TrackDetailContext";
 import { getTrackAudioFeature } from "services/musicService";
 

@@ -1,19 +1,19 @@
 {
-  "common_items": {
-    "common_artists": {
+  "commonItems": {
+    "commonArtists": {
       "0rvjqX7ttXeg3mTy8Xscbt": "Journey",
     },
-    "common_tracks": {
+    "commonTracks": {
       "7x9aauaA9cu6tyfpHnqDLo": {
         "name": "Seven (feat. Latto)",
         "artists": "Jung Kook,Latto"
       }
     },
-    "jaccard_similarity": {
+    "jaccardSimilarity": {
       "artist": 0.41237113402061853,
       "track": 0.10112359550561797
     },
-    "auio_feature": {
+    "userTrackFeatureStats": {
       "ianc_arl": {
         "shortTerm": [
           {
@@ -22,7 +22,7 @@
         ]
       }
     },
-    "music_era_summary": {
+    "userMusicEraSummary": {
       "ianc_arl": {
         "shortTerm": [
           {
@@ -33,6 +33,7 @@
         ]
       }
     },
+
     "tracks": {
       "oldest": {
         "ianc_arl": {

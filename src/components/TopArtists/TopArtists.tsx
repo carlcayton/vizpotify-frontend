@@ -2,9 +2,9 @@ import { useEffect, useState, useContext, createContext } from "react";
 import { SelectedArtistProvider } from "contexts/SelectedArtistContext";
 import { useIsMobile } from "utils/detectScreenSize"
 import { getDataByTimeRange } from "utils/util";
-import UpperSection from "components/composite/UpperSection"
+import UpperSection from "components/layout/UpperSection"
 import { ArtistDetailsProvider } from "contexts/ArtistDetailsContext";
-import ShowMoreButton from "components/base/ShowMoreButton";
+import ShowMoreButton from "components/common/ShowMoreButton";
 
 import ArtistsSelectionList from "./ArtistsSelectionList";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
