@@ -32,15 +32,16 @@ const Analytics = ({ innerRef, spotifyId }) => {
     // use camelcase for keys
 
     const userTrackFeatureStatsData = userAnalyticsData?.userTrackFeatureStats;
-
-    // const genreDistributionData = userAnalyticsData?.user_genre_distribution;
-    // const musicEraSummaryData = userAnalyticsData?.user_music_era_summary;
-    // const artistTrackCountData = userAnalyticsData?.user_artist_track_count;
+    const genreDistributionData = userAnalyticsData?.userGenreDistribution;
+    const musicEraSummaryData = userAnalyticsData?.userMusicEraSummary;
+    const artistTrackCountData = userAnalyticsData?.userArtistTrackCount;
 
     return (
         <div ref={innerRef} className="flex flex-col w-full">
-            {/* <UserGenreDistribution genreDistributionData={genreDistributionData} /> */}
+            <UserGenreDistribution genreDistributionData={genreDistributionData} />
             <UserTrackFeatureStats userTrackFeatureStatData={userTrackFeatureStatsData} />
+            <UserMusicEraSummary userMusicEraData={musicEraSummaryData} />
+            <UserArtistTrackCount userArtistTrackCountData={artistTrackCountData} />
         </div>
     );
 };
