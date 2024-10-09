@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import UpperSection from 'components/layout/UpperSection';
 import { getDataByTimeRange } from 'utils/util';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
