@@ -48,5 +48,5 @@ export const fetchAuthentication = async () => {
 };
 
 export const getUserTrackFeatureStats = (spotifyId: string) => {
-    return getUserData(spotifyId, "trackFeatureStats");
+    return getUserData(spotifyId, "genreDistribution");
 };
