@@ -1,77 +1,51 @@
-
-import React, { useRef, useEffect, useState } from "react";
-import { useRouter } from 'next/router';
+import React, { useRef } from "react";
+import { useRouter } from "next/router";
+import { useQuery } from '@tanstack/react-query'
 import ProfileHeader from "components/ProfileHeader";
 import TopTracks from "components/TopTracks";
+import TopArtists from 'components/TopArtists';
 import Analytics from "components/Analytics";
+import NavBar from 'components/layout/NavBar';
+import CommentSection from 'components/CommentSection';
+import Modal from "components/common/Modal";
+
 import {
   getProfileHeaderData,
   getUserTopArtist,
-  getUserTopTrack,
 } from "../../services/userService";
-import useLazyLoadData from "../../utils/lazyLoadData";
 import { useIsMobile } from "utils/detectScreenSize";
-import NavBar from 'components/layout/NavBar';
-import CommentSection from 'components/CommentSection';
-import TopArtists from 'components/TopArtists';
 
-import Modal from "components/common/Modal";
+interface ProfileHeaderData {
+  userDisplayName: string;
+  profilePictureUrl: string;
+  followedArtistCount: number;
+  followerCount: number;
+}
 
 export default function Dashboard() {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const [spotifyId, setSpotifyId] = useState(null);
-  const [profileHeaderData, setProfileHeaderData] = useState(null);
-  const profileHeaderRef = useRef(null);
-  const userTopArtistsRef = useRef(null);
-  const userTopTracksRef = useRef(null);
-  const analyticsRef = useRef(null);
-  const commentsRef = useRef(null);
-  const userTopArtists = useLazyLoadData(() => spotifyId && getUserTopArtist(spotifyId), userTopArtistsRef);
-  const userTopTracks = useLazyLoadData(() => spotifyId && getUserTopTrack(spotifyId), userTopTracksRef);
+  const { spotifyId } = router.query;
   const modalRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (router.isReady) {
-      const querySpotifyId = router.query.spotifyId;
-      if (querySpotifyId) {
-        setSpotifyId(querySpotifyId as string);
-      }
-    }
-  }, [router.isReady, router.query.spotifyId]);
+  const { data: profileHeaderData, isLoading: isLoadingProfile } = useQuery<ProfileHeaderData>({
+    queryKey: ['profileHeader', spotifyId],
+    queryFn: () => getProfileHeaderData(spotifyId as string),
+    enabled: !!spotifyId,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (spotifyId) {
-          const data = await getProfileHeaderData(spotifyId);
-          setProfileHeaderData(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch profile header data:", error);
-        if (modalRef.current) {
-          (modalRef.current as HTMLInputElement).checked = true;
-          setTimeout(() => {
-            (modalRef.current as HTMLInputElement).checked = false;
-            router.push('/');
-          }, 3000);
-        }
-      }
-    };
-    fetchData();
-  }, [spotifyId]);
+
   return (
     <div className="flex flex-col justify-center w-full">
       <NavBar />
       {profileHeaderData && (
-        <ProfileHeader innerRef={profileHeaderRef} {...profileHeaderData}
-        />
+        <ProfileHeader {...profileHeaderData} />
       )}
       <div className={`flex flex-col justify-center w-full px-10 bg-[#111827] ${isMobile ? 'sm:px-32' : 'md:px-64'}`}>
-        <TopTracks innerRef={userTopTracksRef} userTopTracksAllTimeRange={userTopTracks} />
-        <TopArtists innerRef={userTopArtistsRef} userTopArtistsAllTimeRange={userTopArtists} />
-        <Analytics innerRef={analyticsRef} spotifyId={spotifyId} />
-        {profileHeaderData && <CommentSection innerRef={commentsRef} spotifyId={spotifyId} />}
+        {/* <TopArtists userTopArtistsAllTimeRange={userTopArtistsAllTimeRange} /> */}
+        <TopTracks spotifyId={spotifyId as string} />
+        <Analytics spotifyId={spotifyId as string} />
+        {/* {profileHeaderData && <CommentSection spotifyId={spotifyId as string} />} */}
       </div>
       <Modal
         title="User Not Found"
