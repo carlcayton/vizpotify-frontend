@@ -17,4 +17,16 @@ export const getTrackAudioFeature = async (trackId: string) => {
     return null;
 };
 
-
+export const getGenreDistribution = async (spotifyId: string, timeRange: string) => {
+    try {
+        // This is a placeholder implementation. You'll need to replace this with the actual API call.
+        const response = await fetch(`/api/genre-distribution?spotifyId=${spotifyId}&timeRange=${timeRange}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch genre distribution');
+        }
+        return await response.json();
+    } catch (error) {
+        console.log("Error fetching genre distribution", error);
+        throw error;
+    }
+};
