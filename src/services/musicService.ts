@@ -1,4 +1,6 @@
 import { getArtistInfo, getTrackFeatures } from './commonService';
+import { useQuery } from '@tanstack/react-query';
+import { getUserGenreDistribution } from './userService';
 
 export const getArtistExtraInfo = async (artistId: string) => {
     try {
@@ -17,16 +19,18 @@ export const getTrackAudioFeature = async (trackId: string) => {
     return null;
 };
 
-export const getGenreDistribution = async (spotifyId: string, timeRange: string) => {
-    try {
-        // This is a placeholder implementation. You'll need to replace this with the actual API call.
-        const response = await fetch(`/api/genre-distribution?spotifyId=${spotifyId}&timeRange=${timeRange}`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch genre distribution');
-        }
-        return await response.json();
-    } catch (error) {
-        console.log("Error fetching genre distribution", error);
-        throw error;
-    }
+export interface UserGenreDistributionMap {
+    [timeRange: string]: {
+        genre: string;
+        genreCount: number;
+        percentage: number;
+    }[];
+}
+
+export const useGenreDistribution = (spotifyId: string) => {
+    return useQuery<UserGenreDistributionMap, Error>({
+        queryKey: ['genreDistribution', spotifyId],
+        queryFn: () => getUserGenreDistribution(spotifyId),
+        enabled: !!spotifyId,
+    });
 };

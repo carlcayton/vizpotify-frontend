@@ -1,31 +1,22 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import UpperSection from 'components/layout/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
-import { getUserTrackFeatureStats } from 'services/userService';
+import { useGenreDistribution } from 'services/musicService';
 
 const UserTrackFeatureStat = ({ spotifyId }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState('short_term');
-
-    const { data: userTrackFeatureStatData, isLoading, error } = useQuery(
-        ['userTrackFeatureStats', spotifyId],
-        () => getUserTrackFeatureStats(spotifyId),
-        {
-            staleTime: 5 * 60 * 1000, // 5 minutes
-            cacheTime: 60 * 60 * 1000, // 1 hour
-        }
-    );
+    const { data: genreDistributionData, isLoading, error } = useGenreDistribution(spotifyId);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
 
-    if (!userTrackFeatureStatData || !userTrackFeatureStatData.genreDistributionsByTimeRange) {
+    if (!genreDistributionData || !genreDistributionData[selectedTimeRange]) {
         return null;
     }
 
-    const genreData = userTrackFeatureStatData.genreDistributionsByTimeRange[selectedTimeRange];
+    const genreData = genreDistributionData[selectedTimeRange];
 
-    if (!genreData || genreData.length === 0) {
+    if (genreData.length === 0) {
         return null;
     }
 
