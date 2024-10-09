@@ -46,3 +46,7 @@ export const fetchAuthentication = async () => {
         return { isAuthenticated: false };
     }
 };
+
+export const getUserTrackFeatureStats = (spotifyId: string) => {
+    return getUserData(spotifyId, "trackFeatureStats");
+};
