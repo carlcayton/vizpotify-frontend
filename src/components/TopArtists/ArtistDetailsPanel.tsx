@@ -1,15 +1,31 @@
 import Image from "next/image";
-import { useState, useContext, useEffect } from "react";
-import { SelectedArtistContext } from "contexts/SelectedArtistContext";
-import { useArtistDetails, useStoreArtistDetails } from "contexts/ArtistDetailsContext";
-import { useIsMobile } from "utils/detectScreenSize"
-import { getArtistExtraInfo } from "services/musicService";
-import { formatDuration } from 'utils/util';
-import SectionTitle from 'components/common/SectionTitle'
-import ProgressBar from "components/common/ProgressBar";
+import { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useIsMobile } from "../../utils/detectScreenSize"
+import { getArtistExtraInfo } from "../../services/musicService";
+import { formatDuration } from '../../utils/util';
+import SectionTitle from '../common/SectionTitle'
+import ProgressBar from "../common/ProgressBar";
 
+interface Artist {
+  id: string;
+  name: string;
+  genres: string[];
+  popularity: number;
+  imageUrl: string;
+}
 
-const GenreItem = ({ genre }) => {
+interface Track {
+  name: string;
+  albumName: string;
+  duration: number;
+}
+
+interface ArtistExtraInfo {
+  artistDTOS: Artist[];
+  trackDTOS: Track[];
+}
+const GenreItem = ({ genre }: { genre: string }) => {
   return (
     <div className="bg-[#484E5B] rounded-full border px-2 pb-1.5 text-white font-bold text-xs sm:text-sm md:text-base">
       {genre}
@@ -17,7 +33,7 @@ const GenreItem = ({ genre }) => {
   );
 };
 
-const ArtistGenresSection = ({ genres }) => {
+const ArtistGenresSection = ({ genres }: { genres: string[] }) => {
   return (
     <div className="flex flex-col align-left space-y-2 w-full">
       <SectionTitle sectionName="Genres" />
@@ -32,7 +48,7 @@ const ArtistGenresSection = ({ genres }) => {
   );
 };
 
-const ArtistFollowersSection = ({ followers }) => {
+const ArtistFollowersSection = ({ followers }: { followers: number }) => {
   return (
     <div className="flex flex-col align-left space-y-2">
       <SectionTitle sectionName="Followers" />
@@ -41,7 +57,7 @@ const ArtistFollowersSection = ({ followers }) => {
   );
 };
 
-const ArtistPopularitySection = ({ popularity }) => {
+const ArtistPopularitySection = ({ popularity }: { popularity: number }) => {
   return (
     <div className="flex flex-col align-left space-y-2 w-full">
       <SectionTitle sectionName="Popularity" />
@@ -49,6 +65,7 @@ const ArtistPopularitySection = ({ popularity }) => {
     </div>
   );
 };
+
 const TopTrackHeading = () => {
   let fontColor = "text-white";
   return (
@@ -60,8 +77,7 @@ const TopTrackHeading = () => {
   );
 };
 
-
-const TopTrackCard = ({ rank, track }) => {
+const TopTrackCard = ({ rank, track }: { rank: number, track: Track }) => {
   let fontColor = "text-white";
   return (
     <div className="flex flex-row items-center bg-[#484E5B] rounded-md gap-x-4 p-4 justify-between shadow-lg hover:shadow-2xl transition duration-300 ease-in-out transform hover:--translate-y-1">
@@ -75,15 +91,14 @@ const TopTrackCard = ({ rank, track }) => {
   );
 };
 
-
-const TopTrackSection = ({ artistTopTracks }) => {
+const TopTrackSection = ({ artistTopTracks }: { artistTopTracks: Track[] }) => {
   return (
     <div className="flex flex-col align-left space-y-2 w-full">
       <SectionTitle sectionName="Artist's Popular Songs" />
       <div className="flex flex-col space-y-1">
         <TopTrackHeading />
         {artistTopTracks ? (
-          artistTopTracks.map((track: any, index: number) => {
+          artistTopTracks.map((track, index) => {
             return (
               <TopTrackCard key={index} rank={index + 1} track={track} />
             )
@@ -92,10 +107,9 @@ const TopTrackSection = ({ artistTopTracks }) => {
       </div>
     </div >
   )
-
 }
 
-const SimilarArtistCard = ({ artist }) => {
+const SimilarArtistCard = ({ artist }: { artist: Artist }) => {
   return (
     <div className="w-full relative hover:scale-110">
       <Image
@@ -117,7 +131,7 @@ const SimilarArtistCard = ({ artist }) => {
   );
 };
 
-const SimilarArtistSection = ({ similarArtists }) => {
+const SimilarArtistSection = ({ similarArtists }: { similarArtists: Artist[] }) => {
   const isMobile = useIsMobile()
   const numberOfSimArtistToDisplay = isMobile ? 9 : 10;
   return (
@@ -135,63 +149,50 @@ const SimilarArtistSection = ({ similarArtists }) => {
   );
 };
 
-
-const useArtistInfo = (selectedArtist, artistDetails, storeArtistDetails) => {
-  const [similarArtists, setSimilarArtists] = useState([]);
-  const [artistTopTracks, setArtistTopTracks] = useState([]);
-
-  useEffect(() => {
-    if (!selectedArtist) return;
-
-    const details = artistDetails ? artistDetails[selectedArtist.id] : undefined;
-    if (details) {
-      setSimilarArtists(details.relatedArtists);
-      setArtistTopTracks(details.topTracks);
-    } else {
-      getArtistExtraInfo(selectedArtist.id)
-        .then(data => {
-          setSimilarArtists(data.artistDTOS);
-          setArtistTopTracks(data.trackDTOS);
-          if (storeArtistDetails) {
-            storeArtistDetails(selectedArtist.id, {
-              relatedArtists: data.artistDTOS,
-              topTracks: data.trackDTOS
-            });
-          }
-        })
-        .catch(console.error);
+const useArtistInfo = (artistId: string | undefined) => {
+  return useQuery<ArtistExtraInfo, Error>(
+    ['artistInfo', artistId],
+    () => getArtistExtraInfo(artistId as string),
+    {
+      enabled: !!artistId,
+      staleTime: 5 * 60 * 1000, // 5 minutes
     }
-  }, [selectedArtist, artistDetails, storeArtistDetails]);
-
-  return { similarArtists, artistTopTracks };
+  );
 };
-const ArtistDetailsPanel = () => {
 
+const ArtistDetailsPanel = () => {
   const isMobile = useIsMobile();
   const classForSMScreen = isMobile ? `border sticky` : `sticky `;
 
+  const selectedArtist = useContext(SelectedArtistContext) as Artist | null;
+  const { data: artistInfo, isLoading, isError } = useArtistInfo(selectedArtist?.id);
 
-  const selectedArtist = useContext(SelectedArtistContext);
-  const artist = selectedArtist
-  const artistDetails = useArtistDetails();
-  const storeArtistDetails = useStoreArtistDetails();
+  if (isLoading) {
+    return <div className="text-white">Loading artist details...</div>;
+  }
 
-  const { similarArtists, artistTopTracks } = useArtistInfo(selectedArtist, artistDetails, storeArtistDetails);
+  if (isError) {
+    return <div className="text-white">Error loading artist details. Please try again later.</div>;
+  }
+
+  if (!selectedArtist) {
+    return null;
+  }
+
+  const { artistDTOS: similarArtists, trackDTOS: artistTopTracks } = artistInfo || { artistDTOS: [], trackDTOS: [] };
 
   return (
     <div className="flex flex-col w-full">
-      {selectedArtist ? (
-        <div
-          className={` border sticky sm:border-none  
+      <div
+        className={`${classForSMScreen} border sticky sm:border-none  
         flex-col px-1 md:px-6 py-6 space-y-4 rounded-lg top-0 w-full bg-[#1B2539] w-full`}
-        >
-          <p className="text-3xl text-white font-bold">{artist.name}</p>
-          <ArtistGenresSection genres={artist.genres} />
-          <ArtistPopularitySection popularity={artist.popularity} />
-          <TopTrackSection artistTopTracks={artistTopTracks} />
-          <SimilarArtistSection similarArtists={similarArtists} />
-        </div>
-      ) : null}
+      >
+        <p className="text-3xl text-white font-bold">{selectedArtist.name}</p>
+        <ArtistGenresSection genres={selectedArtist.genres} />
+        <ArtistPopularitySection popularity={selectedArtist.popularity} />
+        <TopTrackSection artistTopTracks={artistTopTracks} />
+        <SimilarArtistSection similarArtists={similarArtists} />
+      </div>
     </div>
   );
 };

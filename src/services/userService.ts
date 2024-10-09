@@ -1,4 +1,4 @@
-import { getUserData, getComments, postComment, checkAuthentication } from './commonService';
+import { checkAuthentication, getComments, getUserData, postComment } from './commonService';
 
 export const getProfileHeaderData = (spotifyId: string) => {
     return getUserData(spotifyId, "profileHeader");
@@ -12,9 +12,6 @@ export const getUserTopTrack = (spotifyId: string) => {
     return getUserData(spotifyId, "topTracks");
 };
 
-export const getUserAnalyticsData = (spotifyId: string) => {
-    return getUserData(spotifyId, "analytics");
-};
 
 export const getCommentsForUser = (spotifyId: string) => {
     return getComments(spotifyId);
@@ -22,6 +19,12 @@ export const getCommentsForUser = (spotifyId: string) => {
 
 export const addCommentForUser = (spotifyId: string, comment: string) => {
     return postComment(spotifyId, comment);
+};
+
+
+
+export const getUserGenreDistribution = (spotifyId: string) => {
+    return getUserData(spotifyId, "genreDistribution");
 };
 
 
@@ -42,4 +45,8 @@ export const fetchAuthentication = async () => {
         console.error('Error checking authentication:', error);
         return { isAuthenticated: false };
     }
+};
+
+export const getUserTrackFeatureStats = (spotifyId: string) => {
+    return getUserData(spotifyId, "genreDistribution");
 };

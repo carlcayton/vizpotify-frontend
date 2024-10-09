@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import UpperSection from 'components/layout/UpperSection';
-import { getDataByTimeRange } from 'utils/util';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
+import { useGenreDistribution } from 'services/musicService';
 
-const UserTrackFeatureStat= ({ userTrackFeatureStatData }) => {
-    const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
-    const [userTrackFeaturesStat, setUserTrackFeaturesStat] = useState([]);
-    
+const UserTrackFeatureStat = ({ spotifyId }) => {
+    const [selectedTimeRange, setSelectedTimeRange] = useState('short_term');
+    const { data: genreDistributionData, isLoading, error } = useGenreDistribution(spotifyId);
 
-    useEffect(() => {
-        const features = getDataByTimeRange({ data: userTrackFeatureStatData, timeRange: selectedTimeRange });
-        setUserTrackFeaturesStat(features);
-    }, [userTrackFeatureStatData, selectedTimeRange]);
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>An error occurred: {error.message}</div>;
 
-    if (!userTrackFeaturesStat.length) {
+    if (!genreDistributionData || !genreDistributionData[selectedTimeRange]) {
+        return null;
+    }
+
+    const genreData = genreDistributionData[selectedTimeRange];
+
+    if (genreData.length === 0) {
         return null;
     }
 
     const chartData = {
-        labels: Object.keys(userTrackFeatureStat[0]),
+        labels: genreData.map(item => item.genre),
         datasets: [{
-            label: 'Percentage',
-            data: Object.values(userTrackFeatureStat[0])
-                .filter(value => typeof value === 'number')
-                .map(value => value * 100),
+            label: 'Genre Distribution',
+            data: genreData.map(item => item.percentage),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
@@ -32,10 +33,19 @@ const UserTrackFeatureStat= ({ userTrackFeatureStatData }) => {
 
     return (
         <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
-            <UpperSection sectionType="Track Features" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-            <LazyLoadedChart data={chartData} chartType="percentage" />
-            <UpperSection customTWClass={"hidden xl:flex"} sectionType="Track Features" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-            <LazyLoadedChart data={chartData} chartType="radar" />
+            <UpperSection 
+                sectionType="Genre Distribution" 
+                selectedTimeRange={selectedTimeRange} 
+                setSelectedTimeRange={setSelectedTimeRange} 
+            />
+            <LazyLoadedChart data={chartData} chartType="bar" />
+            <UpperSection 
+                customTWClass={"hidden xl:flex"} 
+                sectionType="Genre Distribution" 
+                selectedTimeRange={selectedTimeRange} 
+                setSelectedTimeRange={setSelectedTimeRange} 
+            />
+            <LazyLoadedChart data={chartData} chartType="pie" />
         </div>
     );
 };
