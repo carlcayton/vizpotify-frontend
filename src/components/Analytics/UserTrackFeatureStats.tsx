@@ -1,38 +1,27 @@
-import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { useState, useEffect } from 'react';
 import UpperSection from 'components/layout/UpperSection';
+import { getDataByTimeRange } from 'utils/util';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
-import { getUserTrackFeatureStats } from 'services/userService';
 
-const UserTrackFeatureStat = ({ spotifyId }) => {
+const UserTrackFeatureStat= ({ userTrackFeatureStatData }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
+    const [userTrackFeaturesStat, setUserTrackFeaturesStat] = useState([]);
+    
 
-    const { data: userTrackFeaturesStat, isLoading, isError } = useQuery(
-        ['userTrackFeatureStats', spotifyId, selectedTimeRange],
-        () => getUserTrackFeatureStats(spotifyId, selectedTimeRange),
-        {
-            refetchOnWindowFocus: false,
-            staleTime: 1000 * 60 * 5, // 5 minutes
-        }
-    );
+    useEffect(() => {
+        const features = getDataByTimeRange({ data: userTrackFeatureStatData, timeRange: selectedTimeRange });
+        setUserTrackFeaturesStat(features);
+    }, [userTrackFeatureStatData, selectedTimeRange]);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (isError) {
-        return <div>Error fetching data</div>;
-    }
-
-    if (!userTrackFeaturesStat || userTrackFeaturesStat.length === 0) {
+    if (!userTrackFeaturesStat.length) {
         return null;
     }
 
     const chartData = {
-        labels: Object.keys(userTrackFeaturesStat[0]),
+        labels: Object.keys(userTrackFeatureStat[0]),
         datasets: [{
             label: 'Percentage',
-            data: Object.values(userTrackFeaturesStat[0])
+            data: Object.values(userTrackFeatureStat[0])
                 .filter(value => typeof value === 'number')
                 .map(value => value * 100),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',

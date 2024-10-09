@@ -27,10 +27,6 @@ export const getUserGenreDistribution = (spotifyId: string) => {
     return getUserData(spotifyId, "genreDistribution");
 };
 
-export const getUserTrackFeatureStats = (spotifyId: string, timeRange: string) => {
-    return getUserData(spotifyId, `trackFeatureStats?timeRange=${timeRange}`);
-};
-
 
 export const fetchAuthentication = async () => {
     try {
