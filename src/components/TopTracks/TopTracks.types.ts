@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 
 export type TimeRange = "shortTerm" | "mediumTerm" | "longTerm";
 
@@ -13,6 +12,7 @@ export interface Track {
   popularity: number;
   releaseDate: string;
   releaseDateExternal?: string;
+  audioFeatures?: AudioFeatures;
 }
 
 export interface AudioFeatures {
@@ -34,7 +34,7 @@ export interface ShowMoreState {
 }
 
 export interface TrackDetailsPanelProps {
-  track: Track | null;
+  track: Track;
 }
 
 export interface TrackCardProps {
@@ -45,10 +45,8 @@ export interface TrackCardProps {
 }
 
 export interface TracksSelectionListProps {
-  userTopTracks: Track[];
+  userTopTracks: Track[] | undefined;
   showMore: ShowMoreState;
-  selectedTrack: Track | null;
-  setSelectedTrack: Dispatch<SetStateAction<Track | null>>;
 }
 
 export interface TopTracksProps {
