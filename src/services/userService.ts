@@ -1,5 +1,14 @@
 import { checkAuthentication, getComments, getUserData, postComment } from './commonService';
 
+export interface Comment {
+  id: string;
+  content: string;
+  userName: string;
+  createdAt: string;
+  likeCount: number;
+  authorImageUrl: string;
+}
+
 export const userService = {
   getProfileHeaderData: (spotifyId: string) => {
     return getUserData(spotifyId, "profileHeader");
@@ -13,12 +22,14 @@ export const userService = {
     return getUserData(spotifyId, "topTracks");
   },
 
-  getCommentsForUser: (spotifyId: string) => {
-    return getComments(spotifyId);
+  getCommentsForUser: async (spotifyId: string): Promise<Comment[]> => {
+    const comments = await getComments(spotifyId);
+    return comments;
   },
 
-  addCommentForUser: (spotifyId: string, comment: string) => {
-    return postComment(spotifyId, comment);
+  addCommentForUser: async (spotifyId: string, commentData: { content: string; dashboardSpotifyId: string }): Promise<Comment> => {
+    const newComment = await postComment(spotifyId, commentData);
+    return newComment;
   },
 
   fetchAuthentication: async () => {
@@ -40,3 +51,5 @@ export const userService = {
     }
   }
 };
+
+export const { getCommentsForUser, addCommentForUser } = userService;

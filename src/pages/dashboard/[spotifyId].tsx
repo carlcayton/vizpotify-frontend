@@ -24,10 +24,10 @@ export default function Dashboard() {
       <NavBar />
       <ProfileHeader spotifyId={spotifyId as string} />
       <div className={`flex flex-col justify-center w-full px-10 bg-[#111827] ${isMobile ? 'sm:px-32' : 'md:px-64'}`}>
-        <TopTracks spotifyId={spotifyId as string} />
+        {/* <TopTracks spotifyId={spotifyId as string} /> */}
         {/* <TopArtists spotifyId={spotifyId as string} /> */}
-        <Analytics spotifyId={spotifyId as string} />
-        {/* {profileHeaderData && <CommentSection spotifyId={spotifyId as string} />} */}
+        {/* <Analytics spotifyId={spotifyId as string} /> */}
+        <CommentSection spotifyId={spotifyId as string} />
       </div>
       <Modal
         title="User Not Found"
