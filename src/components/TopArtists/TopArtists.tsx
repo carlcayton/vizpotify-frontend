@@ -1,66 +1,59 @@
-import { useEffect, useState, useContext, createContext } from "react";
-import { SelectedArtistProvider } from "contexts/SelectedArtistContext";
-import { useIsMobile } from "utils/detectScreenSize"
-import { getDataByTimeRange } from "utils/util";
-import UpperSection from "components/layout/UpperSection"
-import { ArtistDetailsProvider } from "contexts/ArtistDetailsContext";
-import ShowMoreButton from "components/common/ShowMoreButton";
+// TopArtists.tsx
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useIsMobile } from 'utils/detectScreenSize';
+import UpperSection from 'components/layout/UpperSection';
+import { userService} from 'services/userService';
 
-import ArtistsSelectionList from "./ArtistsSelectionList";
-import ArtistDetailsPanel from "./ArtistDetailsPanel";
+import ArtistsSelectionList from './ArtistsSelectionList';
+import ArtistDetailsPanel from './ArtistDetailsPanel';
+import ShowMoreButton from 'components/common/ShowMoreButton';
 
-// const ShowMoreButton = ({ showMore, setShowMore }) => {
-//   const handleShowMore = () => {
-//     setShowMore((prevState) => ({
-//       isExpanded: !showMore.isExpanded,
-//       itemsToShow: !showMore.isExpanded ? showMore.totalItems : 10,
-//       totalItems: showMore.totalItems,
-//     }));
-//   };
-//   return (
-//     <button
-//       className="px-3 pb-1 flex text-white text-sm items-center mt-5 rounded-full ease-in-out hover:translate-y-1 transition-all group border border-white"
-//       onClick={handleShowMore}
-//     >
-//       {showMore.isExpanded ? "Show Less" : "Show More"}
-//     </button>
-//   );
-// };
+import { Artist, TimeRange, ShowMoreState, TopArtistsProps } from './TopArtists.types';
 
-const TopArtists = ({ innerRef, userTopArtistsAllTimeRange }) => {
-
-  const [selectedTimeRange, setSelectedTimeRange] = useState<string>("shortTerm");
-  const [userTopArtists, setUserTopArtists] = useState([]);
-
-  const [showMore, setShowMore] = useState({
+const TopArtists: React.FC<TopArtistsProps> = ({ spotifyId }) => {
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>("shortTerm");
+  const [showMore, setShowMore] = useState<ShowMoreState>({
     isExpanded: false,
     itemsToShow: 10,
     totalItems: 50,
   });
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
-  useEffect(() => {
-    if (userTopArtistsAllTimeRange) {
-      const artists = getDataByTimeRange({ data: userTopArtistsAllTimeRange, timeRange: selectedTimeRange });
-      setUserTopArtists(artists);
-    }
-  }, [userTopArtistsAllTimeRange, selectedTimeRange, userTopArtists]);
+  const { data: userTopArtists, isLoading, error } = useQuery<Record<TimeRange, Artist[]>, Error>({
+    queryKey: ['topArtists', spotifyId],
+    queryFn: () => userService.getUserTopArtist(spotifyId),
+    enabled: !!spotifyId,
+  });
 
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
+
+  const handleTimeRangeChange = (timeRange: string) => {
+    setSelectedTimeRange(timeRange as TimeRange);
+  };
+
+
+  if (isLoading) return <div className="text-white">Loading top artists...</div>;
+  if (error) return <div className="text-white">Error loading top artists: {error.message}</div>;
+
+  const artistsForSelectedTimeRange = userTopArtists ? userTopArtists[selectedTimeRange] : [];
+
   return (
-    <div ref={innerRef} className={`flex flex-col  justify-center items-center space-y-10 bg-[#111827] w-full `}>
-      <UpperSection sectionType={"Top Artists"} selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
-      <ArtistDetailsProvider>
-        <SelectedArtistProvider>
-          <div className="flex flex-row justify-center  bg-[#111827] space-x-1 w-full ">
-            <ArtistsSelectionList
-              userTopArtists={userTopArtists}
-              showMore={showMore}
-            />
-            {isMobile ? <div></div> : <ArtistDetailsPanel />}
-          </div>
-        </SelectedArtistProvider>
-      </ArtistDetailsProvider>
-
+    <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
+      <UpperSection
+        sectionType="Top Artists"
+        selectedTimeRange={selectedTimeRange}
+        setSelectedTimeRange={handleTimeRangeChange}
+      />
+      <div className="flex flex-row justify-center bg-[#111827] space-x-1 w-full">
+        <ArtistsSelectionList
+          userTopArtists={artistsForSelectedTimeRange}
+          showMore={showMore}
+          selectedArtist={selectedArtist}
+          setSelectedArtist={setSelectedArtist}
+        />
+        {!isMobile && <ArtistDetailsPanel artist={selectedArtist} />}
+      </div>
       <ShowMoreButton showMore={showMore} setShowMore={setShowMore} />
     </div>
   );
