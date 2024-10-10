@@ -2,7 +2,7 @@ import CommentForm from './CommentForm';
 import CommentCard from './CommentCard';
 import React, { useMemo } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getCommentsForUser, addCommentForUser, Comment } from 'services/userService';
+import { getCommentsForUser, addCommentForUser, Comment } from 'services/commentService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface CommentSectionProps {
