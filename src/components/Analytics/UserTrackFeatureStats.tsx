@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import UpperSection from 'components/layout/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
-import { useGenreDistribution } from 'services/musicService';
+import { TimeRange, UserTrackFeatureStats } from 'components/Analytics/Analytics.types';
+import { userAnalyticsService } from 'services/userAnalyticsService';
 
-const UserTrackFeatureStat = ({ spotifyId }) => {
-    const [selectedTimeRange, setSelectedTimeRange] = useState('short_term');
-    const { data: genreDistributionData, isLoading, error } = useGenreDistribution(spotifyId);
+const UserTrackFeatureStatsComponent = ({ spotifyId }: { spotifyId: string }) => {
+    const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('shortTerm');
 
+    const { data: trackFeatureStats, isLoading, error } = useQuery<UserTrackFeatureStats, Error>({
+        queryKey: ['trackFeatureStats', spotifyId],
+        queryFn: () => userAnalyticsService.getUserTrackFeatureStats(spotifyId),
+        enabled: !!spotifyId,
+    });
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
 
-    if (!genreDistributionData || !genreDistributionData[selectedTimeRange]) {
+    if (!trackFeatureStats || !trackFeatureStats.featureStatsByTimeRange[selectedTimeRange]) {
         return null;
     }
 
-    const genreData = genreDistributionData[selectedTimeRange];
 
-    if (genreData.length === 0) {
-        return null;
-    }
+    const featureData = trackFeatureStats.featureStatsByTimeRange[selectedTimeRange];
 
     const chartData = {
-        labels: genreData.map(item => item.genre),
+        labels: Object.keys(featureData),
         datasets: [{
-            label: 'Genre Distribution',
-            data: genreData.map(item => item.percentage),
+            label: 'Track Feature Stats',
+            data: Object.values(featureData).map(Number),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
@@ -33,21 +36,14 @@ const UserTrackFeatureStat = ({ spotifyId }) => {
 
     return (
         <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
-            <UpperSection 
-                sectionType="Genre Distribution" 
-                selectedTimeRange={selectedTimeRange} 
-                setSelectedTimeRange={setSelectedTimeRange} 
+            <UpperSection
+                sectionType="Track Feature Stats"
+                selectedTimeRange={selectedTimeRange}
+                setSelectedTimeRange={(timeRange: string) => setSelectedTimeRange(timeRange as TimeRange)}
             />
-            <LazyLoadedChart data={chartData} chartType="bar" />
-            <UpperSection 
-                customTWClass={"hidden xl:flex"} 
-                sectionType="Genre Distribution" 
-                selectedTimeRange={selectedTimeRange} 
-                setSelectedTimeRange={setSelectedTimeRange} 
-            />
-            <LazyLoadedChart data={chartData} chartType="pie" />
+            <LazyLoadedChart data={chartData} chartType="radar" />
         </div>
     );
 };
 
-export default UserTrackFeatureStat;
+export default UserTrackFeatureStatsComponent;

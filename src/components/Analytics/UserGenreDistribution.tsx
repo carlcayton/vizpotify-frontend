@@ -1,50 +1,67 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import UpperSection from 'components/layout/UpperSection';
-import LazyLoadedChart from 'components/charts/LazyLoadedChart';
-import { getDataByTimeRange } from 'utils/util';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import UpperSection from '@/components/layout/UpperSection';
+import LazyLoadedChart from '@/components/charts/LazyLoadedChart';
+import { TimeRange, UserGenreDistribution } from '@/components/Analytics/Analytics.types';
+import { userAnalyticsService } from '@/services/userAnalyticsService';
 
-const UserGenreDistribution = ({ genreDistributionData }) => {
-    const [selectedTimeRange, setSelectedTimeRange] = useState('shortTerm');
-    const [genreDistribution, setGenreDistribution] = useState([]);
+const UserGenreDistributionComponent = ({ spotifyId }: { spotifyId: string }) => {
+    const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('shortTerm');
 
-    useEffect(() => {
-        const distribution = getDataByTimeRange({ data: genreDistributionData, timeRange: selectedTimeRange });
-        setGenreDistribution(distribution);
-    }, [genreDistributionData, selectedTimeRange]);
+    const { data: genreDistribution, isLoading, error } = useQuery<UserGenreDistribution, Error>({
+        queryKey: ['genreDistribution', spotifyId],
+        queryFn: () => userAnalyticsService.getUserGenreDistribution(spotifyId),
+        enabled: !!spotifyId,
+    });
 
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>An error occurred: {error.message}</div>;
 
-    const percentageChartData = {
-        labels: genreDistribution.map(item => item.genre),
-        datasets: [{
-            label: 'Percentage',
-            data: genreDistribution.map(item => item.percentage),
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-        }],
-        title: "Genre Percentage Distribution"
-    };
+    if (!genreDistribution || !genreDistribution.genreDistributionsByTimeRange[selectedTimeRange]) {
+        return null;
+    }
+
+    const currentDistribution = genreDistribution.genreDistributionsByTimeRange[selectedTimeRange];
 
     const frequencyChartData = {
-        labels: genreDistribution.map(item => item.genre),
+        labels: currentDistribution.map(item => item.genre),
         datasets: [{
-            label: 'Frequency',
-            data: genreDistribution.map(item => item.genre_count),
+            label: 'Genre Frequency',
+            data: currentDistribution.map(item => item.genreCount),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
         }],
-        title: "Genre Frequency Distribution"
+    };
+
+    const percentageChartData = {
+        labels: currentDistribution.map(item => item.genre),
+        datasets: [{
+            label: 'Genre Percentage',
+            data: currentDistribution.map(item => item.percentage),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+        }],
     };
 
     return (
         <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
-            <UpperSection sectionType="Genre Distribution (Count)" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
+            <UpperSection
+                sectionType="Genre Distribution (Count)"
+                selectedTimeRange={selectedTimeRange}
+                setSelectedTimeRange={(timeRange: string) => setSelectedTimeRange(timeRange as TimeRange)}
+            />
             <LazyLoadedChart data={frequencyChartData} chartType="vertical" />
-            <UpperSection customTWClass={"hidden xl:flex"} sectionType="Genre Distribution (Percentage)" selectedTimeRange={selectedTimeRange} setSelectedTimeRange={setSelectedTimeRange} />
+            <UpperSection
+                customTWClass={"hidden xl:flex"}
+                sectionType="Genre Distribution (Percentage)"
+                selectedTimeRange={selectedTimeRange}
+                setSelectedTimeRange={(timeRange: string) => setSelectedTimeRange(timeRange as TimeRange)}
+            />
             <LazyLoadedChart data={percentageChartData} chartType="doughnut" />
         </div>
     );
 };
 
-export default UserGenreDistribution;
+export default UserGenreDistributionComponent;

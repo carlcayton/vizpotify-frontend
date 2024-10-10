@@ -1,47 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { getUserAnalyticsData } from 'services/userService';
-import UserTrackFeatureStats from './UserTrackFeatureStats';
-import UserGenreDistribution from './UserGenreDistribution';
-import UserMusicEraSummary from './UserMusicEraSummary';
-import UserArtistTrackCount from './UserArtistTrackCount';
+import React from 'react';
 
-const Analytics = ({ innerRef, spotifyId }) => {
-    const [userAnalyticsData, setUserAnalyticsData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+import UserTrackFeatureStatsComponent from '@/components/Analytics/UserTrackFeatureStats';
+import UserGenreDistribution from '@/components/Analytics/UserGenreDistribution';
+import UserMusicEraSummary from '@/components/Analytics/UserMusicEraSummary';
+import UserArtistTrackCount from '@/components/Analytics/UserArtistTrackCount';
 
-    useEffect(() => {
-        const fetchAnalyticsData = async () => {
-            if (!spotifyId) return;
-            setIsLoading(true);
-            try {
-                const data = await getUserAnalyticsData(spotifyId);
-                setUserAnalyticsData(data);
-                setIsLoading(false);
-            } catch (error) {
-                console.error('Error fetching analytics data:', error);
-                setIsLoading(false);
-            }
-        };
-
-        fetchAnalyticsData();
-    }, [spotifyId]);
-
-    if (isLoading || !userAnalyticsData) {
-        return <div ref={innerRef} className="flex flex-col w-full">Loading analytics...</div>;
+const Analytics = ({ spotifyId }: { spotifyId: string }) => {
+    if (!spotifyId) {
+        return <div className="flex flex-col w-full">No Spotify ID provided</div>;
     }
-    // use camelcase for keys
-
-    const userTrackFeatureStatsData = userAnalyticsData?.userTrackFeatureStats;
-    const genreDistributionData = userAnalyticsData?.userGenreDistribution;
-    const musicEraSummaryData = userAnalyticsData?.userMusicEraSummary;
-    const artistTrackCountData = userAnalyticsData?.userArtistTrackCount;
 
     return (
-        <div ref={innerRef} className="flex flex-col w-full">
-            <UserGenreDistribution genreDistributionData={genreDistributionData} />
-            <UserTrackFeatureStats userTrackFeatureStatData={userTrackFeatureStatsData} />
-            <UserMusicEraSummary userMusicEraData={musicEraSummaryData} />
-            <UserArtistTrackCount userArtistTrackCountData={artistTrackCountData} />
+        <div className="flex flex-col w-full">
+            <UserTrackFeatureStatsComponent spotifyId={spotifyId} />
+            <UserGenreDistribution spotifyId={spotifyId} />
+            <UserMusicEraSummary spotifyId={spotifyId} />
+            <UserArtistTrackCount spotifyId={spotifyId} />
         </div>
     );
 };

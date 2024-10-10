@@ -1,37 +1,57 @@
 export type TimeRange = 'shortTerm' | 'mediumTerm' | 'longTerm';
 
-export type TimeRangedData<T> = Record<TimeRange, T[]>;
+export interface UserTrackFeatureStatsData {
+  acousticness: string;
+  danceability: string;
+  energy: string;
+  instrumentalness: string;
+  liveness: string;
+  speechiness: string;
+  valence: string;
+}
 
 export interface UserTrackFeatureStats {
-    danceability: number;
-    energy: number;
-    loudness: number;
-    speechiness: number;
-    acousticness: number;
-    instrumentalness: number;
-    liveness: number;
-    valence: number; 
-
+  userSpotifyId: string;
+  featureStatsByTimeRange: {
+    [key in TimeRange]: UserTrackFeatureStatsData;
+  };
 }
 
-export interface GenreDistribution {
-    genre: string;
-    percentage: number;
+export interface UserGenreDistributionData {
+  genre: string;
+  genreCount: number;
+  percentage: number;
 }
 
-export interface MusicEraSummary {
-    era: string;
-    percentage: number;
+export interface UserGenreDistribution {
+  userSpotifyId: string;
+  genreDistributionsByTimeRange: {
+    [key in TimeRange]: UserGenreDistributionData[];
+  };
 }
 
-export interface ArtistTrackCount {
-    artistName: string;
-    trackCount: number;
+export interface MusicEraItem {
+  releaseDateRange: string;
+  trackCount: number;
+  percentage: number;
 }
 
-export interface AnalyticsData {
-    userTrackFeatureStats: TimeRangedData<UserTrackFeatureStats>;
-    userGenreDistribution: TimeRangedData<GenreDistribution>;
-    userMusicEraSummary: TimeRangedData<MusicEraSummary>;
-    userArtistTrackCount: TimeRangedData<ArtistTrackCount>;
+export interface UserMusicEraSummary {
+  userSpotifyId: string;
+  eraSummariesByTimeRange: {
+    [key in TimeRange]: MusicEraItem[];
+  };
+}
+
+export interface ArtistTrackCountItem {
+  artistName: string;
+  trackCount: number;
+  percentage: number;
+}
+
+export interface UserArtistTrackCount {
+  userSpotifyId: string;
+  artistTrackCountsByTimeRange: {
+    [key in TimeRange]: ArtistTrackCountItem[];
+  };
 }

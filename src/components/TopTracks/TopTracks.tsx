@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useIsMobile } from 'utils/detectScreenSize';
 import UpperSection from 'components/layout/UpperSection';
-import { getUserTopTrack } from 'services/userService';
+import { userService } from 'services/userService';
 
 import TracksSelectionList from './TrackSelectionList';
 import TrackDetailsPanel from './TrackDetailsPanel';
@@ -21,7 +21,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ spotifyId }) => {
 
   const { data: userTopTracks, isLoading, error } = useQuery<Record<TimeRange, Track[]>, Error>({
     queryKey: ['topTracks', spotifyId],
-    queryFn: () => getUserTopTrack(spotifyId),
+    queryFn: () => userService.getUserTopTrack(spotifyId),
     enabled: !!spotifyId,
   });
 

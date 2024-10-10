@@ -1,40 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import UpperSection from 'components/layout/UpperSection';
-import { getDataByTimeRange } from 'utils/util';
-import LazyLoadedChart from 'components/charts/LazyLoadedChart';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import UpperSection from '@/components/layout/UpperSection';
+import LazyLoadedChart from '@/components/charts/LazyLoadedChart';
+import { TimeRange } from '@/components/Analytics/Analytics.types';
+import { userAnalyticsService } from '@/services/userAnalyticsService';
+import { UserMusicEraSummary } from '@/components/Analytics/Analytics.types';
 
-interface MusicEraItem {
-  releaseDateRange: string;
-  trackCount: number;
-  percentage: number;
-}
 
-interface UserMusicEraData {
-  shortTerm: MusicEraItem[];
-  mediumTerm: MusicEraItem[];
-  longTerm: MusicEraItem[];
-}
-
-type TimeRange = 'shortTerm' | 'mediumTerm' | 'longTerm';
-
-interface UserMusicEraSummaryProps {
-  userMusicEraData: UserMusicEraData;
-}
-
-const UserMusicEraSummary = ({ userMusicEraData }: UserMusicEraSummaryProps) => {
+const UserMusicEraSummaryComponent = ({ spotifyId }: { spotifyId: string }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('shortTerm');
-  const [musicEraData, setMusicEraData] = useState<MusicEraItem[]>([]);
 
-  useEffect(() => {
-    const data = getDataByTimeRange({ data: userMusicEraData, timeRange: selectedTimeRange });
-    setMusicEraData(data);
-  }, [userMusicEraData, selectedTimeRange]);
+  const { data: musicEraSummary, isLoading, error } = useQuery<UserMusicEraSummary, Error>({
+    queryKey: ['musicEraSummary', spotifyId],
+    queryFn: () => userAnalyticsService.getUserMusicEraSummary(spotifyId),
+    enabled: !!spotifyId,
+  });
 
-  if (!musicEraData.length) {
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {error.message}</div>;
+
+  if (!musicEraSummary || !musicEraSummary.eraSummariesByTimeRange[selectedTimeRange]) {
     return null;
   }
 
-  const reversedData = [...musicEraData].reverse().filter(item => item.releaseDateRange !== '< 1950');
+  const currentEraSummary = musicEraSummary.eraSummariesByTimeRange[selectedTimeRange];
+  const reversedData = [...currentEraSummary].reverse().filter(item => item.releaseDateRange !== '< 1950');
+
   const chartData = {
     labels: reversedData.map(item => item.releaseDateRange),
     datasets: [{
@@ -46,13 +37,12 @@ const UserMusicEraSummary = ({ userMusicEraData }: UserMusicEraSummaryProps) => 
     }]
   };
 
-
   return (
     <div className="flex flex-col justify-center items-center space-y-10 bg-[#111827] w-full">
       <UpperSection 
         sectionType="User Music Era Summary" 
         selectedTimeRange={selectedTimeRange} 
-        setSelectedTimeRange={setSelectedTimeRange} 
+        setSelectedTimeRange={(timeRange: string) => setSelectedTimeRange(timeRange as TimeRange)} 
       />
       <div className='flex flex-col xl:flex-row w-full h-full items-center'>
         <LazyLoadedChart data={chartData} chartType="percentage" />
@@ -61,4 +51,4 @@ const UserMusicEraSummary = ({ userMusicEraData }: UserMusicEraSummaryProps) => 
   );
 };
 
-export default UserMusicEraSummary;
+export default UserMusicEraSummaryComponent;
