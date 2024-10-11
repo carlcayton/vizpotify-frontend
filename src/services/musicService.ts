@@ -1,6 +1,6 @@
 import { getArtistInfo, getTrackFeatures } from './commonService';
-import { useQuery } from '@tanstack/react-query';
 import { getUserGenreDistribution } from './userService';
+import { TimeRangedData, UserTrackFeatureStatsDto } from 'components/Analytics/Analytics.types';
 
 export const getArtistExtraInfo = async (artistId: string) => {
     try {
@@ -19,18 +19,6 @@ export const getTrackAudioFeature = async (trackId: string) => {
     return null;
 };
 
-export interface UserGenreDistributionMap {
-    [timeRange: string]: {
-        genre: string;
-        genreCount: number;
-        percentage: number;
-    }[];
-}
 
-export const useGenreDistribution = (spotifyId: string) => {
-    return useQuery<UserGenreDistributionMap, Error>({
-        queryKey: ['genreDistribution', spotifyId],
-        queryFn: () => getUserGenreDistribution(spotifyId),
-        enabled: !!spotifyId,
-    });
-};
+
+

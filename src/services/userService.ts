@@ -1,4 +1,4 @@
-import { checkAuthentication, getComments, getUserData, postComment } from './commonService';
+import { checkAuthentication, getUserData } from './commonService';
 
 export const userService = {
   getProfileHeaderData: (spotifyId: string) => {
@@ -11,14 +11,6 @@ export const userService = {
 
   getUserTopTrack: (spotifyId: string) => {
     return getUserData(spotifyId, "topTracks");
-  },
-
-  getCommentsForUser: (spotifyId: string) => {
-    return getComments(spotifyId);
-  },
-
-  addCommentForUser: (spotifyId: string, comment: string) => {
-    return postComment(spotifyId, comment);
   },
 
   fetchAuthentication: async () => {

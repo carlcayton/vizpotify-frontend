@@ -5,20 +5,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useUserProfile } from 'contexts/UserContext';
 
-const CommentForm = ({ onSubmitComment }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+interface CommentFormProps {
+  onSubmitComment: (comment: string) => void;
+}
 
-    const  userProfile  = useUserProfile();
+interface CommentFormData {
+  comment: string;
+}
 
-    const onSubmit = data => {
+const CommentForm: React.FC<CommentFormProps> = ({ onSubmitComment }) => {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<CommentFormData>();
+    const userProfile = useUserProfile();
+
+    const onSubmit = (data: CommentFormData) => {
         onSubmitComment(data.comment);
+        reset(); 
     };
 
     return (
         <div className="bg-gray-800 p-4 rounded-md">
             <form onSubmit={handleSubmit(onSubmit)} className="flex items-center space-x-2">
                 <Avatar>
-                    <AvatarImage src={userProfile?.profilePictureUrl || '/Dashboard/user.svg'} />
+                    <AvatarImage src={userProfile?.profilePictureUrl || '/Dashboard/user.svg'} alt="User avatar" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <Input
@@ -30,6 +38,7 @@ const CommentForm = ({ onSubmitComment }) => {
                     Comment
                 </Button>
             </form>
+            {errors.comment && <p className="text-red-500 mt-2">{errors.comment.message}</p>}
         </div>
     );
 }
