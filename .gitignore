@@ -44,3 +44,5 @@ test.json
 create_barrels.py
 create_barrels_2.py
 repopack-output.txt
+.aider*
+# docs

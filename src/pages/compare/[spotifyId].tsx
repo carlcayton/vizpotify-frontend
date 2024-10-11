@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import NavBar from 'components/layout/NavBar';
 import ProfileHeader from 'components/ProfileHeader';
 import { getComparisonData, } from 'services/commonService';
-import { getProfileHeaderData } from 'services/userService';
+import { userService} from 'services/userService';
 import Modal from "components/common/Modal";
 import SimilarityMeter from 'components/comparison/Similarity';
 
@@ -30,7 +30,6 @@ export default function ComparisonPage() {
         if (spotifyId) {
           const data = await getComparisonData(spotifyId);
           setComparisonData(data);
-          console.log(data);
         }
       } catch (error) {
         console.error("Failed to fetch comparison data:", error);
@@ -43,7 +42,7 @@ export default function ComparisonPage() {
     const fetchData = async () => {
       try {
         if (spotifyId) {
-          const data = await getProfileHeaderData(spotifyId);
+          const data = await userService.getProfileHeaderData(spotifyId);
           setProfileHeaderData(data);
         }
       } catch (error) {

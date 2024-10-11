@@ -1,7 +1,5 @@
-// contexts/UserContext.tsx
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import axios from 'axios';
-import { fetchAuthentication } from '../services/userService';
+import { userService} from '../services/userService';
 
 interface UserProfile {
   spotifyId: string;
@@ -21,7 +19,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await fetchAuthentication();
+        const response = await userService.fetchAuthentication();
         if (response.isAuthenticated) {
           setUserProfile({
             spotifyId: response.spotifyId,
