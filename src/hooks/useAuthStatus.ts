@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { checkAuthentication } from '@/services/commonService';
 import { useRouter } from 'next/router';
-import { checkAuthentication } from 'services/commonService';
+import { useEffect, useState } from 'react';
 
 const useAuthStatus = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

@@ -1,6 +1,4 @@
 import { getArtistInfo, getTrackFeatures } from './commonService';
-import { getUserGenreDistribution } from './userService';
-import { TimeRangedData, UserTrackFeatureStatsDto } from 'components/Analytics/Analytics.types';
 
 export const getArtistExtraInfo = async (artistId: string) => {
     try {

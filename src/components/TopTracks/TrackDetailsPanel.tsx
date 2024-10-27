@@ -54,7 +54,7 @@ const AudioFeatureSection: React.FC<{ audioFeatures: AudioFeatures }> = ({ audio
                     </div>
                 ))}
                 <div className="col-span-2">
-                    <span className="text-sm text-white font-semibold">Tempo:</span>
+                    <SectionTitle sectionName="Audio Tempo" />
                     <p className="text-white">{audioFeatures.tempo.toFixed(2)} BPM</p>
                 </div>
             </div>

@@ -2,21 +2,31 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import UpperSection from '@/components/layout/UpperSection';
 import LazyLoadedChart from '@/components/charts/LazyLoadedChart';
-import { TimeRange, UserGenreDistribution } from '@/components/Analytics/Analytics.types';
+import { TimeRange, UserGenreDistribution, AnalyticsResponse } from '@/components/Analytics/Analytics.types';
 import { userAnalyticsService } from '@/services/userAnalyticsService';
 
 const UserGenreDistributionComponent = ({ spotifyId }: { spotifyId: string }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('shortTerm');
 
-    const { data: genreDistribution, isLoading, error } = useQuery<UserGenreDistribution, Error>({
+    const { data, isLoading, error } = useQuery<AnalyticsResponse<UserGenreDistribution>, Error>({
         queryKey: ['genreDistribution', spotifyId],
         queryFn: () => userAnalyticsService.getUserGenreDistribution(spotifyId),
         enabled: !!spotifyId,
+        retry: 3,
+        retryDelay: 3000,
+        refetchInterval: (query) => {
+            return query.state.data?.status === 'processing' ? 5000 : false;
+        },
     });
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
 
+    if (data?.status === 'processing') {
+        return <div>{data.message}</div>;
+    }
+
+    const genreDistribution = data?.data;
     if (!genreDistribution || !genreDistribution.genreDistributionsByTimeRange[selectedTimeRange]) {
         return null;
     }

@@ -2,23 +2,31 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import UpperSection from '@/components/layout/UpperSection';
 import LazyLoadedChart from '@/components/charts/LazyLoadedChart';
-import { TimeRange } from '@/components/Analytics/Analytics.types';
+import { TimeRange, UserArtistTrackCount, AnalyticsResponse } from '@/components/Analytics/Analytics.types';
 import { userAnalyticsService } from '@/services/userAnalyticsService';
-import { ArtistTrackCountItem, UserArtistTrackCount } from '@/components/Analytics/Analytics.types';
-
 
 const UserArtistTrackCountComponent = ({ spotifyId }: { spotifyId: string }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('shortTerm');
 
-    const { data: artistTrackCount, isLoading, error } = useQuery<UserArtistTrackCount, Error>({
+    const { data, isLoading, error } = useQuery<AnalyticsResponse<UserArtistTrackCount>, Error>({
         queryKey: ['artistTrackCount', spotifyId],
         queryFn: () => userAnalyticsService.getUserArtistTrackCount(spotifyId),
         enabled: !!spotifyId,
+        retry: 3,
+        retryDelay: 5000,
+        refetchInterval: (query) => {
+            return query.state.data?.status === 'processing' ? 5000 : false;
+        },
     });
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
 
+    if (data?.status === 'processing') {
+        return <div>{data.message}</div>;
+    }
+
+    const artistTrackCount = data?.data;
     if (!artistTrackCount || !artistTrackCount.artistTrackCountsByTimeRange[selectedTimeRange]) {
         return null;
     }

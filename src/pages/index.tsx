@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import NavBar from "components/layout/NavBar";
 
-import { checkAuthentication } from 'services/commonService';
+import { checkAuthentication } from '@/services/commonService';
 
 export async function getServerSideProps(context) {
   try {

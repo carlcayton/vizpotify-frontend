@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
-import { FaThumbsUp } from 'react-icons/fa';
 
 
 const CommentCard = ({ userName, content, createdAt, authorImageUrl }) => {

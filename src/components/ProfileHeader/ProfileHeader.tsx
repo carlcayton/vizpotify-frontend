@@ -34,7 +34,6 @@ const ProfileHeader = ({ spotifyId }: ProfileHeaderProps) => {
     queryFn: () => userService.getProfileHeaderData(spotifyId),
     enabled: !!spotifyId,
   });
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

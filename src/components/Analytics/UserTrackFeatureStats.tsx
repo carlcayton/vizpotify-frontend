@@ -1,21 +1,34 @@
+
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import UpperSection from 'components/layout/UpperSection';
 import LazyLoadedChart from 'components/charts/LazyLoadedChart';
-import { TimeRange, UserTrackFeatureStats } from 'components/Analytics/Analytics.types';
+import { TimeRange, UserTrackFeatureStats, AnalyticsResponse } from 'components/Analytics/Analytics.types';
 import { userAnalyticsService } from 'services/userAnalyticsService';
 
 const UserTrackFeatureStatsComponent = ({ spotifyId }: { spotifyId: string }) => {
     const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('shortTerm');
 
-    const { data: trackFeatureStats, isLoading, error } = useQuery<UserTrackFeatureStats, Error>({
+    const { data, isLoading, error } = useQuery<AnalyticsResponse<UserTrackFeatureStats>, Error>({
         queryKey: ['trackFeatureStats', spotifyId],
         queryFn: () => userAnalyticsService.getUserTrackFeatureStats(spotifyId),
         enabled: !!spotifyId,
+        retry: 3,
+        retryDelay: 1000,
+        refetchInterval: (query) => {
+            return query.state.data?.status === 'processing' ? 5000 : false;
+        },
     });
+
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
 
+    console.log(data)
+    if (data?.status === 'processing') {
+        return <div>{data.message}</div>;
+    }
+
+    const trackFeatureStats = data?.data;
     if (!trackFeatureStats || !trackFeatureStats.featureStatsByTimeRange[selectedTimeRange]) {
         return null;
     }

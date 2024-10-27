@@ -55,3 +55,9 @@ export interface UserArtistTrackCount {
     [key in TimeRange]: ArtistTrackCountItem[];
   };
 }
+
+export interface AnalyticsResponse<T> {
+  status: 'processing' | 'complete';
+  message: string;
+  data: T | null;
+}
