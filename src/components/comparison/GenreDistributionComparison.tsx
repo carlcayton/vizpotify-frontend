@@ -12,14 +12,25 @@ import type {
     CombinedGenreData
 } from '@/types/genreDistribution';
 
+import {
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend
+} from 'recharts';
+
 const LoadingSkeleton = () => (
-    <div className="space-y-4 w-full">
-        <div className="flex justify-between items-center">
-            <Skeleton className="h-8 w-48 bg-gray-700" />
-            <Skeleton className="h-10 w-32 bg-gray-700" />
+    <div className="space-y-6 w-full p-4">
+        <div className="flex justify-between items-center gap-4">
+            <Skeleton className="h-8 w-48 bg-gray-700/50" />
+            <Skeleton className="h-10 w-32 bg-gray-700/50" />
         </div>
         <div className="flex justify-center">
-            <Skeleton className="h-[400px] w-full bg-gray-700" />
+            <Skeleton className="h-[450px] w-full bg-gray-700/50 rounded-lg" />
         </div>
     </div>
 );
@@ -41,15 +52,14 @@ interface GenreVisualizationProps {
     maxGenres?: number;
 }
 
-// Custom tooltip for the bar chart
 const CustomTooltip = ({ active, payload, label }) => {
     if (!active || !payload) return null;
 
     return (
-        <div className="bg-gray-800 border border-gray-700 p-4 rounded-lg shadow-lg">
-            <p className="text-white font-medium mb-2">{label}</p>
+        <div className="bg-gray-800/95 border border-gray-700 p-4 rounded-lg shadow-lg backdrop-blur-sm">
+            <p className="text-white font-medium mb-3">{label}</p>
             {payload.map((entry, index) => (
-                <div key={index} className="flex items-center gap-2">
+                <div key={index} className="flex items-center gap-3 py-1">
                     <div
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: entry.fill }}
@@ -126,8 +136,8 @@ export const GenreDoughnutChart: React.FC<GenreVisualizationProps> = ({
     user2Name,
     maxGenres = 5
 }) => {
-    const chartData = React.useMemo(() => {
-        const user1Data = {
+    const chartData = React.useMemo(() => ({
+        user1Data: {
             labels: data.slice(0, maxGenres).map(d => d.genre),
             datasets: [{
                 data: data.slice(0, maxGenres).map(d => d.user1Percentage),
@@ -137,9 +147,8 @@ export const GenreDoughnutChart: React.FC<GenreVisualizationProps> = ({
                 borderColor: '#111827',
                 borderWidth: 2,
             }]
-        };
-
-        const user2Data = {
+        },
+        user2Data: {
             labels: data.slice(0, maxGenres).map(d => d.genre),
             datasets: [{
                 data: data.slice(0, maxGenres).map(d => d.user2Percentage),
@@ -149,13 +158,12 @@ export const GenreDoughnutChart: React.FC<GenreVisualizationProps> = ({
                 borderColor: '#111827',
                 borderWidth: 2,
             }]
-        };
-
-        return { user1Data, user2Data };
-    }, [data, maxGenres]);
+        }
+    }), [data, maxGenres]);
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'bottom' as const,
@@ -164,8 +172,11 @@ export const GenreDoughnutChart: React.FC<GenreVisualizationProps> = ({
                     padding: 20,
                     font: {
                         size: 12
-                    }
-                }
+                    },
+                    // Ensure labels don't get cut off
+                    textAlign: 'left',
+                    boxWidth: 15
+                },
             },
             tooltip: {
                 callbacks: {
@@ -178,22 +189,31 @@ export const GenreDoughnutChart: React.FC<GenreVisualizationProps> = ({
                 }
             }
         },
-        cutout: '60%'
+        cutout: '60%',
+        layout: {
+            padding: {
+                bottom: 20
+            }
+        }
     };
 
     return (
-        <div className="grid grid-cols-2 gap-8 h-full">
-            <div className="flex flex-col items-center">
-                <h3 className="text-white mb-4">{user1Name}</h3>
-                <Doughnut data={chartData.user1Data} options={options} />
-            </div>
-            <div className="flex flex-col items-center">
-                <h3 className="text-white mb-4">{user2Name}</h3>
-                <Doughnut data={chartData.user2Data} options={options} />
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+            {[
+                { name: user1Name, data: chartData.user1Data },
+                { name: user2Name, data: chartData.user2Data }
+            ].map(({ name, data }, index) => (
+                <div key={index} className="flex flex-col items-center">
+                    <h3 className="text-white mb-4 font-medium">{name}</h3>
+                    <div className="relative w-full h-[300px] md:h-[350px]">
+                        <Doughnut data={data} options={options} />
+                    </div>
+                </div>
+            ))}
         </div>
     );
 };
+
 
 const GenreDistributionComparison: React.FC<GenreDistributionComparisonProps> = ({
     user1Profile,
@@ -260,30 +280,34 @@ const GenreDistributionComparison: React.FC<GenreDistributionComparisonProps> = 
     }
 
     return (
-        <Card className="w-full bg-gray-800 border-gray-700">
-            <CardHeader>
-                <div className="flex justify-between items-center">
-                    <div>
-                        <CardTitle className="text-white">Genre Distribution</CardTitle>
-                        <CardDescription className="text-gray-400">
+        <Card className="bg-gray-800/95 border-gray-700 transition-all duration-300">
+            <CardHeader className="px-6 pb-4">
+                <div className="flex justify-between items-center gap-8">
+                    <div className="space-y-1.5">
+                        <CardTitle className="text-xl font-medium">Genre Distribution</CardTitle>
+                        <CardDescription className="text-sm text-gray-400">
                             Compare music genre preferences between users
                         </CardDescription>
                     </div>
-                    <div className="flex gap-4">
-                        <Select
-                            value={timeRange}
-                            onValueChange={(value: TimeRange) => setTimeRange(value)}
-                        >
-                            <SelectTrigger className="w-[180px] bg-gray-700 border-gray-600">
-                                <SelectValue placeholder="Select time range" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-gray-700 border-gray-600">
-                                <SelectItem value="shortTerm">Last 4 Weeks</SelectItem>
-                                <SelectItem value="mediumTerm">Last 6 Months</SelectItem>
-                                <SelectItem value="longTerm">All Time</SelectItem>
-                            </SelectContent>
-                        </Select>
+                    <div className="flex items-center gap-4">
+                        <div className="flex gap-2 bg-gray-700/50 rounded-lg p-1.5">
+                            {[
+                                { label: '4 Weeks', value: 'shortTerm' },
+                                { label: 'All Time', value: 'longTerm' }
+                            ].map(option => (
+                                <button
+                                    key={option.value}
+                                    onClick={() => setTimeRange(option.value)}
+                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 
+              ${timeRange === option.value
+                                            ? 'bg-gray-600 text-white shadow-sm'
+                                            : 'text-gray-400 hover:text-white hover:bg-gray-600/50'}`}
 
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
                         <Tabs
                             value={viewType}
                             onValueChange={(value: ViewType) => setViewType(value)}
@@ -303,7 +327,10 @@ const GenreDistributionComparison: React.FC<GenreDistributionComparisonProps> = 
             </CardHeader>
 
             <CardContent>
-                <div className="h-[500px] w-full">
+                <div className={`w-full ${viewType === 'doughnut'
+                    ? 'min-h-[450px] md:min-h-[200px]'
+                    : 'h-[400px]'} 
+                    pt-4 px-2`}>
                     {viewType === 'bar' ? (
                         <GenreBarChart
                             data={combinedData}
