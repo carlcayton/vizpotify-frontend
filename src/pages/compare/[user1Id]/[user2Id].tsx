@@ -8,31 +8,39 @@ import { userService } from '@/services/userService';
 import { ProfileData } from '@/types/comparison';
 import { Skeleton } from '@/components/ui/skeleton';
 
+
 const ComparisonSkeleton = () => (
-  <div className="min-h-screen bg-gray-900 text-white p-6 space-y-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Skeleton className="h-32 bg-gray-800" />
-      <Skeleton className="h-32 bg-gray-800" />
+  <div className="min-h-screen bg-gray-900 p-4">
+    <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Skeleton className="h-32 bg-gray-800" />
+        <Skeleton className="h-32 bg-gray-800" />
+      </div>
+      <Skeleton className="h-40 bg-gray-800 mt-6" />
+      <Skeleton className="h-96 bg-gray-800 mt-6" />
     </div>
-    <Skeleton className="h-40 bg-gray-800" />
-    <Skeleton className="h-96 bg-gray-800" />
   </div>
 );
 
 const ComparisonErrorState = ({ message }: { message: string }) => (
-  <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-    <div className="text-white text-center">
-      <h2 className="text-xl font-bold mb-2">Error</h2>
-      <p className="text-gray-400">{message}</p>
+  <div className="min-h-screen bg-gray-900">
+    <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 flex items-center justify-center min-h-[50vh]">
+      <div className="text-white text-center">
+        <h2 className="text-xl font-bold mb-2">Error</h2>
+        <p className="text-gray-400">{message}</p>
+      </div>
     </div>
   </div>
 );
+
 
 const ComparePage = () => {
   const router = useRouter();
   const { user1Id, user2Id } = router.query;
 
   // Fetch comparison data
+
+
   const {
     data: comparisonData,
     isLoading: isLoadingComparison,
@@ -46,7 +54,6 @@ const ComparePage = () => {
     staleTime: 30000, // Optional: Keep the data fresh for 30 seconds
   });
 
-  // Fetch user 1 profile
   const {
     data: user1Profile,
     isLoading: isLoadingUser1,
@@ -58,7 +65,6 @@ const ComparePage = () => {
     retry: 2,
   });
 
-  // Fetch user 2 profile
   const {
     data: user2Profile,
     isLoading: isLoadingUser2,
@@ -70,13 +76,22 @@ const ComparePage = () => {
     retry: 2,
   });
 
-  // Loading state
+  const PageWrapper = ({ children }) => (
+    <div className="flex flex-col min-h-screen bg-gray-900">
+      <NavBar />
+      <main className="flex-grow">
+        <div className="mx-auto max-w-7xl w-full px-4 md:px-8 lg:px-12 py-6 md:py-8 lg:py-12">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+
   if (isLoadingComparison || isLoadingUser1 || isLoadingUser2) {
     return (
-      <div className="flex flex-col">
-        <NavBar />
+      <PageWrapper>
         <ComparisonSkeleton />
-      </div>
+      </PageWrapper>
     );
   }
 
@@ -90,7 +105,6 @@ const ComparePage = () => {
     );
   }
 
-  // Success state - only render when we have all the data
   if (isComparisonSuccess && isUser1Success && isUser2Success &&
     comparisonData && user1Profile && user2Profile) {
 
@@ -116,8 +130,7 @@ const ComparePage = () => {
     };
 
     return (
-      <div className="flex flex-col">
-        <NavBar />
+      <PageWrapper>
         <ComparisonSection
           user1={user1Data}
           user2={user2Data}
@@ -131,7 +144,7 @@ const ComparePage = () => {
           isLoading={isLoadingComparison}
           error={comparisonError}
         />
-      </div>
+      </PageWrapper>
     );
   }
 

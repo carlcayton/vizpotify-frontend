@@ -12,9 +12,9 @@ interface ProfileData {
 }
 
 const UserProfileCard = ({ profile }: { profile: ProfileData }) => (
-  <Card className="bg-gray-800 border-gray-700">
+  <Card className="bg-gray-800/90 backdrop-blur-sm border-gray-700 transition-all duration-300 hover:bg-gray-800 hover:shadow-lg">
     <CardContent className="flex items-center gap-6 p-6">
-      <Avatar className="w-20 h-20">
+      <Avatar className="transform transition-transform hover:scale-105">
         <AvatarImage src={profile.imageUrl} alt={profile.displayName} />
         <AvatarFallback>
           <UserCircle className="w-20 h-20 text-gray-400" />

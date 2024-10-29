@@ -12,16 +12,17 @@ interface CommonItemsGridProps {
 }
 
 const CommonItemsGrid = ({ items, type, emptyMessage }: CommonItemsGridProps) => (
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 p-2">
     {items.length === 0 ? (
       <div className="col-span-full text-center text-gray-400 py-8">
         {emptyMessage}
       </div>
     ) : (
       items.map((item) => (
-        <Card 
-          key={item.id} 
-          className="bg-gray-700 border-gray-600 hover:bg-gray-600 transition-colors overflow-hidden"
+        <Card
+          key={item.id}
+          // Update the Card className to:
+          className="bg-gray-700 border-gray-600 hover:bg-gray-600 transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg overflow-hidden group"
         >
           <div className="relative w-full pt-[100%]">
             <Image
