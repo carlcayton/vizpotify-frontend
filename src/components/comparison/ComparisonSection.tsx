@@ -6,6 +6,11 @@ import UserProfileCard from './common/UserProfileCard';
 import SimilarityMeter from './common/SimilarityMeter';
 import CommonItemsGrid from './common/CommonItemsGrid';
 import MusicEraComparison from './MusicEraComparison';
+import TrackFeaturesComparison from './TrackFeaturesComparison';
+import type {
+    TrackFeaturesComparisonProps,
+    UserTrackFeatureStatsMap
+} from '@/types/trackFeatures';
 import GenreDistributionComparison from './GenreDistributionComparison';
 import { ProfileData } from '@/types/comparison';
 import { ArtistDto, TrackDto } from '@/services/comparisonService';
@@ -33,6 +38,10 @@ interface ComparisonSectionProps {
             };
         };
     };
+    trackFeatureStats: {  // Updated this to use proper type
+        [key: string]: UserTrackFeatureStatsMap;
+    };
+
     genreDistribution: {
         [key: string]: {
             userSpotifyId: string;
@@ -56,6 +65,7 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({
     commonItems,
     musicEraSummary,
     genreDistribution,
+    trackFeatureStats,
     isLoading,
     error
 }) => {
@@ -147,6 +157,15 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                 </Tabs>
             </Card>
 
+            <div className="mt-6">
+                <TrackFeaturesComparison
+                    user1Profile={user1}
+                    user2Profile={user2}
+                    trackFeatureStats={trackFeatureStats}
+                    isLoading={isLoading}
+                    error={error}
+                />
+            </div>
             {/* Music Era Comparison */}
             <div className="mt-6">
                 <MusicEraComparison

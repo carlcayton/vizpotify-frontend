@@ -141,6 +141,7 @@ const ComparePage = () => {
           commonItems={safeCommonItems}
           musicEraSummary={comparisonData.musicEraSummary}
           genreDistribution={comparisonData.genreDistribution}
+          trackFeatureStats={comparisonData.trackFeatureStats}
           isLoading={isLoadingComparison}
           error={comparisonError}
         />
