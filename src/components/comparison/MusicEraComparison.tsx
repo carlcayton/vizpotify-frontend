@@ -67,7 +67,7 @@ const MusicEraComparison = ({
                 </div>
             </CardHeader>
             <CardContent>
-                <div className="h-[400px] w-full">
+                <div className="h-[350px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                             data={chartData}
